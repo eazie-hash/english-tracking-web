@@ -1593,7 +1593,7 @@ html.dark #auth-switch button{color:#a9bfee!important}
 .ar-streak{display:flex;align-items:center;gap:10px;margin:2px 0 4px;color:#9a3412;font-weight:600;font-size:15px}
 .ar-streak img{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(180,105,42,.18))}
 html.dark .ar-streak{color:#fdba74}
-.ar-fx{min-height:6px}
+.ar-fx{min-height:6px}.ar-feedback{margin:14px 0;padding:13px 15px;border:1px solid var(--border,#ddd);border-left:4px solid var(--color-primary,#6845a5);border-radius:10px;background:var(--color-page,#fff);line-height:1.55}.ar-feedback strong{display:block;margin-bottom:5px}.ar-feedback p{margin:5px 0}
 .ar-win{width:96px;height:96px;display:block;margin:4px 0}
 /* Study-streak flames */
 .streak-flame{width:44px;height:44px;max-width:none;margin:-7px;display:block;opacity:.38;filter:drop-shadow(0 2px 4px rgba(180,105,42,.16))}
@@ -2699,6 +2699,9 @@ ${mVe}${d}`,tokens:{light:s,dark:l},defaultMode:a==="dark"?"dark":"light"}}funct
 `)})},"resolveAll"),impl:{readAll:s}};function s(){return Promise.resolve(n.asArray(document.styleSheets)).then(function(q){let ne=typeof y.impl.options.requestInterceptor=="function",Q={};return Promise.all(q.map(function(be){let se=be.href;if(!se||Q[se])return be;Q[se]=!0;var G=(ye=>{try{return!ye.cssRules}catch{return!0}})(be)&&(ye=>{var he=y.impl.options.loadExternalStyleSheet;if(typeof he=="function")try{return he(ye)===!0}catch(xe){return C("domtoimage: loadExternalStyleSheet predicate threw:",xe),!1}return he===!0})(se);return ne||G?n.getResourceText(se,g.STYLESHEET,G).then(function(ye){return ye&&((he,xe)=>{try{var Te=document.implementation.createHTMLDocument(""),Ee=Te.createElement("style");return Ee.appendChild(document.createTextNode((Qe=xe,he.replace(/url\((['"]?)([^'")]+)\1\)/g,function(Oe,P,X){return X=X.trim(),n.isDataUrl(X)||/^[a-z][a-z0-9+.-]*:/i.test(X)?Oe:`url(${P}${n.resolveUrl(X,Qe)}${P})`})))),Te.body.appendChild(Ee),Ee.sheet}catch{return null}var Qe})(ye,se)||be}):be}))}).then(function(q){let ne=[];return q.forEach(function(Q){var be=Object.getPrototypeOf(Q);if(Object.prototype.hasOwnProperty.call(be,"cssRules"))try{n.asArray(Q.cssRules||[]).forEach(ne.push.bind(ne))}catch(se){y.impl.options.ignoreCSSRuleErrors||C("domtoimage: Error while reading CSS rules from: "+Q.href,se)}}),ne}).then(function(q){return q.filter(function(ne){return ne.type===CSSRule.FONT_FACE_RULE}).filter(function(ne){return a.shouldProcess(ne.style.getPropertyValue("src"))})}).then(function(q){return q.map(D)});function D(q){return{resolve:o(function(){var ne=(q.parentStyleSheet||{}).href;return a.inlineAll(q.cssText,ne,g.FONT)},"resolve"),src:o(function(){return q.style.getPropertyValue("src")},"src"),descriptor:o(function(){var ne=q.style;return{family:n.parseFontFamilies(ne.getPropertyValue("font-family"))[0]||"",style:ne.getPropertyValue("font-style"),weight:ne.getPropertyValue("font-weight"),stretch:ne.getPropertyValue("font-stretch"),unicodeRange:ne.getPropertyValue("unicode-range"),src:ne.getPropertyValue("src"),rule:q}},"descriptor")}}}o(s,"e");let l={inlineAll:o(function D(q){return n.isElement(q)?((ne=q).style?(Q=["background","background-image","mask","mask-image","-webkit-mask","-webkit-mask-image"].map(function(be){let se=ne.style.getPropertyValue(be),G=ne.style.getPropertyPriority(be);return se?a.inlineAll(se,void 0,g.CSS_IMAGE).then(function(ye){ne.style.setProperty(be,ye,G)}):Promise.resolve()}),Promise.all(Q).then(function(){return ne})):Promise.resolve(ne)).then(function(){return n.isHTMLImageElement(q)?u(q).inline():n.isSVGImageElement(q)?!(se=(be=q).getAttribute("href")||be.getAttributeNS(f,"href")||be.getAttribute("xlink:href"))||n.isDataUrl(se)?Promise.resolve(be):Promise.resolve(se).then(function(G){return(0,n.getAndEncode)(G,g.IMAGE)}).then(function(G){return G&&(be.setAttributeNS(f,"xlink:href",G),be.setAttribute("href",G)),be}):Promise.all(n.asArray(q.childNodes).map(D));var be,se}):Promise.resolve(q);var ne,Q},"n2"),impl:{newImage:u}};function u(D){return{inline:o(function(q){return n.isDataUrl(D.src)?Promise.resolve():Promise.resolve(D.src).then(function(ne){return(q||n.getAndEncode)(ne,g.IMAGE)}).then(function(ne){return new Promise(function(Q){D.onload=Q,D.onerror=Q,D.src=ne})})},"inline")}}o(u,"i");let c={position:"fixed",left:"-9999px",visibility:"hidden"},d="http://www.w3.org/2000/svg",f="http://www.w3.org/1999/xlink",p="data:image/svg+xml;charset=utf-8,",m={warn:o(function(...D){console.warn(...D)},"warn"),error:o(function(...D){console.error(...D)},"error")},h={copyDefaultStyles:!0,imagePlaceholder:void 0,cacheBust:!1,useCredentials:!1,useCredentialsFilters:[],httpTimeout:3e4,styleCaching:"strict",corsImg:void 0,adjustClonedNode:void 0,filterStyles:void 0,filterUrls:void 0,filterFonts:void 0,adjustPseudoElement:void 0,onImageError:void 0,ensureShown:!1,pixelRatio:1,preserveScroll:!1,ignoreCSSRuleErrors:!1,requestInterceptor:void 0,loadExternalStyleSheet:!1,logger:m},g=Object.freeze({IMAGE:"image",CSS_IMAGE:"css-image",FONT:"font",STYLESHEET:"stylesheet"}),y={toSvg:L,toPng:o(function(D,q){return O(D,q).then(function(ne){return ne.toDataURL()})},"toPng"),toJpeg:o(function(D,q){return O(D,q).then(function(ne){return ne.toDataURL("image/jpeg",(q?q.quality:void 0)||1)})},"toJpeg"),toBlob:o(function(D,q){return O(D,q).then(n.canvasToBlob)},"toBlob"),toPixelData:o(function(D,q){return O(D,q).then(function(ne){return ne.getContext("2d").getImageData(0,0,n.width(D),n.height(D)).data})},"toPixelData"),toCanvas:O,ResourceType:g,impl:{fontFaces:i,images:l,util:n,inliner:a,urlCache:[],options:{},copyOptions:o(function(D){Object.keys(h).forEach(function(q){y.impl.options[q]=(D[q]===void 0?h:D)[q]})},"copyOptions"),resetUrlCache:v}};function v(){y.impl.urlCache=[]}o(v,"m"),typeof e=="object"&&typeof t=="object"?t.exports=y:r.domtoimage=y;let b=(typeof Node<"u"?Node.ELEMENT_NODE:void 0)||1,x=w("getComputedStyle"),S=w("atob");function w(D){return(r!==void 0?r[D]:void 0)||(typeof window<"u"?window[D]:void 0)||globalThis[D]}o(w,"s");function k(...D){I("warn",D)}o(k,"d");function C(...D){I("error",D)}o(C,"P");function I(Q,q){var ne=y.impl.options.logger||m,Q=ne[Q];typeof Q=="function"&&Q.apply(ne,q)}o(I,"a");function L(D,q){let ne=y.impl.util.getWindow(D),Q=(q=q||{},y.impl.copyOptions(q),[]);return j=[],U=new Set,ne&&ne.document?(()=>{var G=ne.document;if(!G.fonts||!G.fonts.ready)return Promise.resolve();let ye=y.impl.options.httpTimeout||3e4,he,xe=Promise.resolve(G.fonts.ready).then(function(){return!1},function(){return!1}),Te=new Promise(function(Ee){he=ne.setTimeout(function(){Ee(!0)},ye)});return Promise.race([xe,Te]).then(function(Ee){ne.clearTimeout(he),Ee&&k("dom-to-image-more: timed out after "+ye+"ms waiting for document fonts to finish loading (document.fonts.ready); rendering anyway \u2014 the output may have missing glyphs or fallback-font metrics.")})})().then(function(){var G=D;if(G.nodeType===b)return G;var ye,he=G,xe=G.parentNode;if(xe)return ye=document.createElement("span"),xe.replaceChild(ye,he),ye.append(G),Q.push({parent:xe,child:he,wrapper:ye}),ye;throw new Error("Cannot render a non-element node that is not attached to a parent; wrap it in an element or attach it to the document first.")}).then(function(G){return o((function ye(he,xe,Te,Ee){var Qe=xe.filter;return he===N||n.isHTMLScriptElement(he)||n.isHTMLStyleElement(he)||n.isHTMLLinkElement(he)||Te!==null&&Qe&&!Qe(he)?Promise.resolve():Promise.resolve(he).then(function(Oe){return n.isHTMLCanvasElement(Oe)?n.makeImage(Oe.toDataURL()):Oe.cloneNode(!1)}).then(function(Oe){return xe.adjustClonedNode&&xe.adjustClonedNode(he,Oe,!1),Promise.resolve(Oe)}).then(function(Oe){{var P=Oe,Oe=(Oe=he,n.isElementHostForOpenShadowRoot(Oe)?Oe.shadowRoot:Oe);let ie=(te=>{if(n.isShadowSlotElement(te)){var Ce=te.assignedNodes();if(Ce&&0<Ce.length)return Ce}return te.childNodes})(Oe),le=Promise.resolve();if(ie.length!==0){let te=x((Oe=Oe,n.isShadowRoot(Oe)?Oe.host:Oe));n.asArray(ie).forEach(function(Ce){le=le.then(function(){return ye(Ce,xe,te,Ee).then(function(ze){ze&&P.appendChild(ze)})})})}return le.then(function(){return P})}}).then(function(Oe){return xe.adjustClonedNode&&xe.adjustClonedNode(he,Oe,!0),Promise.resolve(Oe)}).then(function(Oe){return P=Oe,X=he,!n.isElement(P)||n.isShadowSlotElement(X)?Promise.resolve(P):Promise.resolve().then(function(){if(n.isHTMLImageElement(X)&&typeof X.decode=="function"&&!(X.complete&&0<X.naturalWidth||(ie=>{if(ie.loading==="lazy"){let te=ie;for(;te&&te.nodeType===1;){if(x(te).getPropertyValue("display")==="none")return 1;var le;te=te.parentElement||((le=typeof te.getRootNode=="function"?te.getRootNode():null)&&le.host?le.host:null)}}})(X)))return X.decode().catch(function(){})}).then(function(){if(P.style){var ie=X,le=P,te,Ce,ze=x(ie);if(ze.cssText)le.style.cssText=ze.cssText,(Gt=le.style).font=(ur=ze).font,Gt.fontFamily=ur.fontFamily,Gt.fontFeatureSettings=ur.fontFeatureSettings,Gt.fontKerning=ur.fontKerning,Gt.fontSize=ur.fontSize,Gt.fontStretch=ur.fontStretch,Gt.fontStyle=ur.fontStyle,Gt.fontVariant=ur.fontVariant,Gt.fontVariantCaps=ur.fontVariantCaps,Gt.fontVariantEastAsian=ur.fontVariantEastAsian,Gt.fontVariantLigatures=ur.fontVariantLigatures,Gt.fontVariantNumeric=ur.fontVariantNumeric,Gt.fontVariationSettings=ur.fontVariationSettings,Gt.fontWeight=ur.fontWeight;else{{var yt=xe,_t=ie,yn=ze,ca=Te,Gt=le;let mo=y.impl.options.copyDefaultStyles?((Zi,er)=>{var tr,yr=(Wt=>{var Ln=[];do if(Wt.nodeType===b){var Ir=Wt.tagName;if(Ln.push(Ir),J.includes(Ir))break}while(Wt=Wt.parentNode);return Ln})(er),Zi=(Zi.styleCaching!=="relaxed"?yr:yr.filter((Wt,Ln,Ir)=>Ln===0||Ln===Ir.length-1)).join(">")+((tr=er)&&tr.hasAttribute?re.filter(function(Wt){return tr.hasAttribute(Wt)}).map(function(Wt){return`[${Wt}]`}).join(""):"");if(F[Zi])return F[Zi];var rf,_u=yr=((Wt,Ln)=>{let Ir=Wt.body;do var ho=Ln.pop(),ho=Wt.createElement(ho);while(Ir.appendChild(ho),Ir=ho,0<Ln.length);return Ir.textContent="\u200B",Ir})((rf=(()=>{if(N)return N.contentWindow;Ln=document.characterSet||"UTF-8",Wt=(Wt=document.doctype)?(`<!DOCTYPE ${go(Wt.name)} ${go(Wt.publicId)} `+go(Wt.systemId)).trim()+">":"",(N=document.createElement("iframe")).id="domtoimage-sandbox-"+n.uid(),Object.assign(N.style,c),document.body.appendChild(N);var Wt,Ln,Ir=N,ho="domtoimage-sandbox";try{return Ir.contentWindow.document.write(Wt+`<html><head><meta charset='${Ln}'><title>${ho}</title></head><body>
 
   
+
+
+
 
 
 
@@ -4579,6 +4582,7 @@ applied:[["Test validity means a test…","measures what it claims to measure","
 literature:[["A comparison using “like” or “as” is a…","simile","metaphor","personification","hyperbole"],["The point of greatest tension in a plot is the…","climax","exposition","denouement","prologue"],["Reader-response criticism focuses on…","the reader’s experience of the text","the author’s biography","class conflict","form only"],["Who wrote “Hamlet”?","William Shakespeare","Christopher Marlowe","John Milton","Ben Jonson"],["Postcolonial criticism examines…","the effects of colonialism in texts","sound patterns","printing history","rhyme schemes"],["A 14-line poem is a…","sonnet","ballad","ode","haiku"]],
 composition:[["A sentence that states a paragraph’s main idea is the…","topic sentence","transition","caption","citation"],["Which mode of writing aims to convince?","argumentation","narration","description","exposition"],["The first stage of the writing process is…","prewriting","editing","publishing","revising"],["A thesis statement presents the essay’s…","central claim","title","list of sources","word count"],["Ethos, pathos and logos are Aristotle’s…","modes of persuasion","essay parts","parts of speech","sentence types"],["Paragraph unity means…","all sentences support one main idea","sentences are short","many transitions are used","sentences are equal in length"]],
 elt:[["Teaching the rule first, then examples, is…","deductive teaching","inductive teaching","task-based learning","immersion"],["Task-based language teaching is organized around…","meaningful tasks","grammar rules","drills","translation"],["Scaffolding is associated with…","Vygotsky","Skinner","Krashen","Chomsky"],["Formative assessment is done…","during learning to guide teaching","only at year end","only for ranking","only for certification"],["The lowest level in Bloom’s revised taxonomy is…","remembering","creating","evaluating","analyzing"],["Communicative Language Teaching emphasizes…","meaningful communication","memorizing dialogues","translation","grammar charts"]]};
+var EX={"In “She has been working,” the verb phrase shows which aspect?":"“Has been working” combines the present perfect (“has been”) with the -ing form. The perfect progressive describes an activity that began earlier and continues up to, or has relevance at, the present.","Which is a complex sentence?":"A complex sentence contains one independent clause and at least one dependent clause. “Although it rained” is dependent, while “we played” is independent.","Which word is a subordinating conjunction?":"“Because” introduces a dependent clause and shows a relationship such as reason. “And,” “but,” and “or” are coordinating conjunctions.","Choose the correct form: “Neither of the boys ___ ready.”":"“Neither” is grammatically singular in formal standard English, so it takes the singular verb “is.”","What is the direct object in “Mia gave Leo a book”?":"The direct object receives the action of the verb. Mia gave what? A book. “Leo” is the indirect object—the recipient.","In X-bar theory, a head plus its complement forms…":"In X-bar syntax, a head combines with its complement to form the intermediate projection X′ (X-bar). A specifier combines at a higher level to form XP.","Hot and cold are examples of…":"“Hot” and “cold” express opposite meanings on a scale, so they are gradable antonyms.","“Bank” (river) and “bank” (money) show…":"These are homonyms: the same spoken and written form has unrelated meanings. The meanings are not simply related senses of one word.","Which pair shows hyponymy?":"A dog is a kind of animal. “Dog” is the more specific hyponym, while “animal” is its superordinate category.","“John killed Bill” entails…":"To kill someone means to cause that person to die. Therefore, if John killed Bill, Bill died.","The emotional associations of a word are its…":"Connotation refers to the feelings, associations, or cultural meanings connected with a word beyond its basic dictionary meaning.","In “Ana opened the door with the key,” “the key” is the…":"The key is the instrument or means used by the agent (Ana) to perform the action of opening.","The IPA symbol /ʃ/ is the first sound in…":"The initial sound in “ship” is /ʃ/, a voiceless postalveolar fricative. “Chip” begins with /tʃ/, while “sip” begins with /s/.","/p/ is classified as a…":"/p/ is produced by bringing both lips together (bilabial), stopping airflow briefly (stop/plosive), and not vibrating the vocal folds (voiceless).","Pairs like “pat/bat” that differ by one sound are…":"A minimal pair consists of two words that differ in only one phoneme and have different meanings. /p/ and /b/ distinguish “pat” from “bat.”","The aspirated [pʰ] in “pin” and plain [p] in “spin” are…":"The aspirated and unaspirated [p] occur in predictable environments and do not change word meaning in English. They are allophones of the same phoneme /p/.","Where does main stress fall in “photograph”?":"“Photograph” is commonly pronounced with primary stress on the first syllable: PHO-to-graph. Compare “photography,” where the stress shifts.","Saying “input” as “imput” is an example of…":"The /n/ changes to [m] before the bilabial /p/, matching its place of articulation. This is place assimilation.","In “unhappiness,” the “un-” is a…":"“Un-” is a bound prefix attached before the base. It contributes a negative or reversing meaning.","Which is an inflectional morpheme?":"The plural -s in “cats” marks grammatical number without creating a new dictionary word or changing the word class. It is inflectional.","“Brunch” is formed by…":"“Brunch” combines parts of “breakfast” and “lunch.” Creating a word by blending parts of two words is called blending.","“Email” (noun) becoming “to email” (verb) is…":"The word changes from a noun to a verb without an added affix. This word-formation process is conversion, also called zero derivation.","The forms [s], [z], [ɪz] of plural -s are…":"These are different pronunciations of the same grammatical plural morpheme. Such variant forms of a morpheme are allomorphs.","A morpheme that can stand alone as a word is…":"A free morpheme can occur independently as a word, unlike a bound morpheme, which must attach to another form.","Grice’s maxim of Quantity says to…":"The maxim of Quantity asks speakers to make their contribution as informative as required for the current purpose, but not more informative than needed.","“Can you pass the salt?” is usually a…":"Although it has the grammatical form of a question about ability, in ordinary conversation it functions as a polite indirect request.","The effect of an utterance on the hearer is the…":"A perlocutionary act is the effect produced on a listener, such as persuading, frightening, amusing, or convincing them.","Meaning inferred beyond what is literally said is…":"An implicature is meaning that a listener infers from context and conversational expectations rather than from the literal words alone.","Politeness theory (Brown & Levinson) centers on…":"Brown and Levinson’s politeness theory explains how speakers manage face: a person’s public self-image or desire to be approved of and not imposed upon.","Words like “here,” “you,” “now” are…":"These expressions are deictics because their interpretation depends on the context of speaking, including the speaker, place, and time.","Switching between languages within one conversation is…":"Code-switching is the alternation between two or more languages or language varieties within a conversation or communicative situation.","A variety tied to the situation (formal or casual) is a…":"Register is a language variety associated with a particular situation, purpose, audience, or level of formality.","An individual’s personal way of speaking is an…":"An idiolect is the distinctive language use of one individual, including their vocabulary, pronunciation, and grammatical preferences.","In Kachru’s model, the Philippines is usually placed in the…":"In the traditional Three Circles model, the Philippines is commonly classified in the Outer Circle because English has an established institutional and second-language role.","Diglossia is…":"Diglossia describes a community where two varieties have different, often complementary, social functions—for example, a high variety in formal settings and a low variety in everyday use.","A pidgin that becomes a community’s first language is a…":"When a pidgin becomes the first language of a community and is acquired by children as a native language, it is called a creole.","“However” and “therefore” are…":"These words connect ideas and signal relationships between parts of a text. “However” marks contrast; “therefore” marks a result or conclusion.","Using “it” to point back to “the book” is…":"Anaphoric reference occurs when an expression points back to something already mentioned. Here, “it” refers to “the book.”","“Do you like it? — I do.” shows…":"The response omits the repeated verb phrase “like it” because it can be understood from the preceding question. This is ellipsis.","Question–answer pairs are examples of…":"An adjacency pair is a conventional sequence of two related turns, such as a question followed by an answer or a greeting followed by a greeting.","Cohesion refers to…":"Cohesion concerns explicit linguistic links in a text, such as reference, conjunction, substitution, ellipsis, and lexical repetition.","Critical discourse analysis studies how language relates to…":"Critical discourse analysis examines how discourse both reflects and reproduces social power relations, inequality, and ideology.","Krashen’s “i+1” is input that is…":"The “i” represents the learner’s current level; “+1” means input contains language just beyond that level, while remaining understandable with context and support.","The behaviorist view of language learning is linked to…":"B. F. Skinner is associated with behaviorism, which explains learning through conditioning, imitation, practice, and reinforcement.","Chomsky’s innate mechanism is the…":"The Language Acquisition Device (LAD) is Chomsky’s proposed innate capacity that helps humans acquire the rules of language.","A learner’s developing system between L1 and L2 is…":"Interlanguage is the evolving linguistic system a second-language learner constructs. It may show patterns influenced by the first language and by learner-internal development.","The critical period hypothesis claims…":"The hypothesis proposes that there is a biologically favorable period for acquiring language, especially native-like aspects, although the scope and implications remain debated.","The mental store of word knowledge is the…":"The mental lexicon is the organized store of words and information about their meanings, forms, sounds, and grammatical behavior in the mind.","Which period includes Beowulf?":"“Beowulf” is an Old English epic poem, generally dated to the early medieval English period.","The Norman Conquest took place in…":"The Norman Conquest of England occurred in 1066, beginning after William, Duke of Normandy, defeated King Harold II at the Battle of Hastings.","The Great Vowel Shift mainly affected…":"The Great Vowel Shift was a major historical change in the pronunciation of the long vowels of English, occurring mainly from the late Middle English into Early Modern English periods.","English belongs to which language branch?":"English is a West Germanic language within the Germanic branch of the Indo-European language family.","A word borrowed from another language is a…":"A loanword is a word adopted from another language. Borrowing can occur through contact, trade, migration, education, and cultural exchange.","Chaucer wrote in…":"Geoffrey Chaucer wrote in Middle English. His best-known work, “The Canterbury Tales,” reflects the language of the late fourteenth century.","Test validity means a test…":"Validity concerns whether evidence supports the interpretation and use of test results for the intended purpose. A valid test measures the construct it claims to measure.","Test reliability means…":"Reliability refers to the consistency or dependability of assessment results across occasions, forms, or raters.","The four macro skills are listening, speaking, reading and…":"Writing completes the traditional set of four language macro skills: listening, speaking, reading, and writing.","Studying learners’ mistakes is called…":"Error analysis systematically identifies, describes, and explains learners’ errors to understand their developing language knowledge and instructional needs.","A large electronic collection of authentic texts is a…":"A corpus is a systematically collected body of spoken or written language used for linguistic description and analysis.","Systematic classroom inquiry by teachers to improve practice is…":"Action research is a cyclical process in which practitioners identify a problem, plan an intervention, gather evidence, and reflect to improve practice.","A comparison using “like” or “as” is a…":"A simile explicitly compares two unlike things using words such as “like” or “as.”","The point of greatest tension in a plot is the…":"The climax is the turning point or moment of greatest tension, when the central conflict reaches its most intense point.","Reader-response criticism focuses on…":"Reader-response criticism examines how readers participate in creating meaning through their experiences, expectations, and interpretations of a text.","Who wrote “Hamlet”?":"“Hamlet,” the tragedy about the Prince of Denmark, was written by William Shakespeare.","Postcolonial criticism examines…":"Postcolonial criticism studies how literature represents colonialism and its continuing effects, including identity, language, power, resistance, and cultural conflict.","A 14-line poem is a…":"A sonnet is a fourteen-line poem, commonly organized through a particular rhyme scheme and meter, though forms vary.","A sentence that states a paragraph’s main idea is the…":"A topic sentence expresses the controlling idea of a paragraph and helps readers understand what the supporting sentences will develop.","Which mode of writing aims to convince?":"Argumentation presents claims supported by reasons and evidence in order to persuade an audience to accept a position.","The first stage of the writing process is…":"Prewriting comes before drafting. It includes generating ideas, narrowing a topic, researching, and planning the organization.","A thesis statement presents the essay’s…":"A thesis statement communicates the essay’s central claim or controlling argument, guiding the direction of the discussion.","Ethos, pathos and logos are Aristotle’s…":"Ethos appeals to credibility, pathos to emotion, and logos to reasoning. Together, they are the classical modes of persuasion.","Paragraph unity means…":"A unified paragraph develops one controlling idea. Each supporting sentence should contribute to that idea rather than introduce an unrelated point.","Teaching the rule first, then examples, is…":"Deductive teaching begins with an explicit rule or generalization and then moves to examples and practice.","Task-based language teaching is organized around…":"Task-based language teaching uses meaningful tasks with a communicative outcome as the central unit of instruction.","Scaffolding is associated with…":"Scaffolding is commonly associated with Vygotskian sociocultural theory: temporary guidance helps learners perform tasks they cannot yet complete independently.","Formative assessment is done…":"Formative assessment takes place during instruction. Teachers and learners use evidence from it to adjust teaching and improve learning while it is developing.","The lowest level in Bloom’s revised taxonomy is…":"Remembering is the foundational level of the revised taxonomy. It involves retrieving or recognizing previously learned information.","Communicative Language Teaching emphasizes…":"Communicative Language Teaching prioritizes meaningful interaction and the ability to use language appropriately and effectively in real communicative contexts."};
 var T=[["mix","Mixed (all topics)"],["grammar","Grammar and Syntax"],["semantics","Semantics"],["phonetics","Phonetics and Phonology"],["morphology","Morphology"],["pragmatics","Pragmatics"],["socio","Sociolinguistics"],["discourse","Discourse Analysis"],["psycho","Psycholinguistics"],["historical","Historical Linguistics"],["applied","Applied Linguistics"],["literature","Literature and Literary Criticism"],["composition","Composition, Rhetoric, and Communication"],["elt","English Language Teaching and Pedagogy"]];
 var sb,me,root,body,badge,tm,run,sel="mix",lbT="mix",names={},LIM=15;
 function h(t,a,k){var e=document.createElement(t);for(var x in a){if(x==="class")e.className=a[x];else if(x==="text")e.textContent=a[x];else if(x.slice(0,2)==="on")e.addEventListener(x.slice(2),a[x]);else e.setAttribute(x,a[x])}(k||[]).forEach(function(c){if(c)e.appendChild(typeof c==="string"?document.createTextNode(c):c)});return e}
@@ -4589,24 +4593,52 @@ function shuf(a,r){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(r(
 function tname(id){for(var i=0;i<T.length;i++)if(T[i][0]===id)return T[i][1];return id}
 function missing(e){return/does not exist|schema cache|could not find/i.test(e.message||"")?"Quiz Arena has not been configured. Run arena-setup.sql once in the Supabase SQL Editor.":e.message}
 function toast(m){var u=window.__settingsUI;if(u&&u.toast)u.toast("error",m);else alert(m)}
-function round(topic,seed){var r=rng(seed),pool=topic==="mix"?[].concat.apply([],Object.keys(Q).map(function(k){return Q[k]})):Q[topic];return shuf(pool,r).slice(0,5).map(function(q){return{q:q[0],o:shuf(q.slice(1).map(function(t,i){return{t:t,ok:i===0}}),r)}})}
+function round(topic,seed){var r=rng(seed),pool=topic==="mix"?[].concat.apply([],Object.keys(Q).map(function(k){return Q[k]})):Q[topic];return shuf(pool,r).slice(0,5).map(function(q){return{q:q[0],answer:q[1],explanation:EX[q[0]]||("The correct answer is "+q[1]+". It best matches the concept asked about in this question. Review the definition and compare it with the other choices."),o:shuf(q.slice(1).map(function(t,i){return{t:t,ok:i===0}}),r)}})}
 async function nm(ids){var need=ids.filter(function(i){return i&&!names[i]});if(!need.length)return;var r=await sb.from("chat_profiles").select("id,username,full_name").in("id",need);(r.data||[]).forEach(function(p){names[p.id]=p.full_name||p.username||"Player"})}
-function play(topic,seed,ch){run={topic:topic,seed:seed,ch:ch,qs:round(topic,seed),i:0,score:0,ok:0,st:0};ask()}
+function play(topic,seed,ch){run={topic:topic,seed:seed,ch:ch,qs:round(topic,seed),i:0,ok:0,st:0};ask()}
 function fl(n){return n>1?h("div",{class:"ar-streak"},[h("img",{src:window.__FLAME,alt:""}),h("span",{text:"Consecutive correct responses: "+n})]):null}
-function ask(){var r=run,q=r.qs[r.i],t0=Date.now(),done=false,bar=h("div",{class:"ar-bar"},[h("i")]);
+function ask(){
+ var r=run,q=r.qs[r.i],t0=Date.now(),done=false,bar=h("div",{class:"ar-bar"},[h("i")]);
  var opts=q.o.map(function(o){return h("button",{class:"ar-opt",type:"button",text:o.t,onclick:function(){pick(o)}})});
  var fx=h("div",{class:"ar-fx"});fx.appendChild(fl(r.st||0)||document.createTextNode(""));
- view([h("div",{class:"ar-meta",text:tname(r.topic)+" · Question "+(r.i+1)+" of 5 · Score: "+r.score}),fx,h("h2",{text:q.q}),bar].concat(opts));
- function pick(o){if(done)return;done=true;clearInterval(tm);var left=Math.max(0,LIM-(Date.now()-t0)/1000);if(o&&o.ok){r.ok++;r.st=(r.st||0)+1;r.score+=100+Math.round(left/LIM*50);fx.textContent="";var f2=fl(r.st);if(f2)fx.appendChild(f2)}else{r.st=0;fx.textContent=""}
-  opts.forEach(function(b,i){b.disabled=true;if(q.o[i].ok)b.classList.add("good");else if(q.o[i]===o)b.classList.add("bad")});
-  setTimeout(function(){r.i++;if(r.i<5)ask();else finish()},1000)}
- tm=setInterval(function(){var e=(Date.now()-t0)/1000;bar.firstChild.style.width=Math.max(0,100-e/LIM*100)+"%";if(e>=LIM)pick(null)},100)}
-async function finish(){var r=run;view([h("p",{text:"Recording your score…"})]);
- var x=await sb.from("quiz_scores").insert({user_id:me,topic:r.topic,score:r.score,correct:r.ok,total:5,challenge_id:r.ch||null});
- var win=r.ok>=4;if(r.ch&&!x.error){var op=await sb.from("quiz_scores").select("user_id,score").eq("challenge_id",r.ch).neq("user_id",me);if(op.data&&op.data.length)win=r.score>op.data[0].score}
+ var feedback=h("div",{class:"ar-feedback"});feedback.hidden=true;
+ var next=h("button",{class:"ar-b",type:"button",text:r.i===4?"See results":"Next question",onclick:advance});next.hidden=true;
+ view([h("div",{class:"ar-meta",text:tname(r.topic)+" · Question "+(r.i+1)+" of 5 · Correct: "+r.ok+"/5"}),fx,h("h2",{text:q.q}),bar].concat(opts,[feedback,next]));
+ function pick(o){
+  if(done)return;done=true;clearInterval(tm);
+  if(o&&o.ok){r.ok++;r.st=(r.st||0)+1;fx.textContent="";var f2=fl(r.st);if(f2)fx.appendChild(f2)}else{r.st=0;fx.textContent=""}
+  opts.forEach(function(b,i){b.disabled=true;if(q.o[i].ok)b.classList.add("good");else if(o&&q.o[i]===o)b.classList.add("bad")});
+  feedback.textContent="";
+  feedback.appendChild(h("strong",{text:o?(o.ok?"Correct!":"Not quite."):"Time is up."}));
+  feedback.appendChild(h("p",{text:"Correct answer: "+q.answer}));
+  feedback.appendChild(h("p",{text:q.explanation}));
+  feedback.hidden=false;
+  next.textContent=r.i===4?"See results":"Next question";next.hidden=false;
+  var meta=body.querySelector(".ar-meta");if(meta)meta.textContent=tname(r.topic)+" · Question "+(r.i+1)+" of 5 · Correct: "+r.ok+"/5";
+ }
+ function advance(){if(!done)return;r.i++;if(r.i<5)ask();else finish()}
+ tm=setInterval(function(){var e=(Date.now()-t0)/1000;bar.firstChild.style.width=Math.max(0,100-e/LIM*100)+"%";if(e>=LIM)pick(null)},100)
+}
+async function finish(){
+ var r=run;view([h("p",{text:"Saving your result…"})]);
+ var x=await sb.from("quiz_scores").insert({user_id:me,topic:r.topic,score:r.ok,correct:r.ok,total:5,challenge_id:r.ch||null});
+ var win=r.ok>=4;
  if(win&&!x.error&&window.__winMusic)window.__winMusic();
- view([h("h2",{text:win?"Round Complete: Commendable Result":"Round Complete"}),win?h("img",{class:"ar-win",src:window.__FLAME,alt:""}):h("span"),h("p",{class:"ar-big",text:r.score+" points"}),h("p",{text:r.ok+" of 5 correct. "+(x.error?"Your result is shown, but we could not save your score. Check your connection and try again later.":"Your score has been saved.")}),h("div",{class:"ar-row"},[h("button",{class:"ar-b",type:"button",text:"Return to arena",onclick:tPlay}),r.ch?h("button",{class:"ar-b g",type:"button",text:"Challenge result",onclick:tCh}):h("button",{class:"ar-b g",type:"button",text:"Leaderboard",onclick:function(){lbT=r.topic;tLb()}})])]);pend()}
-function tPlay(){view([h("h2",{text:"Select a topic"}),h("div",{class:"ar-grid"},T.map(function(t){return h("button",{class:"ar-t"+(t[0]===sel?" on":""),type:"button",text:t[1],onclick:function(){sel=t[0];tPlay()}})})),h("div",{class:"ar-row"},[h("button",{class:"ar-b",type:"button",text:"Individual round",onclick:function(){play(sel,rnd())}}),h("button",{class:"ar-b g",type:"button",text:"Challenge a peer",onclick:pickFriend})]),h("p",{class:"ar-hint",text:"Each round comprises five questions with fifteen seconds allowed per question. A correct response earns 100 points, with up to 50 additional points for speed. In a challenge, both participants receive identical questions."})])}
+ var msg=x.error?"Your result is displayed, but could not be saved. Check your connection and try again.":"Your result has been saved.";
+ view([
+  h("h2",{text:win?"Round complete — well done!":"Round complete"}),
+  h("p",{class:"ar-big",text:r.ok+" / 5"}),
+  h("p",{text:r.ok+" correct answer"+(r.ok===1?"":"s")+" out of 5. "+msg}),
+  h("p",{class:"ar-hint",text:"This game records your quiz score only. It does not award points, coins, or rewards."}),
+  h("div",{class:"ar-row"},[
+   h("button",{class:"ar-b",type:"button",text:"Retry this round",onclick:function(){play(r.topic,r.seed,null)}}),
+   h("button",{class:"ar-b g",type:"button",text:"Return to arena",onclick:tPlay}),
+   r.ch?h("button",{class:"ar-b g",type:"button",text:"Challenge result",onclick:tCh}):null,
+   h("button",{class:"ar-b g",type:"button",text:"Leaderboard",onclick:function(){lbT=r.topic;tLb()}})
+  ])
+ ]);pend()
+}
+function tPlay(){view([h("h2",{text:"Select a topic"}),h("div",{class:"ar-grid"},T.map(function(t){return h("button",{class:"ar-t"+(t[0]===sel?" on":""),type:"button",text:t[1],onclick:function(){sel=t[0];tPlay()}})})),h("div",{class:"ar-row"},[h("button",{class:"ar-b",type:"button",text:"Individual round",onclick:function(){play(sel,rnd())}}),h("button",{class:"ar-b g",type:"button",text:"Challenge a peer",onclick:pickFriend})]),h("p",{class:"ar-hint",text:"Purpose: strengthen your English Studies knowledge through short, focused retrieval practice. How to play: choose a topic, answer five questions, and read the feedback after each response. You have 15 seconds per question. Your result is the number of correct answers out of five—there are no points, coins, or speed bonuses. In a peer challenge, both participants receive the same questions."})])}
 function pickFriend(){var out=h("div",{class:"ar-list"}),inp=h("input",{class:"ar-in",type:"search",placeholder:"Search by name or username\u2026","aria-label":"Search players"}),t,n=0;
  inp.addEventListener("input",function(){clearTimeout(t);var q=inp.value.trim().replace(/^@/,"").replace(/[%,()*\\]/g,""),k=++n;out.textContent="";if(q.length<2)return;
   t=setTimeout(async function(){var r=await sb.from("chat_profiles").select("id,username,full_name").neq("id",me).or("username.ilike.%"+q+"%,full_name.ilike.%"+q+"%").limit(8);if(k!==n)return;out.textContent="";
@@ -4616,20 +4648,20 @@ async function challenge(p){var seed=rnd(),r=await sb.from("quiz_challenges").in
 async function tCh(){view([h("p",{text:"Loading…"})]);
  var c=await sb.from("quiz_challenges").select("*").or("challenger.eq."+me+",opponent.eq."+me).order("created_at",{ascending:false}).limit(20);
  if(c.error){view([h("p",{class:"ar-hint",text:missing(c.error)})]);return}
- var rows=c.data||[],ids=rows.map(function(x){return x.id}),s=ids.length?await sb.from("quiz_scores").select("challenge_id,user_id,score").in("challenge_id",ids):{data:[]};
+ var rows=c.data||[],ids=rows.map(function(x){return x.id}),s=ids.length?await sb.from("quiz_scores").select("challenge_id,user_id,score").in("challenge_id",ids).lte("score",5):{data:[]};
  await nm(rows.map(function(x){return x.challenger===me?x.opponent:x.challenger}));
  var cards=rows.map(function(x){var sc={};(s.data||[]).forEach(function(y){if(y.challenge_id===x.id)sc[y.user_id]=y.score});var o=x.challenger===me?x.opponent:x.challenger,a=sc[me],b=sc[o],txt,act=null;
   if(a==null){txt="Awaiting your attempt";act=h("button",{class:"ar-b",type:"button",text:"Play",onclick:function(){play(x.topic,x.seed,x.id)}})}
-  else if(b==null)txt="Waiting for "+(names[o]||"opponent")+" · you scored "+a;
-  else txt=(a>b?"Result: victory, ":a<b?"Result: defeat, ":"Result: draw, ")+a+" to "+b;
+  else if(b==null)txt="Waiting for "+(names[o]||"opponent")+" · your score: "+a+"/5";
+  else txt=(a>b?"Result: victory, ":a<b?"Result: defeat, ":"Result: draw, ")+a+"/5 to "+b+"/5";
   return h("div",{class:"ar-card"},[h("div",{},[h("b",{text:tname(x.topic)+" vs "+(names[o]||"Player")}),h("small",{text:txt})]),act])});
  view([h("h2",{text:"Your challenges"}),cards.length?h("div",{class:"ar-list"},cards):h("p",{class:"ar-hint",text:"No challenges are on record. Select a topic and invite a peer."})]);pend()}
 async function tLb(){var s2=h("select",{class:"ar-in","aria-label":"Topic"},T.map(function(t){return h("option",{value:t[0],text:t[1]})}));s2.value=lbT;s2.addEventListener("change",function(){lbT=s2.value;tLb()});
  view([h("h2",{text:"Leaderboard"}),s2,h("p",{text:"Loading…"})]);
- var r=await sb.from("quiz_scores").select("user_id,score").eq("topic",lbT).order("score",{ascending:false}).limit(100);
+ var r=await sb.from("quiz_scores").select("user_id,score").eq("topic",lbT).lte("score",5).order("score",{ascending:false}).limit(100);
  if(r.error){view([h("p",{class:"ar-hint",text:missing(r.error)})]);return}
  var best={};(r.data||[]).forEach(function(x){if(!(x.user_id in best))best[x.user_id]=x.score});var ids=Object.keys(best).slice(0,10);await nm(ids);
- view([h("h2",{text:"Leaderboard"}),s2,ids.length?h("ol",{class:"ar-lb"},ids.map(function(i){return h("li",{class:i===me?"me":""},[h("span",{text:names[i]||"Player"}),h("b",{text:best[i]+" points"})])})):h("p",{class:"ar-hint",text:"No scores have been recorded for this topic."})])}
+ view([h("h2",{text:"Leaderboard"}),s2,ids.length?h("ol",{class:"ar-lb"},ids.map(function(i){return h("li",{class:i===me?"me":""},[h("span",{text:names[i]||"Player"}),h("b",{text:best[i]+" / 5 correct"})])})):h("p",{class:"ar-hint",text:"No score-only results have been recorded for this topic yet."})])}
 async function pend(){if(!sb||!me)return;var c=await sb.from("quiz_challenges").select("id").eq("opponent",me);if(c.error||!c.data.length){badge.hidden=true;return}
  var s=await sb.from("quiz_scores").select("challenge_id").eq("user_id",me).in("challenge_id",c.data.map(function(x){return x.id})),d=new Set((s.data||[]).map(function(x){return x.challenge_id})),n=c.data.filter(function(x){return!d.has(x.id)}).length;badge.textContent=n;badge.hidden=!n}
 function close(){clearInterval(tm);root.hidden=true;document.body.style.overflow=""}
@@ -5382,6 +5414,8 @@ var GROUPS=[
   {t:'Quiz Arena',d:'Play quizzes and challenges',ic:'arena',launch:'ar-launch'},
   {t:'Reed–Kellogg Sentence Diagram',d:'Diagram sentences step by step',ic:'diagram',launch:'dl-launch'},
   {t:'X-bar Diagram Lab',d:'Practise phrase structure at five levels',ic:'structure',launch:'ath-xbar-launch'},
+  {t:'Parts of Speech Lab',d:'Master the eight parts of speech and practise sentence writing',ic:'structure',launch:'ath-pos-launch'},
+  {t:'Phonetics Exercises',d:'Practise IPA, speech sounds, articulation and transcription at five levels',ic:'practice',launch:'ath-phonetics-launch'},
   {t:'Labeled Bracketing Lab',d:'Build phrase markers with labeled brackets at five levels',ic:'structure',launch:'ath-lb-launch'},
   {t:'Grammar Components Lab',d:'Practise syntax, phonetics, phonology, semantics, grammar, and pragmatics',ic:'structure',launch:'ath-gc-launch'},
   {t:'Dependency Tree Lab',d:'Analyse heads and grammatical relations at five levels',ic:'structure',launch:'ath-dep-launch'},
@@ -6095,6 +6129,12 @@ html.dark #ath-xbar-root{--xb-bg:#17131f;--xb-fg:#ece7f6;--xb-card:#221c2e;--xb-
 #ath-xbar-root select{width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--xb-border);border-radius:9px;background:var(--xb-card);color:var(--xb-fg)}
 #ath-xbar-root .xb-tree{overflow-x:auto;padding:16px;border:1px dashed var(--xb-border);border-radius:10px;background:var(--xb-card)}
 #ath-xbar-root pre{font:600 14px/1.45 ui-monospace,monospace;white-space:pre;min-width:max-content;margin:0;color:var(--xb-fg)}
+#ath-xbar-root .xb-model-figure{margin:14px 0 4px;padding:12px;border:1px solid var(--xb-border);border-radius:12px;background:var(--xb-card)}
+#ath-xbar-root .xb-model-image{display:block;width:100%;height:auto;max-width:900px;margin:0 auto;border-radius:8px}
+#ath-xbar-root .xb-model-figure figcaption{margin-top:8px;color:var(--xb-muted);font-size:14px}
+#ath-xbar-root .xb-tree-image{display:block;width:100%;height:auto;max-width:900px;margin:0 auto;border-radius:8px;background:#fff}
+#ath-xbar-root .xb-tree-caption{font-size:13px;color:var(--xb-muted);margin:8px 2px 0}
+
 #ath-xbar-root .xb-feedback{padding:12px 14px;border-radius:10px;margin-top:12px;background:color-mix(in srgb,var(--xb-primary) 10%,var(--xb-card))}
 #ath-xbar-root .xb-feedback.good{background:#e6f5ec;color:#205c39}
 html.dark #ath-xbar-root .xb-feedback.good{background:#17301f;color:#a9e8bd}
@@ -6105,6 +6145,48 @@ html.dark #ath-xbar-root .xb-feedback.retry{background:#3a1c24;color:#ffb1bd}
 #ath-xbar-root .xb-progress span{display:block;height:100%;background:var(--xb-primary);width:0}
 @media(max-width:600px){#ath-xbar-launch{left:12px;bottom:220px;max-width:calc(100vw - 24px)}#ath-xbar-root{padding:64px 12px 28px}#ath-xbar-root .xb-card{padding:13px}#ath-xbar-root .xb-assign{grid-template-columns:1fr;gap:5px;margin:13px 0}}
 @media(prefers-reduced-motion:reduce){#ath-xbar-root *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+#ath-pos-root .pos-lab{margin-top:34px;padding-top:28px;border-top:3px solid var(--xb-border)}
+#ath-pos-root .pos-lab p{line-height:1.75;margin:0 0 16px}
+#ath-pos-root .pos-lab h2,#ath-pos-root .pos-lab h3{margin:0 0 14px}
+#ath-pos-root .pos-levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:18px 0}
+#ath-pos-root .pos-category-group{border:1px solid var(--xb-border,#ddd);border-radius:12px;padding:12px;margin:12px 0}
+#ath-pos-root .pos-category-group h3{margin:4px 0 10px}
+#ath-pos-root .pos-category-group .pos-level{margin:5px;min-width:180px}
+#ath-pos-root .pos-level{border:1px solid var(--xb-border);border-radius:12px;padding:15px;background:var(--xb-card);color:var(--xb-fg);text-align:left;cursor:pointer;min-height:82px}
+#ath-pos-root .pos-level:disabled{opacity:.45;cursor:not-allowed}
+#ath-pos-root .pos-option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--xb-border);border-radius:10px;padding:12px;margin:10px 0;cursor:pointer}
+#ath-pos-root .pos-option:has(input:checked){border-color:var(--xb-primary);background:color-mix(in srgb,var(--xb-primary) 9%,var(--xb-card))}
+#ath-pos-root .pos-option input{margin-top:5px}
+#ath-pos-root .pos-meter{height:8px;background:var(--xb-border);border-radius:9px;overflow:hidden;margin:14px 0}
+#ath-pos-root .pos-meter span{display:block;height:100%;width:0;background:var(--xb-primary)}
+#ath-pos-root .pos-feedback{padding:14px;border-radius:10px;background:color-mix(in srgb,var(--xb-primary) 9%,var(--xb-card));margin:14px 0;line-height:1.7}
+#ath-pos-root .pos-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+#ath-pos-root .pos-writing{margin-top:28px;padding:20px;border:1px solid var(--xb-border);border-radius:12px;background:var(--xb-card)}
+#ath-pos-root .pos-writing textarea{width:100%;min-height:110px;padding:12px;border:1px solid var(--xb-border);border-radius:9px;background:var(--xb-card);color:var(--xb-fg);font:inherit;line-height:1.7}
+#ath-pos-root .pos-writing select{max-width:100%;margin:8px 0 14px}
+#ath-pos-root .pos-writing .pos-feedback{white-space:pre-line}
+
+#ath-pos-root{--xb-bg:#faf8fd;--xb-fg:#29233a;--xb-card:#fff;--xb-muted:#6c6479;--xb-border:#e5dff0;--xb-primary:#6845a5;position:fixed;inset:0;z-index:10003;overflow:auto;background:var(--xb-bg);color:var(--xb-fg);font:16px/1.6 system-ui,sans-serif;padding:22px 18px 40px}
+#ath-pos-root[hidden]{display:none}
+#ath-pos-root .pos-lab{max-width:1000px;margin:22px auto 0;padding:26px;border:1px solid var(--xb-border);border-radius:16px;background:var(--xb-card);box-shadow:0 8px 30px #30204b12}
+#ath-pos-root p{line-height:1.8;margin:0 0 18px}
+#ath-pos-root h2,#ath-pos-root h3{line-height:1.35;margin:0 0 16px}
+#ath-pos-root .xb-card{background:var(--xb-card);color:var(--xb-fg);border:1px solid var(--xb-border);border-radius:12px;padding:18px;margin-top:18px}
+#ath-pos-root .xb-muted{color:var(--xb-muted)}
+html.dark #ath-pos-root{--xb-bg:#17131f;--xb-fg:#ece7f6;--xb-card:#221c2e;--xb-muted:#bcb3ca;--xb-border:#453b57;--xb-primary:#b99be8}
+#ath-pos-root .xb-btn{border:0;border-radius:9px;padding:11px 16px;background:var(--xb-primary);color:white;font:600 14px system-ui;cursor:pointer}
+#ath-pos-root .xb-btn.secondary{background:transparent;color:var(--xb-fg);border:1px solid var(--xb-border)}
+#ath-pos-root button:disabled{opacity:.45;cursor:not-allowed}
+
+
+#ath-pos-root .pos-written-answer{width:100%;box-sizing:border-box;min-height:52px;padding:13px 15px;border:1px solid var(--xb-border,#ccc);border-radius:10px;background:var(--xb-card,#fff);color:var(--xb-text,inherit);font:inherit;font-size:1rem;line-height:1.5}
+#ath-pos-root .pos-answer-hint{display:block;margin:7px 0 12px;color:var(--xb-muted,#666);font-size:.9rem}
+#ath-pos-root .pos-task{padding:16px 18px;margin:10px 0 16px;border:1px solid var(--xb-border,#ddd);border-radius:12px;background:var(--xb-card,#fff)}
+#ath-pos-root .pos-sentence{font-size:1.12rem;line-height:1.85;margin:12px 0;font-weight:600}
+#ath-pos-root .pos-task small{color:var(--xb-muted,#666)}
+#ath-pos-root .pos-option{cursor:pointer;transition:background .15s,border-color .15s}
+#ath-pos-root .pos-option:has(input:checked){border-color:var(--xb-accent,#7050b5);background:color-mix(in srgb,var(--xb-accent,#7050b5) 10%,transparent)}
 </style>
 <button id="ath-xbar-launch" type="button" aria-haspopup="dialog">X-bar Diagram Exercise</button>
 <section id="ath-xbar-root" hidden role="dialog" aria-modal="true" aria-labelledby="ath-xbar-title">
@@ -6119,6 +6201,7 @@ html.dark #ath-xbar-root .xb-feedback.retry{background:#3a1c24;color:#ffb1bd}
    <p><strong>How it works:</strong> Every phrase has a <em>head</em> (the main noun, verb, adjective, or preposition). The head projects to an X′ level; a complement completes the head's meaning, an adjunct adds optional detail, and a specifier appears at the phrase edge. The full phrase is XP.</p>
    <p><strong>How to do it:</strong> (1) Identify the phrase type and its head. (2) Find any required complement. (3) Add optional modifiers as adjuncts. (4) Check for a specifier. (5) Build upward from X to X′ to XP. Not every phrase contains all three extra parts.</p>
    <p class="xb-muted"><strong>Example:</strong> “the student of linguistics” — the head is <em>student</em> (N); “of linguistics” is its complement; “the” is the specifier.</p>
+   <figure class="xb-model-figure"><img class="xb-model-image" alt="X-bar tree for the student of linguistics: NP branches to the specifier the and N-prime; N-prime branches to the noun head student and the PP complement of linguistics." src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22900%22%20height%3D%22390%22%20viewBox%3D%220%200%20900%20390%22%3E%3Crect%20width%3D%22900%22%20height%3D%22390%22%20rx%3D%2218%22%20fill%3D%22%23ffffff%22%2F%3E%3Ctext%20x%3D%22450%22%20y%3D%2234%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2221%22%20font-weight%3D%22700%22%20fill%3D%22%23263653%22%3EX-bar%20structure%3A%20%E2%80%9Cthe%20student%20of%20linguistics%E2%80%9D%3C%2Ftext%3E%3Cg%20stroke%3D%22%23526987%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M450%2075%20V105%20M450%20105%20H225%20V145%20M450%20105%20H600%20V145%20M225%20175%20V205%20M600%20175%20V205%20M600%20235%20H500%20V270%20M600%20235%20H720%20V270%22%2F%3E%3C%2Fg%3E%3Cg%20font-family%3D%22Arial%2Csans-serif%22%20text-anchor%3D%22middle%22%3E%3Crect%20x%3D%22405%22%20y%3D%2248%22%20width%3D%2290%22%20height%3D%2234%22%20rx%3D%228%22%20fill%3D%22%23e9e4f5%22%20stroke%3D%22%236845a5%22%2F%3E%3Ctext%20x%3D%22450%22%20y%3D%2271%22%20font-size%3D%2218%22%20font-weight%3D%22700%22%20fill%3D%22%2338265e%22%3ENP%3C%2Ftext%3E%3Crect%20x%3D%22175%22%20y%3D%22145%22%20width%3D%22100%22%20height%3D%2234%22%20rx%3D%228%22%20fill%3D%22%23fff1d6%22%20stroke%3D%22%23c28a25%22%2F%3E%3Ctext%20x%3D%22225%22%20y%3D%22168%22%20font-size%3D%2217%22%20font-weight%3D%22700%22%20fill%3D%22%23674713%22%3ESpec%3C%2Ftext%3E%3Crect%20x%3D%22555%22%20y%3D%22145%22%20width%3D%2290%22%20height%3D%2234%22%20rx%3D%228%22%20fill%3D%22%23e9e4f5%22%20stroke%3D%22%236845a5%22%2F%3E%3Ctext%20x%3D%22600%22%20y%3D%22168%22%20font-size%3D%2218%22%20font-weight%3D%22700%22%20fill%3D%22%2338265e%22%3EN%E2%80%B2%3C%2Ftext%3E%3Crect%20x%3D%22175%22%20y%3D%22205%22%20width%3D%22100%22%20height%3D%2236%22%20rx%3D%228%22%20fill%3D%22%23fff8e8%22%20stroke%3D%22%23c28a25%22%2F%3E%3Ctext%20x%3D%22225%22%20y%3D%22229%22%20font-size%3D%2218%22%20fill%3D%22%23674713%22%3Ethe%3C%2Ftext%3E%3Crect%20x%3D%22450%22%20y%3D%22205%22%20width%3D%22100%22%20height%3D%2236%22%20rx%3D%228%22%20fill%3D%22%23e7f2fb%22%20stroke%3D%22%233975a8%22%2F%3E%3Ctext%20x%3D%22500%22%20y%3D%22229%22%20font-size%3D%2217%22%20font-weight%3D%22700%22%20fill%3D%22%23214d70%22%3EN%3C%2Ftext%3E%3Crect%20x%3D%22670%22%20y%3D%22205%22%20width%3D%22100%22%20height%3D%2236%22%20rx%3D%228%22%20fill%3D%22%23e7f2fb%22%20stroke%3D%22%233975a8%22%2F%3E%3Ctext%20x%3D%22720%22%20y%3D%22229%22%20font-size%3D%2217%22%20font-weight%3D%22700%22%20fill%3D%22%23214d70%22%3EPP%3C%2Ftext%3E%3Ctext%20x%3D%22500%22%20y%3D%22295%22%20font-size%3D%2218%22%20fill%3D%22%23214d70%22%3Estudent%3C%2Ftext%3E%3Ctext%20x%3D%22720%22%20y%3D%22295%22%20font-size%3D%2218%22%20fill%3D%22%23214d70%22%3Eof%20linguistics%3C%2Ftext%3E%3Ctext%20x%3D%22450%22%20y%3D%22355%22%20font-size%3D%2214%22%20fill%3D%22%23526174%22%3ESpecifier%20%2B%20N%E2%80%B2%3B%20N%E2%80%B2%20contains%20the%20noun%20head%20and%20its%20PP%20complement.%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fsvg%3E"/><figcaption>Read from the top down: the whole noun phrase (NP) branches into its specifier and N′. The N′ contains the head noun <em>student</em> and the complement PP <em>of linguistics</em>.</figcaption></figure>
   </section>
   <div class="xb-levelbar"><label for="ath-xbar-level">Choose difficulty</label><select id="ath-xbar-level"><option value="0">Level 1 · Beginner</option><option value="1">Level 2 · Developing</option><option value="2">Level 3 · Intermediate</option><option value="3">Level 4 · Advanced</option><option value="4">Level 5 · Mastery</option></select><span id="ath-xbar-levelnote" class="xb-levelnote">Identify heads and basic complements.</span></div>
   <p id="ath-xbar-count" class="xb-muted">Exercise 1 of 10</p>
@@ -6131,7 +6214,7 @@ html.dark #ath-xbar-root .xb-feedback.retry{background:#3a1c24;color:#ffb1bd}
    <div id="ath-xbar-feedback" class="xb-feedback" role="status" aria-live="polite" hidden></div>
    <div id="ath-xbar-tree-wrap" hidden>
     <h2>Completed X-bar structure</h2>
-    <div class="xb-tree"><pre id="ath-xbar-tree"></pre></div>
+    <div class="xb-tree"><img id="ath-xbar-tree-image" class="xb-tree-image" alt="Completed X-bar phrase structure tree"/><p id="ath-xbar-tree-caption" class="xb-tree-caption">Model structure shown as a visual tree.</p></div>
     <p id="ath-xbar-explain" class="xb-muted"></p>
    </div>
    <div class="xb-actions">
@@ -6144,6 +6227,43 @@ html.dark #ath-xbar-root .xb-feedback.retry{background:#3a1c24;color:#ffb1bd}
   </div>
   <p id="ath-xbar-score" class="xb-muted" aria-live="polite">Correct answers: 0 of 50</p>
  </div>
+
+
+  </section>
+
+</section>
+<button id="ath-pos-launch" type="button" hidden aria-label="Open Parts of Speech Lab"></button>
+<section id="ath-pos-root" hidden role="dialog" aria-modal="true" aria-labelledby="ath-pos-title">
+ <button class="xb-btn secondary" id="pos-close" type="button" style="position:sticky;top:0;z-index:2">← Close Parts of Speech Lab</button>
+  <section class="pos-lab" id="ath-pos-lab" aria-labelledby="ath-pos-title">
+   <h2 id="ath-pos-title">Parts of Speech Lab</h2>
+   <p>Continue your grammar practice here, directly after the X-bar Diagram Exercise. Complete each part of speech by category: three levels each for nouns, pronouns, verbs, adjectives, adverbs, conjunctions, and interjections; prepositions has five levels.</p>
+   <p>Each level contains 10 sentence-identification questions worth 10 points each. You must type the correct word or words from each sentence—there are no multiple-choice options. If more than one word belongs to the target category, enter them separated by commas. You must earn at least 80/100 on your first answers to unlock the next level. A wrong answer can be retried for practice, but a retry earns no points. Your best scores and unlocked levels are saved on this device.</p>
+   <div><strong>Best-score points:</strong> <span id="pos-total">0</span>/2600 <span class="xb-muted">· 26 levels · Passing score: 80/100 per level</span></div>
+   <div class="pos-levels" id="pos-levels"></div>
+   <div class="xb-card" id="ph-pos-quiz" hidden>
+    <p id="pos-level-name" class="xb-muted"></p>
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><strong id="pos-count">Question 1 of 10</strong><strong>Score: <span id="pos-score">0</span>/100</strong></div>
+    <div class="pos-meter"><span id="pos-bar"></span></div>
+    <h3 id="pos-question"></h3><div id="pos-options"></div>
+    <div class="pos-feedback" id="pos-feedback" hidden aria-live="polite"></div>
+    <div class="pos-actions"><button class="xb-btn" id="pos-submit" type="button">Check answer</button><button class="xb-btn secondary" id="pos-question-retry" type="button" hidden>Retry this question (no points)</button><button class="xb-btn" id="pos-next" type="button" hidden>Next question</button><button class="xb-btn secondary" id="pos-home-btn" type="button">Back to categories</button></div>
+   </div>
+   <div class="xb-card" id="ph-pos-result" hidden>
+    <h3 id="pos-result-title">Category complete</h3><p id="pos-result-score"></p><p id="pos-result-message"></p>
+    <div class="pos-actions"><button class="xb-btn" id="pos-retry" type="button">Retry category</button><button class="xb-btn secondary" id="pos-result-home" type="button">Back to categories</button></div>
+   </div>
+   <section class="pos-writing" id="pos-writing">
+    <h3>Sentence-Writing Challenge</h3>
+    <p>Write an original sentence that uses the given word as the specified part of speech. Your response is checked for the target word, a minimum of four words, capitalization, and ending punctuation. This quick automatic check does not replace a full grammar evaluation.</p>
+    <label for="pos-write-category"><strong>Choose a part of speech</strong></label><br>
+    <select id="pos-write-category"><option value="Noun">Noun</option><option value="Pronoun">Pronoun</option><option value="Verb">Verb</option><option value="Adjective">Adjective</option><option value="Adverb">Adverb</option><option value="Preposition">Preposition</option><option value="Conjunction">Conjunction</option><option value="Interjection">Interjection</option></select>
+    <p><strong>Target word:</strong> <span id="pos-write-word">curiosity</span></p>
+    <textarea id="pos-write-answer" placeholder="Write your sentence here..."></textarea>
+    <div class="pos-actions"><button class="xb-btn" id="pos-write-new" type="button">New target word</button><button class="xb-btn" id="pos-write-check" type="button">Check my sentence</button></div>
+    <div class="pos-feedback" id="pos-write-feedback" hidden aria-live="polite"></div>
+    <p><strong>Writing points:</strong> <span id="pos-write-points">0</span> <span class="xb-muted">· 10 points for a sentence that meets the checks; no points are deducted for revisions.</span></p>
+   </section>
 </section>
 <script id="athenaeum-xbar-addon-js">
 (()=>{
@@ -6222,8 +6342,15 @@ html.dark #ath-xbar-root .xb-feedback.retry{background:#3a1c24;color:#ffb1bd}
  levels.forEach((L,i)=>L.items.push(...extraQuestions[i]));
  let level=0,index=0,score=0,checked=false,lastFocus=null;
  const $=id=>document.getElementById('ath-xbar-'+id),roles=['Specifier','Head','Complement','Adjunct','None'];
+ function makeTreeImage(tree,title){
+  const lines=String(tree||'').split('\n'),lineH=31,padTop=66,height=Math.max(150,padTop+lines.length*lineH+30),maxIndent=Math.max(0,...lines.map(x=>(x.match(/^\s*/)||[''])[0].length)),width=Math.max(620,Math.min(1100,520+maxIndent*13));
+  const esc=x=>String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');
+  const rows=lines.map((line,i)=>{const indent=(line.match(/^\s*/)||[''])[0].length;const label=line.trim();const x=28+indent*11;const y=padTop+i*lineH;return `<text x="${x}" y="${y}" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="17" font-weight="600" fill="#24344d">${esc(label)}</text>`}).join('');
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" rx="12" fill="#ffffff"/><text x="${width/2}" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#263653">${esc(title||'X-bar model structure')}</text>${rows}<text x="${width-18}" y="${height-12}" text-anchor="end" font-family="Arial,sans-serif" font-size="11" fill="#718096">X-bar phrase structure</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+ }
  function render(){const L=levels[level],q=L.items[index];checked=false;$('level').value=String(level);$('levelnote').textContent=L.note;$('count').textContent=`Exercise ${index+1} of ${L.items.length} · Level ${level+1}: ${L.name}`;$('progress').style.width=`${index/L.items.length*100}%`;$('type').textContent=q[0];$('phrase').textContent=q[1];$('assignments').innerHTML=q[2].map((p,i)=>`<div class="xb-assign"><label for="ath-xbar-role-${i}"><strong>${p[0]}</strong></label><select id="ath-xbar-role-${i}" data-xb-role="${i}" aria-label="X-bar role for ${p[0]}"><option value="">Choose a role</option>${roles.map(r=>`<option value="${r}">${r}</option>`).join('')}</select></div>`).join('');$('feedback').hidden=true;$('tree-wrap').hidden=true;root.querySelector('[data-xb="check"]').hidden=false;root.querySelector('[data-xb="reveal"]').hidden=false;root.querySelector('[data-xb="next"]').hidden=true;$('score').textContent=`Correct answers: ${score} of ${levels.reduce((n,l)=>n+l.items.length,0)} across all levels`;}
- function finish(reveal=false){if(checked)return;const q=levels[level].items[index],sels=[...root.querySelectorAll('[data-xb-role]')];if(!reveal&&sels.some(s=>!s.value)){$('feedback').hidden=false;$('feedback').className='xb-feedback retry';$('feedback').textContent='Choose a role for every phrase part before checking.';return;}const correct=sels.every(s=>s.value===q[2][+s.dataset.xbRole][1]);if(!reveal&&correct)score++;checked=true;$('feedback').hidden=false;$('feedback').className='xb-feedback '+(correct&&!reveal?'good':'');$('feedback').textContent=reveal?'Model answer shown.':correct?'Excellent! All phrase roles are correct.':'Some roles need review. Compare your choices with the model structure and explanation.';$('tree').textContent=q[3];$('explain').textContent=q[4];$('tree-wrap').hidden=false;sels.forEach(s=>s.disabled=true);$('progress').style.width=`${(index+1)/levels[level].items.length*100}%`;$('score').textContent=`Correct answers: ${score} across all levels` ;root.querySelector('[data-xb="check"]').hidden=true;root.querySelector('[data-xb="reveal"]').hidden=true;root.querySelector('[data-xb="retry"]').hidden=correct||reveal;root.querySelector('[data-xb="next"]').hidden=false;root.querySelector('[data-xb="next"]').textContent=index===levels[level].items.length-1?(level===levels.length-1?'Finish mastery practice':'Next level'):'Next exercise';}
+ function finish(reveal=false){if(checked)return;const q=levels[level].items[index],sels=[...root.querySelectorAll('[data-xb-role]')];if(!reveal&&sels.some(s=>!s.value)){$('feedback').hidden=false;$('feedback').className='xb-feedback retry';$('feedback').textContent='Choose a role for every phrase part before checking.';return;}const correct=sels.every(s=>s.value===q[2][+s.dataset.xbRole][1]);if(!reveal&&correct)score++;checked=true;$('feedback').hidden=false;$('feedback').className='xb-feedback '+(correct&&!reveal?'good':'');$('feedback').textContent=reveal?'Model answer shown.':correct?'Excellent! All phrase roles are correct.':'Some roles need review. Compare your choices with the model structure and explanation.';const treeImg=$('tree-image');treeImg.src=makeTreeImage(q[3],q[0]+' · model structure');treeImg.alt='Visual X-bar model structure for '+q[1]+': '+q[3].replace(/\n/g,'; ');$('tree-caption').textContent='Model structure for “'+q[1]+'”. Read each branch from the top node down; labels and indentation show the phrase hierarchy.';$('explain').textContent=q[4];$('tree-wrap').hidden=false;sels.forEach(s=>s.disabled=true);$('progress').style.width=`${(index+1)/levels[level].items.length*100}%`;$('score').textContent=`Correct answers: ${score} across all levels` ;root.querySelector('[data-xb="check"]').hidden=true;root.querySelector('[data-xb="reveal"]').hidden=true;root.querySelector('[data-xb="retry"]').hidden=correct||reveal;root.querySelector('[data-xb="next"]').hidden=false;root.querySelector('[data-xb="next"]').textContent=index===levels[level].items.length-1?(level===levels.length-1?'Finish mastery practice':'Next level'):'Next exercise';}
  function close(){root.hidden=true;document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
  launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;render();root.querySelector('.xb-close').focus()});
  $('level').addEventListener('change',e=>{level=Number(e.target.value);index=0;render()});
@@ -7187,5 +7314,406 @@ applyLocks();
 })();
 </script>
 <style id="ath-complete-module-lessons-style">.gl-section-label{font-size:1.05rem;margin:18px 0 8px;color:var(--color-primary,#6845a5)}.gl-study-notes{border-left:4px solid var(--color-primary,#6845a5)}.gl-topic-focus{outline:2px solid var(--color-primary,#6845a5);outline-offset:5px;border-radius:10px;scroll-margin-top:20px}.gl-topic-focus h2{color:var(--color-primary,#6845a5)}.gl-study-notes li{margin:7px 0}</style>
+
+<style id="ath-phonetics-style">
+#ath-phonetics-launch{display:none!important}
+#ath-phonetics-root[hidden]{display:none}
+#ath-phonetics-root{--ph-bg:#f7fafc;--ph-fg:#253247;--ph-card:#fff;--ph-muted:#64748b;--ph-border:#dbe3ee;--ph-accent:#315b91;position:fixed;inset:0;z-index:10005;overflow:auto;background:var(--ph-bg);color:var(--ph-fg);font:16px/1.55 system-ui,sans-serif;padding:64px 18px 38px}
+html.dark #ath-phonetics-root{--ph-bg:#151d2b;--ph-fg:#e8edf6;--ph-card:#202c3d;--ph-muted:#aab7ca;--ph-border:#39485d;--ph-accent:#8db7ed}
+#ath-phonetics-root .ph-inner{max-width:900px;margin:auto}
+#ath-phonetics-root h1,#ath-phonetics-root h2{font-family:Georgia,serif;line-height:1.25}
+#ath-phonetics-root h1{font-size:clamp(25px,4vw,34px);margin:0 0 8px}
+#ath-phonetics-root .ph-card{background:var(--ph-card);border:1px solid var(--ph-border);border-radius:15px;padding:18px;margin:14px 0}
+#ath-phonetics-root button,#ath-phonetics-root select{font:inherit}
+#ath-phonetics-root button{cursor:pointer}
+#ath-phonetics-root .ph-btn{min-height:43px;padding:9px 16px;border:1px solid var(--ph-accent);border-radius:10px;background:var(--ph-accent);color:white;font-weight:650}
+#ath-phonetics-root .ph-btn.secondary{background:transparent;color:var(--ph-accent)}
+#ath-phonetics-root .ph-close{position:absolute;top:12px;left:16px}
+#ath-phonetics-root .ph-levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-top:16px}
+#ath-phonetics-root .ph-level{border:1px solid var(--ph-border);border-radius:12px;padding:13px;background:var(--ph-card);color:var(--ph-fg);text-align:left}
+#ath-phonetics-root .ph-level:disabled{opacity:.48;cursor:not-allowed}
+#ath-phonetics-root .ph-progress{height:8px;background:var(--ph-border);border-radius:9px;overflow:hidden;margin:12px 0}
+#ath-phonetics-root .ph-progress span{display:block;height:100%;background:var(--ph-accent);width:0}
+#ath-phonetics-root .ph-option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--ph-border);border-radius:11px;padding:12px;margin:9px 0;cursor:pointer}
+#ath-phonetics-root .ph-option:has(input:checked){border-color:var(--ph-accent);background:color-mix(in srgb,var(--ph-accent) 9%,var(--ph-card))}
+#ath-phonetics-root .ph-option input{margin-top:5px;accent-color:var(--ph-accent)}
+#ath-phonetics-root .ph-feedback{padding:13px;border-radius:10px;background:color-mix(in srgb,var(--ph-accent) 10%,var(--ph-card));margin-top:12px}
+#ath-phonetics-root .ph-muted{color:var(--ph-muted)}
+#ath-phonetics-root .ph-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+#ath-phonetics-root .ph-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+#ath-phonetics-root .ph-tab{border:1px solid var(--ph-border);border-radius:9px;padding:9px 13px;background:var(--ph-card);color:var(--ph-fg)}
+#ath-phonetics-root .ph-tab.active{background:var(--ph-accent);border-color:var(--ph-accent);color:white}
+#ath-phonetics-root .ph-panel{scroll-margin-top:12px}
+#ath-phonetics-root details{padding:12px 0;border-bottom:1px solid var(--ph-border)}
+#ath-phonetics-root summary{cursor:pointer}
+#ath-phonetics-root .ph-note{padding:12px;border-left:4px solid var(--ph-accent);background:color-mix(in srgb,var(--ph-accent) 9%,var(--ph-card))}
+#ath-phonetics-root .ph-symbol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(62px,1fr));gap:8px;margin:12px 0 20px}
+#ath-phonetics-root .ph-symbol{font-size:21px;padding:10px;border:1px solid var(--ph-border);border-radius:9px;background:var(--ph-card);color:var(--ph-fg)}
+#ath-phonetics-root .ph-search{width:100%;padding:12px;border:1px solid var(--ph-border);border-radius:9px;background:var(--ph-card);color:var(--ph-fg);font:inherit}
+#ath-phonetics-root .ph-glossary-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px;margin-top:14px}
+#ath-phonetics-root .ph-term{padding:12px;border:1px solid var(--ph-border);border-radius:10px}
+#ath-phonetics-root .ph-term p{margin:5px 0 0;color:var(--ph-muted)}
+#root p,#ath-phonetics-root p{margin-top:0;margin-bottom:1.15em;line-height:1.75}
+#root li,#ath-phonetics-root li{line-height:1.7;margin-bottom:.35em}
+#ath-phonetics-root .ph-pos-intro{margin-bottom:18px}
+#ath-phonetics-root .ph-pos-levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-top:16px}
+#ath-phonetics-root .ph-pos-level{border:1px solid var(--ph-border);border-radius:12px;padding:13px;background:var(--ph-card);color:var(--ph-fg);text-align:left}
+#ath-phonetics-root .ph-pos-level:disabled{opacity:.48;cursor:not-allowed}
+#ath-phonetics-root .ph-pos-option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--ph-border);border-radius:11px;padding:12px;margin:9px 0;cursor:pointer}
+#ath-phonetics-root .ph-pos-option:has(input:checked){border-color:var(--ph-accent);background:color-mix(in srgb,var(--ph-accent) 9%,var(--ph-card))}
+#ath-phonetics-root .ph-pos-option input{margin-top:5px;accent-color:var(--ph-accent)}
+#ath-phonetics-root .ph-pos-progress{height:8px;background:var(--ph-border);border-radius:9px;overflow:hidden;margin:12px 0}
+#ath-phonetics-root .ph-pos-progress span{display:block;height:100%;background:var(--ph-accent);width:0}
+@media(max-width:560px){#ath-phonetics-root{padding:60px 12px 28px}}
+</style>
+<button id="ath-phonetics-launch" type="button" aria-label="Open Phonetics Exercises"></button>
+<section id="ath-phonetics-root" hidden aria-label="Phonetics Exercises">
+ <button class="ph-btn secondary ph-close" id="ph-close">← Close exercises</button>
+ <div class="ph-inner">
+  <h1>Phonetics Exercises</h1>
+  <p class="ph-muted">A guided learning space for understanding how English speech sounds are produced, heard, described and organized.</p>
+  <nav class="ph-tabs" aria-label="Phonetics learning sections">
+   <button class="ph-tab active" data-ph-tab="overview">Overview</button>
+   <button class="ph-tab" data-ph-tab="guide">Study guide</button>
+   <button class="ph-tab" data-ph-tab="chart">IPA chart</button>
+   <button class="ph-tab" data-ph-tab="glossary">Glossary</button>
+   <button class="ph-tab" data-ph-tab="practice">Exercises</button>
+  </nav>
+  <section class="ph-panel" id="ph-panel-overview">
+   <div class="ph-card"><h2>Purpose of this learning area</h2>
+    <p>These activities help you develop the knowledge and practical skills needed to describe, identify and transcribe speech sounds. Phonetics is useful for English majors because pronunciation, listening, oral communication and language analysis all depend on understanding the sound system of speech.</p>
+    <h3>Learning outcomes</h3><ul><li>Explain the difference between phonetics and phonology.</li><li>Identify vowels and consonants using IPA symbols.</li><li>Describe consonants by voicing, place and manner of articulation.</li><li>Recognize syllable structure, stress, rhythm and intonation.</li><li>Interpret broad and narrow phonetic transcriptions.</li><li>Apply sound concepts when listening to and analyzing spoken English.</li></ul>
+    <h3>How to use this section</h3><ol><li>Read the study guide before attempting a new topic.</li><li>Explore the IPA chart and glossary when you encounter unfamiliar symbols or terms.</li><li>Complete the levels in order and read the explanation after every answer.</li><li>Retry a level to strengthen your understanding, not only to increase your score.</li></ol>
+    <p class="ph-note"><strong>Important:</strong> English pronunciation varies across accents. Examples in these exercises use common broad IPA descriptions; some symbols and vowel qualities may differ by dictionary or English variety.</p>
+   </div>
+  </section>
+  <section class="ph-panel" id="ph-panel-guide" hidden>
+   <div class="ph-card"><h2>Study guide: the foundations of phonetics</h2>
+    <details open><summary><strong>1. What is phonetics?</strong></summary><p>Phonetics is the scientific study of speech sounds. It examines how sounds are produced by the vocal organs (articulatory phonetics), how sound travels through the air (acoustic phonetics), and how listeners perceive speech (auditory phonetics).</p><p><b>Example:</b> When producing /p/, the two lips close, pressure builds, and the lips release the air.</p></details>
+    <details><summary><strong>2. Phonetics and phonology</strong></summary><p>Phonetics focuses on the physical properties of speech sounds. Phonology studies how a language organizes sounds into a system of contrasts and patterns.</p><p><b>Example:</b> Phonetics describes the sound [pʰ]. Phonology considers whether /p/ contrasts with /b/ in a language.</p></details>
+    <details><summary><strong>3. Consonants: voicing, place and manner</strong></summary><p><b>Voicing</b> asks whether the vocal folds vibrate. <b>Place</b> identifies where the airflow is narrowed or stopped. <b>Manner</b> describes how the airflow is modified.</p><ul><li>/p/: voiceless bilabial stop</li><li>/b/: voiced bilabial stop</li><li>/s/: voiceless alveolar fricative</li><li>/m/: voiced bilabial nasal</li><li>/k/: voiceless velar stop</li></ul></details>
+    <details><summary><strong>4. Vowels</strong></summary><p>Vowels are produced without a complete blockage of airflow in the vocal tract. They are commonly described by tongue height (high, mid, low), tongue position (front, central, back), and lip shape (rounded or unrounded). Vowel systems vary considerably across English accents.</p></details>
+    <details><summary><strong>5. Syllables and stress</strong></summary><p>A syllable commonly has an onset, a nucleus and an optional coda. In “cat” /kæt/, /k/ is the onset, /æ/ is the nucleus and /t/ is the coda. Stress makes a syllable more prominent through a combination of cues such as pitch, duration and intensity.</p></details>
+    <details><summary><strong>6. Transcription: / / and [ ]</strong></summary><p>Slashes / / usually mark phonemic transcription, which represents contrastive units. Square brackets [ ] mark phonetic transcription, which can show more detailed pronunciation. Diacritics add information such as aspiration or nasalization.</p></details>
+    <details><summary><strong>7. Connected speech and prosody</strong></summary><p>In connected speech, sounds may link, become more alike (assimilation), weaken (reduction), or disappear (elision). Prosody includes stress, rhythm and intonation. Intonation is the pattern of pitch movement across an utterance.</p></details>
+   </div>
+  </section>
+  <section class="ph-panel" id="ph-panel-chart" hidden>
+   <div class="ph-card"><h2>IPA quick-reference chart</h2><p>The International Phonetic Alphabet (IPA) uses symbols to represent speech sounds. Select a symbol to view a short description and an example. The examples are broad guides, not a claim that every accent pronounces them identically.</p>
+    <h3>Common consonant symbols</h3><div class="ph-symbol-grid" id="ph-consonants"></div>
+    <h3>Common vowel symbols</h3><div class="ph-symbol-grid" id="ph-vowels"></div>
+    <div class="ph-feedback" id="ph-symbol-info" aria-live="polite">Choose a symbol above to see its sound description and example.</div>
+   </div>
+  </section>
+  <section class="ph-panel" id="ph-panel-glossary" hidden>
+   <div class="ph-card"><h2>Phonetics glossary</h2><p>Search the key terms used in the lessons and exercises.</p><input id="ph-glossary-search" type="search" placeholder="Search a term (e.g., phoneme, fricative)" class="ph-search"><div id="ph-glossary-list" class="ph-glossary-list"></div></div>
+  </section>
+  <div class="ph-panel" id="ph-panel-practice" hidden>
+  <div class="ph-card" id="ph-home">
+   <strong>How it works</strong>
+   <p>Each level contains 20 questions. You must earn at least <strong>80/100 (80%)</strong> to pass and unlock the next level. Each question is worth 5 points. If you answer incorrectly, you can retry that question for practice before moving on. Your score is based on your first answer, so retries help you learn without changing your score.</p>
+   <div><strong>Total score:</strong> <span id="ph-total">0</span> <span class="ph-muted">· Pass mark: 80/100 per level</span></div>
+   <p class="ph-muted">Level 1 is available to begin. To access each following level, pass the previous level with at least 80%.</p>
+   <div class="ph-levels" id="ph-levels"></div>
+  </div>
+  <div class="ph-card" id="ph-quiz" hidden>
+   <div class="ph-muted" id="ph-level-name"></div>
+   <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><strong id="ph-count">Question 1 of 20</strong><strong>Score: <span id="ph-score">0</span>/100</strong></div>
+   <div class="ph-progress"><span id="ph-bar"></span></div>
+   <h2 id="ph-question"></h2>
+   <div id="ph-options"></div>
+   <div class="ph-feedback" id="ph-feedback" hidden></div>
+   <div class="ph-actions">
+    <button class="ph-btn" id="ph-submit">Check answer</button>
+    <button class="ph-btn secondary" id="ph-question-retry" hidden>↻ Retry this question</button>
+    <button class="ph-btn" id="ph-next" hidden>Next question →</button>
+    <button class="ph-btn secondary" id="ph-home-btn">Levels</button>
+   </div>
+  </div>
+  <div class="ph-card" id="ph-result" hidden>
+   <h2>Level complete!</h2>
+   <p id="ph-result-score"></p><p id="ph-result-message"></p>
+   <div class="ph-actions"><button class="ph-btn" id="ph-retry">Retry level</button><button class="ph-btn secondary" id="ph-result-home">Back to levels</button></div>
+  </div>
+  </div>
+  <div class="ph-actions"><button class="ph-btn secondary" id="ph-reset-progress" type="button">Reset exercise progress</button></div>
+  <p class="ph-muted" id="ph-save-note">Progress is saved in this browser on this device. Clearing browser data may erase it.</p>
+ </div>
+</section>
+<script id="ath-phonetics-app">
+(function(){
+"use strict";
+const root=document.getElementById('ath-phonetics-root');
+if(!root || root.dataset.ready)return; root.dataset.ready='1';
+const $=id=>document.getElementById(id);
+const names=['Beginner','Developing','Intermediate','Advanced','Mastery'];
+const glossary=[
+['Articulation','The movement and positioning of speech organs to produce sounds.'],['Assimilation','A sound becomes more similar to a neighboring sound.'],['Allophone','A predictable phonetic variant of a phoneme.'],['Affricate','A consonant that begins as a stop and releases with friction, such as /tʃ/.'],['Coda','The consonant or consonants after a syllable nucleus.'],['Diphthong','A vowel sound involving movement from one vowel quality toward another.'],['Fricative','A consonant made by forcing air through a narrow passage, creating friction.'],['Intonation','The pattern of pitch movement across an utterance.'],['IPA','The International Phonetic Alphabet, a system for representing speech sounds.'],['Manner of articulation','How airflow is modified when a consonant is produced.'],['Minimal pair','Two words differing in one phoneme in the same position, with different meanings.'],['Nucleus','The central element of a syllable, usually a vowel.'],['Onset','The consonant or consonant cluster before a syllable nucleus.'],['Phoneme','A contrastive sound unit capable of distinguishing meaning.'],['Phonetics','The study of the physical properties of speech sounds.'],['Phonology','The study of how sounds are organized and patterned in a language.'],['Place of articulation','The location in the vocal tract where a consonant is produced.'],['Schwa','The symbol /ə/, commonly used for a reduced central vowel.'],['Voicing','Vocal-fold vibration during sound production.']
+];
+const symbols=[['p','voiceless bilabial stop','pin'],['b','voiced bilabial stop','bat'],['t','voiceless alveolar stop','top'],['d','voiced alveolar stop','dog'],['k','voiceless velar stop','cat'],['g','voiced velar stop','go'],['f','voiceless labiodental fricative','fan'],['v','voiced labiodental fricative','van'],['θ','voiceless dental fricative','think'],['ð','voiced dental fricative','this'],['s','voiceless alveolar fricative','sip'],['z','voiced alveolar fricative','zoo'],['ʃ','voiceless postalveolar fricative','ship'],['ʒ','voiced postalveolar fricative','vision'],['tʃ','voiceless postalveolar affricate','chair'],['dʒ','voiced postalveolar affricate','judge'],['m','bilabial nasal','map'],['n','alveolar nasal','no'],['ŋ','velar nasal','sing'],['l','alveolar lateral approximant','light'],['r','alveolar/postalveolar approximant in many descriptions','red'],['w','labial-velar approximant','we'],['j','palatal approximant','yes'],['h','glottal fricative','hat']];
+const vowels=[['iː','close front unrounded vowel','see'],['ɪ','near-close near-front vowel','sit'],['e','close-mid front unrounded vowel','bed (variety-dependent)'],['æ','near-open front unrounded vowel','cat'],['ɑː','open back unrounded vowel','father (variety-dependent)'],['ɒ','open back rounded vowel','hot (variety-dependent)'],['ɔː','open-mid back rounded vowel','thought (variety-dependent)'],['ʊ','near-close near-back rounded vowel','put'],['uː','close back rounded vowel','food'],['ʌ','open-mid back/central unrounded vowel','strut'],['ə','mid central vowel (schwa)','about'],['ɜː','open-mid central vowel','bird (non-rhotic varieties)'],['eɪ','diphthong','day'],['aɪ','diphthong','time'],['ɔɪ','diphthong','boy'],['aʊ','diphthong','now'],['əʊ','diphthong in many British descriptions','go']];
+function setupLearningTools(){
+ const renderSymbols=(id,data)=>{const box=$(id);box.innerHTML='';data.forEach(([sym,desc,ex])=>{const b=document.createElement('button');b.className='ph-symbol';b.type='button';b.textContent='/'+sym+'/';b.title=desc+'; example: '+ex;b.addEventListener('click',()=>{$('ph-symbol-info').innerHTML='<strong>/'+sym+'/</strong> — '+desc+'. Example: <em>'+ex+'</em>.'});box.appendChild(b)})};
+ renderSymbols('ph-consonants',symbols);renderSymbols('ph-vowels',vowels);
+ const list=$('ph-glossary-list');function renderGlossary(q=''){list.innerHTML='';glossary.filter(x=>(x[0]+' '+x[1]).toLowerCase().includes(q.toLowerCase())).forEach(x=>{const d=document.createElement('article');d.className='ph-term';const h=document.createElement('strong');h.textContent=x[0];const p=document.createElement('p');p.textContent=x[1];d.append(h,p);list.appendChild(d)});if(!list.children.length)list.textContent='No matching term. Try another keyword.'}
+ renderGlossary();$('ph-glossary-search').addEventListener('input',e=>renderGlossary(e.target.value));
+ root.querySelectorAll('[data-ph-tab]').forEach(b=>b.addEventListener('click',()=>{root.querySelectorAll('[data-ph-tab]').forEach(x=>x.classList.toggle('active',x===b));root.querySelectorAll('.ph-panel').forEach(x=>x.hidden=x.id!=='ph-panel-'+b.dataset.phTab);if(b.dataset.phTab==='practice')showHome();else if(b.dataset.phTab==='parts')posHome()}));
+}
+
+const STORE='athenaeum.phonetics.progress.v1';
+let state={unlocked:0,completed:[],best:{},total:0};
+try{const saved=JSON.parse(localStorage.getItem(STORE)||'null');if(saved)state=Object.assign(state,saved)}catch(e){}
+// Enforce the 80% pass rule for previously saved progress as well.
+state.completed=(state.completed||[]).filter(i=>Number(state.best&&state.best[i]||0)>=80);
+state.unlocked=0;for(let i=0;i<names.length-1;i++){if(state.completed.includes(i))state.unlocked=i+1;else break;}
+const bank=[
+[
+['Which symbol represents the first sound in “think”?','/θ/',['/ð/','/s/','/t/'],'The initial sound in “think” is the voiceless dental fricative /θ/.'],
+['Which word begins with /ʃ/?','ship',['sip','chip','thin'],'“Ship” begins with /ʃ/, the voiceless postalveolar fricative.'],
+['Which sound is the first sound in “this”?','/ð/',['/θ/','/d/','/z/'],'“This” begins with voiced dental fricative /ð/.'],
+['Which word ends with /ŋ/?','sing',['sin','sit','sip'],'The final sound in “sing” is the velar nasal /ŋ/.'],
+['Which symbol represents the vowel in “see”?','/iː/',['/ɪ/','/e/','/æ/'],'“See” contains the long close front vowel /iː/.'],
+['Which word contains /æ/?','cat',['cot','cut','coat'],'The vowel in “cat” is /æ/ in many standard English descriptions.'],
+['Which pair differs by one phoneme?','ship – sheep',['ship – boat','cat – dog','pen – paper'],'Ship and sheep differ in their vowel phoneme.'],
+['How many syllables are in “banana”?','3',['2','1','4'],'Banana is commonly divided ba-na-na: three syllables.'],
+['Which sound is a consonant?','/m/',['/iː/','/æ/','/uː/'],'/m/ is an articulated consonant; the others are vowel symbols.'],
+['Which sound is a vowel?','/ɑː/',['/p/','/t/','/k/'],'/ɑː/ represents a vowel sound.'],
+['Which word starts with a voiced consonant?','go',['tea','pie','fan'],'/g/ is voiced; /t/, /p/ and /f/ are voiceless.'],
+['Which word starts with a voiceless consonant?','fan',['van','zoo','go'],'/f/ is voiceless, unlike /v/, /z/ and /g/.'],
+['What do square brackets usually show in phonetic transcription?','A phonetic realization',['A morpheme','A spelling rule','A sentence boundary'],'[ ] commonly enclose phonetic detail; / / enclose phonemic representations.'],
+['What do slashes usually enclose?','Phonemic transcription',['Orthographic spelling','Syllable count','Morpheme boundaries'],'Slashes / / represent phonemes in broad transcription.'],
+['Which word has the same initial sound as “kite”?','key',['city','giant','queen'],'“Kite” and “key” begin with /k/.'],
+['Which word contains the diphthong /aɪ/?','time',['team','ten','tone'],'The vowel in “time” is commonly transcribed /aɪ/.'],
+['Which word has a final /t/?','seat',['see','sea','seed'],'“Seat” ends in the voiceless alveolar stop /t/.'],
+['Which is a nasal consonant?','/n/',['/s/','/f/','/l/'],'/n/ is nasal because air flows through the nasal cavity.'],
+['Which word has two syllables?','teacher',['book','strength','asked'],'Teacher is commonly pronounced with two syllables.'],
+['What is the main purpose of the IPA?','To represent speech sounds consistently',['To show word meanings','To replace grammar','To mark punctuation'],'The IPA provides a consistent symbol system for speech sounds.']
+],
+[
+['Which pair is a minimal pair?','fan – van',['fan – fans','fan – flower','fan – funfair'],'A minimal pair differs in one phoneme in the same position.'],
+['What is the place of articulation for /p/?','Bilabial',['Alveolar','Velar','Dental'],'Both lips close to produce /p/.'],
+['What is the manner of articulation for /s/?','Fricative',['Stop','Nasal','Approximant'],'Air passes through a narrow constriction, creating friction.'],
+['Which sound is voiced?','/z/',['/s/','/f/','/θ/'],'/z/ is voiced; vocal folds vibrate during its production.'],
+['Which sound is a bilabial nasal?','/m/',['/n/','/ŋ/','/l/'],'/m/ is made with both lips and nasal airflow.'],
+['Which word contains /dʒ/?','judge',['ship','thin','sing'],'“Judge” begins and ends with the affricate /dʒ/.'],
+['Which vowel is typically found in “bed”?','/e/',['/uː/','/ɑː/','/ɔɪ/'],'The vowel in bed is commonly represented /e/ or /ɛ/, depending on the transcription system.'],
+['Which word contains a diphthong?','boy',['bit','bed','book'],'“Boy” contains /ɔɪ/, a glide between vowel qualities.'],
+['What is the onset of the syllable “cat”?','/k/',['/æ/','/t/','/æt/'],'The onset is the consonant or consonant cluster before the nucleus.'],
+['What is the nucleus of “cat”?','/æ/',['/k/','/t/','/kæt/'],'The nucleus is the syllable’s central vowel sound.'],
+['Which word has primary stress on the first syllable?','TAble',['reLAX','beGIN','aBOUT'],'“Table” normally has first-syllable primary stress.'],
+['Which transcription is broad phonemic transcription?','/pɪn/',['[pʰɪn]','pin','<pin>'],'Slashes indicate phonemic transcription; brackets can show phonetic detail.'],
+['Which sound is alveolar?','/t/',['/p/','/k/','/f/'],'/t/ is produced with the tongue at the alveolar ridge.'],
+['Which sound is velar?','/k/',['/t/','/m/','/θ/'],'/k/ is produced with the back of the tongue near the soft palate.'],
+['Which sound is dental?','/θ/',['/ʃ/','/s/','/h/'],'/θ/ is produced with the tongue at or near the teeth.'],
+['Which word ends in a voiced fricative?','rose',['rice','safe','back'],'“Rose” ends in voiced /z/.'],
+['Which word contains /ʒ/?','vision',['mission','pressure','nation'],'The middle consonant in “vision” is /ʒ/.'],
+['What is assimilation?','A sound becomes more like a neighboring sound',['A syllable disappears in writing','A word gains a suffix','A vowel is always lengthened'],'Assimilation is a contextual change in which a sound takes on features of a nearby sound.'],
+['Which pair contrasts voicing?','/s/ – /z/',['/m/ – /n/','/l/ – /r/','/iː/ – /uː/'],'/s/ is voiceless and /z/ is voiced; their place and manner are similar.'],
+['Which word has three syllables?','beautiful',['bright','teacher','computer'],'Beautiful is commonly pronounced with three syllables.']
+],
+[
+['Which feature distinguishes /b/ from /p/?','Voicing',['Place','Nasality','Vowel length'],'Both are bilabial stops; /b/ is voiced and /p/ is voiceless.'],
+['Which is the manner of /tʃ/?','Affricate',['Nasal','Approximant','Lateral'],'/tʃ/ begins as a stop and releases into frication.'],
+['Which sound is a voiced postalveolar fricative?','/ʒ/',['/ʃ/','/s/','/θ/'],'/ʒ/ as in “measure” is voiced and postalveolar.'],
+['Which word has stress on the second syllable?','reLAX',['TAble','HAPpy','GARden'],'Relax carries primary stress on the second syllable.'],
+['Which word commonly shifts stress by grammatical category?','record',['window','garden','yellow'],'REcord (noun) and reCORD (verb) illustrate stress shift.'],
+['What is a phoneme?','A contrastive sound unit that can distinguish meaning',['A written letter','A syllable','A punctuation mark'],'Phonemes distinguish words, as /p/ and /b/ in pat and bat.'],
+['What is an allophone?','A context-dependent phonetic variant of a phoneme',['A separate alphabet','A word ending','A stress mark'],'Allophones are predictable variants that do not normally change lexical meaning.'],
+['Which is an example of aspiration in English?','The [pʰ] in “pin”',['The [s] in “sip”','The [m] in “map”','The [ŋ] in “sing”'],'The initial /p/ in stressed “pin” is typically aspirated [pʰ].'],
+['Which transcription shows aspiration?','[tʰ]',['/t/','<t>','{t}'],'The superscript h marks aspiration in narrow phonetic transcription.'],
+['What is coarticulation?','Overlapping articulatory gestures between neighboring sounds',['A spelling variation','A type of morpheme','A sentence pattern'],'Speech gestures overlap, so adjacent sounds influence one another.'],
+['Which word contains a syllabic consonant in many pronunciations?','button',['bee','go','eye'],'The second syllable of “button” may be realized with syllabic [n̩].'],
+['Which sound is a lateral approximant?','/l/',['/r/','/w/','/j/'],'For /l/, airflow passes around the sides of the tongue.'],
+['Which sound is a palatal approximant?','/j/',['/k/','/m/','/f/'],'/j/ as in “yes” is a palatal approximant.'],
+['What does the IPA length mark ː indicate?','A long sound',['A stressed syllable','A nasal sound','A silent letter'],'The colon-like mark indicates length, as in /iː/.'],
+['Which word includes the diphthong /eɪ/?','day',['do','did','dawn'],'“Day” commonly contains /eɪ/.'],
+['Which word includes /ə/?','about',['cat','see','food'],'The first vowel in “about” is schwa /ə/.'],
+['What is schwa generally associated with?','An unstressed central vowel',['A voiced stop','A long front vowel','A consonant cluster'],'Schwa is a common reduced vowel in unstressed syllables.'],
+['Which process explains “input” often sounding like [ɪmpʊt]?','Regressive place assimilation',['Dissimilation','Metathesis','Epenthesis'],'The alveolar /n/ may assimilate to bilabial /p/ in place.'],
+['Which term means loss of a speech sound?','Elision',['Insertion','Assimilation','Diphthongization'],'Elision is the omission of a sound in connected speech.'],
+['Which word has a final consonant cluster?','texts',['go','tea','me'],'“Texts” ends with a complex cluster /ksts/.']
+],
+[
+['Which transcription best represents the broad form of “ship”?','/ʃɪp/',['[ʃɪp]','ship','/sɪp/'],'/ʃɪp/ is a broad phonemic representation of ship.'],
+['What is the articulatory description of /ð/?','Voiced dental fricative',['Voiceless dental fricative','Voiced alveolar stop','Voiceless velar stop'],'/ð/ is voiced, dental and fricative.'],
+['What is the articulatory description of /ŋ/?','Voiced velar nasal',['Voiceless velar stop','Voiced bilabial nasal','Voiced alveolar fricative'],'/ŋ/ is a voiced nasal made at the velum.'],
+['Which pair demonstrates a vowel-length contrast in varieties that maintain it?','sheep – ship',['cat – cut','pen – pan','bit – beat'],'The pair contrasts /iː/ and /ɪ/; length is one part of the distinction in many descriptions.'],
+['Which statement about English stress is most accurate?','Stress can distinguish lexical or grammatical patterns',['Every syllable has equal prominence','Stress is always on the final syllable','Spelling alone determines stress'],'Stress placement can vary by word class and lexical item.'],
+['What is intonation?','The pattern of pitch movement across an utterance',['The number of letters','A consonant place','A type of suffix'],'Intonation uses pitch movement to convey discourse and pragmatic meaning.'],
+['Which intonation pattern is often associated with a neutral yes/no question?','Rising contour',['Always falling contour','No pitch movement','Only whispering'],'A rising contour is common in many varieties, though patterns vary by context and dialect.'],
+['Which process inserts a sound to break up a difficult cluster?','Epenthesis',['Elision','Assimilation','Metathesis'],'Epenthesis is the insertion of a sound.'],
+['Which process changes the order of sounds?','Metathesis',['Assimilation','Deletion','Lengthening'],'Metathesis is the reordering of sounds.'],
+['Which term refers to a sound becoming less like a neighboring sound?','Dissimilation',['Assimilation','Nasalization','Aspiration'],'Dissimilation makes neighboring sounds less similar.'],
+['What is nasalization?','Lowering the velum so air passes through the nose',['Closing the lips','Raising pitch','Lengthening a consonant'],'Nasalization involves nasal airflow and is often marked [ ̃ ].'],
+['Which symbol marks primary stress in IPA?','ˈ',['ˌ','ː','ə'],'The primary stress mark appears before the stressed syllable.'],
+['Which symbol marks secondary stress?','ˌ',['ˈ','ː','ŋ'],'The secondary stress mark is ˌ.'],
+['Which word has primary stress on the final syllable?','engineer',['TAble','HAPpy','GARden'],'Engineer normally carries primary stress on its final syllable.'],
+['Which word has a reduced vowel in its first syllable?','support',['cat','seat','food'],'The first syllable of support commonly has schwa /ə/.'],
+['Which feature is most relevant to distinguishing /s/ and /ʃ/?','Place of articulation',['Voicing','Nasality','Vowel length'],'Both are voiceless fricatives, but /s/ is alveolar and /ʃ/ postalveolar.'],
+['What does a narrow transcription aim to show?','Detailed phonetic realization',['Only spelling','Only morphemes','Word meaning'],'Narrow transcription records finer phonetic detail, often with diacritics.'],
+['Which is a plausible narrow transcription of aspirated “top” initial consonant?','[tʰ]',['/d/','[ŋ]','[ʒ]'],'The initial /t/ in stressed “top” is commonly aspirated [tʰ].'],
+['What is a tone language?','A language where pitch patterns can distinguish lexical meaning',['A language with no vowels','A language that uses only stress','A language with silent consonants'],'In tone languages, pitch is lexically contrastive; English primarily uses intonation and stress.'],
+['Which statement about dialect transcription is best?','Transcriptions should reflect the target variety consistently',['All English accents have identical vowels','Only spelling matters','One accent is universally correct'],'Pronunciation differs across English varieties; specify and apply a consistent target accent.']
+],
+[
+['Which statement best distinguishes phonetics from phonology?','Phonetics studies physical speech sounds; phonology studies sound systems',['Both study spelling only','Phonology studies meaning only','Phonetics studies syntax'],'Phonetics examines production, transmission and perception; phonology examines patterned sound systems.'],
+['What is a complementary distribution?','Two sounds occur in different phonetic environments without contrastive meaning',['Two sounds always rhyme','Two spellings mean the same','Two words share a suffix'],'Complementary distribution can support an allophonic analysis.'],
+['What evidence most strongly supports two sounds as separate phonemes?','A minimal pair in the same environment',['Similar spelling','Same syllable count','Same speaker'],'A minimal pair shows a meaning contrast associated with one sound difference.'],
+['What is a distinctive feature?','A phonological property used to characterize sound contrasts',['A font style','A spelling convention','A phrase boundary'],'Features such as [±voice] describe contrasts and natural classes.'],
+['Which set forms a natural class?','/p, t, k/',['/a, m, z/','/i, b, ŋ/','/s, u, d/'],'/p, t, k/ are voiceless oral stops.'],
+['What does [+nasal] indicate?','The velum is lowered for nasal airflow',['The vocal folds are always open','The tongue is at the alveolar ridge','The lips are rounded'],'The feature [nasal] describes airflow through the nasal cavity.'],
+['Which process changes /n/ to [m] before /p/?','Place assimilation',['Vowel harmony','Metathesis','Final devoicing'],'The nasal adopts the bilabial place of the following /p/.'],
+['What is a phonotactic constraint?','A language-specific restriction on sound sequences',['A rule for punctuation','A type of intonation','A spelling dictionary'],'Phonotactics describes permitted sound combinations and syllable structures.'],
+['Which cluster is possible at the beginning of many English words?','/str/',['/ŋl/','/tl/','/ʒm/'],'English permits /str/ in words such as “street”.'],
+['What is a mora?','A unit of syllable weight in some phonological systems',['A type of consonant','A written accent','A speech organ'],'Morae measure syllable weight in languages where the unit is relevant.'],
+['What is the difference between a phoneme and a phone?','A phoneme is abstract and contrastive; a phone is a concrete speech sound',['They are always identical concepts','A phone is a letter','A phoneme is a syllable'],'Phonemes are mental contrastive units; phones are actual speech sounds.'],
+['Which statement about English rhoticity is accurate?','Some varieties pronounce /r/ after vowels and others do not',['All English varieties are non-rhotic','All English varieties pronounce every written r','Rhoticity concerns vowel stress'],'Rhotic accents pronounce post-vocalic /r/; non-rhotic accents generally do not.'],
+['Which word pair can illustrate /æ/ versus /ɛ/ in some varieties?','bad – bed',['bat – bag','sip – zip','fan – van'],'The vowel contrast can be heard in bad and bed in varieties maintaining it.'],
+['What is vowel reduction?','An unstressed vowel becomes shorter or more centralized',['A consonant becomes voiced','A syllable gains stress','A stop becomes a fricative'],'Unstressed vowels often reduce toward schwa or another centralized quality.'],
+['What does the diacritic [ ̃ ] commonly indicate?','Nasalization',['Aspiration','Length','Dental articulation'],'A tilde above a symbol indicates nasalization.'],
+['What is a syllabic consonant?','A consonant functioning as a syllable nucleus',['A consonant written twice','A consonant between vowels','A silent consonant'],'A syllabic consonant can form the nucleus, as [n̩] in some pronunciations of button.'],
+['Which term describes pitch movement over a phrase?','Intonation',['Assimilation','Epenthesis','Syllabification'],'Intonation is the pitch contour of an utterance.'],
+['What is a prosodic feature?','A feature such as stress, tone, rhythm or intonation',['A spelling pattern','A noun class','A morpheme boundary'],'Prosody concerns suprasegmental properties extending over segments.'],
+['Why should an IPA transcription identify its accent or variety?','Pronunciation and phonemic inventories vary across varieties',['IPA symbols change randomly','All accents have identical phonemes','Spelling is the same as sound'],'A target variety makes transcription choices interpretable and consistent.'],
+['What is the best practice when transcribing connected speech?','Represent the sounds actually produced while following a stated transcription level',['Copy spelling letter by letter','Ignore reductions in every context','Change sounds to match spelling'],'Connected speech includes linking, reduction and assimilation; transcription should follow its stated level.']
+]
+];
+let level=0,index=0,score=0,answered=false,earned=[],firstTry=[];
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}}
+function total(){return Object.values(state.best).reduce((a,b)=>a+Number(b||0),0)}
+function showHome(){
+ $('ph-home').hidden=false;$('ph-quiz').hidden=true;$('ph-result').hidden=true;
+ $('ph-total').textContent=state.total||total();
+ $('ph-levels').innerHTML='';
+ names.forEach((n,i)=>{
+  const done=state.completed.includes(i),locked=i>state.unlocked;
+  const b=document.createElement('button');b.className='ph-level';b.disabled=locked;
+  b.innerHTML='<strong>'+(locked?'🔒 ':done?'✓ ':'')+n+'</strong><br><small>'+(locked?'Pass the previous level with at least 80% to unlock':done?'Passed · Best: '+(state.best[i]||0)+'/100':'20 questions · Pass mark: 80/100')+'</small>';
+  b.addEventListener('click',()=>start(i));$('ph-levels').appendChild(b);
+ });
+}
+function start(l){if(l>state.unlocked)return;level=l;index=0;score=0;answered=false;earned=Array(20).fill(false);firstTry=Array(20).fill(null);$('ph-home').hidden=true;$('ph-result').hidden=true;$('ph-quiz').hidden=false;render()}
+function render(){
+ const q=bank[level][index];answered=false;
+ $('ph-level-name').textContent=names[level]+' · 20-question challenge';
+ $('ph-count').textContent='Question '+(index+1)+' of 20';
+ $('ph-score').textContent=score;$('ph-bar').style.width=(index/20*100)+'%';
+ $('ph-question').textContent=q[0];$('ph-options').innerHTML='';
+ const opts=[q[1],...q[2]].sort(()=>Math.random()-.5);
+ opts.forEach((v,i)=>{const label=document.createElement('label');label.className='ph-option';const radio=document.createElement('input');radio.type='radio';radio.name='ph-answer';radio.value=v;const span=document.createElement('span');span.textContent=v;label.append(radio,span);$('ph-options').appendChild(label)});
+ $('ph-feedback').hidden=true;$('ph-submit').hidden=false;$('ph-question-retry').hidden=true;$('ph-next').hidden=true;
+}
+function submit(){
+ if(answered)return;
+ const selected=root.querySelector('input[name="ph-answer"]:checked');if(!selected){$('ph-feedback').hidden=false;$('ph-feedback').textContent='Choose an answer before checking.';return}
+ const q=bank[level][index],ok=selected.value===q[1];answered=true;
+ if(firstTry[index]===null){firstTry[index]=ok;if(ok)score+=5;}
+ $('ph-score').textContent=score;$('ph-feedback').hidden=false;
+ $('ph-feedback').innerHTML='<strong>'+(ok?'Correct! '+(firstTry[index]?'You earned 5 points.':'Correct on your retry; your first-answer score stays the same.'):'Not quite — 0 points for this question.')+'</strong><br>Correct answer: <b>'+q[1].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</b><br>'+q[3];
+ root.querySelectorAll('input[name="ph-answer"]').forEach(x=>x.disabled=true);
+ $('ph-submit').hidden=true;$('ph-question-retry').hidden=ok;$('ph-next').hidden=false;$('ph-next').textContent=index===19?'See results':'Next question →';
+}
+function finish(){
+ const old=Number(state.best[level]||0);state.best[level]=Math.max(old,score);
+ const passed=score>=80;
+ if(passed){if(!state.completed.includes(level))state.completed.push(level);state.unlocked=Math.max(state.unlocked,Math.min(4,level+1));}
+ else{state.completed=state.completed.filter(i=>i!==level);}
+ state.total=total();save();
+ $('ph-quiz').hidden=true;$('ph-result').hidden=false;
+ $('ph-result').querySelector('h2').textContent=passed?'Level passed!':'80% pass mark not reached';
+ $('ph-result-score').textContent='Your score: '+score+'/100 · Best score: '+state.best[level]+'/100';
+ $('ph-result-message').textContent=passed?(level===4?'You have completed all five phonetics levels. Excellent work!':'You met the 80% requirement. The next level is now unlocked.'):'You need at least 80/100 to pass and unlock the next level. Review the explanations, then retry this level. Your best score is saved.';
+}
+$('ph-submit').addEventListener('click',submit);
+$('ph-question-retry').addEventListener('click',()=>{render();$('ph-feedback').hidden=true;});
+$('ph-next').addEventListener('click',()=>{if(!answered)return;if(index===19)finish();else{index++;render()}});
+$('ph-home-btn').addEventListener('click',showHome);$('ph-result-home').addEventListener('click',showHome);
+$('ph-retry').addEventListener('click',()=>start(level));
+$('ph-close').addEventListener('click',()=>{root.hidden=true;showHome()});
+$('ph-reset-progress').addEventListener('click',()=>{if(!confirm('Reset all Phonetics Exercises scores, completed levels and unlocks? This cannot be undone.'))return;state={unlocked:0,completed:[],best:{},total:0};save();posState={unlocked:0,completed:[],best:{},writingPoints:0,writingEarned:[]};posSave();showHome();posHome();$('pos-write-points').textContent='0';$('ph-save-note').textContent='Your local Phonetics and Parts of Speech progress has been reset.';});
+$('ath-phonetics-launch').addEventListener('click',()=>{root.hidden=false;showHome()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!root.hidden){root.hidden=true;showHome()}});
+/* ---------- Parts of Speech Lab: category-based multi-level progression ---------- */
+const posNames=['Nouns','Pronouns','Verbs','Adjectives','Adverbs','Prepositions','Conjunctions','Interjections'];
+const posBank=[
+[
+['The **librarian** arranged the books.','Noun',['Verb','Adjective','Adverb'],'“Librarian” names a person.'],['Her **kindness** encouraged the new student.','Noun',['Adjective','Verb','Pronoun'],'“Kindness” names a quality; it is an abstract noun.'],['Three **butterflies** landed on the flower.','Noun',['Verb','Adverb','Preposition'],'“Butterflies” names animals.'],['The **committee** reached a decision.','Noun',['Adjective','Conjunction','Verb'],'“Committee” names a group.'],['We visited the **museum** yesterday.','Noun',['Adverb','Verb','Pronoun'],'“Museum” names a place.'],['His **arrival** surprised everyone.','Noun',['Adjective','Verb','Preposition'],'“Arrival” names an event.'],['The **children** prepared a performance.','Noun',['Pronoun','Adverb','Conjunction'],'“Children” names people.'],['A **flock** crossed the valley.','Noun',['Verb','Adjective','Interjection'],'“Flock” is a collective noun naming a group.'],['The **decision** requires careful thought.','Noun',['Adverb','Verb','Preposition'],'“Decision” names an idea or result.'],['The **key** is on the table.','Noun',['Verb','Adjective','Conjunction'],'“Key” names a thing.']],
+[
+['**They** arrived before the program began.','Pronoun',['Noun','Verb','Adjective'],'“They” replaces the names of people.'],['Mara gave **him** the notebook.','Pronoun',['Preposition','Noun','Adverb'],'“Him” is an object pronoun.'],['**Who** prepared the presentation?','Pronoun',['Conjunction','Verb','Adjective'],'“Who” is an interrogative pronoun.'],['The blue bag is **mine**.','Pronoun',['Adjective','Noun','Preposition'],'“Mine” is a possessive pronoun.'],['The students helped **themselves**.','Pronoun',['Adverb','Verb','Conjunction'],'“Themselves” is a reflexive pronoun.'],['**Someone** left a folder here.','Pronoun',['Noun','Adjective','Interjection'],'“Someone” is an indefinite pronoun.'],['The teacher **whose** class won smiled.','Pronoun',['Preposition','Verb','Adverb'],'“Whose” is a relative pronoun.'],['Neither answer is **hers**.','Pronoun',['Adjective','Conjunction','Verb'],'“Hers” is a possessive pronoun.'],['**This** is the book I borrowed.','Pronoun',['Adjective','Noun','Adverb'],'“This” stands alone as a demonstrative pronoun.'],['The person **who** called is waiting.','Pronoun',['Preposition','Conjunction','Adjective'],'“Who” refers to a person and introduces a relative clause.']],
+[
+['The students **discussed** the story.','Verb',['Noun','Adjective','Adverb'],'“Discussed” expresses an action.'],['The flowers **bloom** in spring.','Verb',['Noun','Pronoun','Preposition'],'“Bloom” expresses what the flowers do.'],['She **is** our class president.','Verb',['Adjective','Noun','Conjunction'],'“Is” is a linking verb.'],['They have **finished** the activity.','Verb',['Adverb','Noun','Preposition'],'“Finished” is the main verb in the verb phrase.'],['Please **submit** your work tomorrow.','Verb',['Pronoun','Adjective','Interjection'],'“Submit” expresses an action.'],['The audience **remained** silent.','Verb',['Adverb','Noun','Conjunction'],'“Remained” is a linking verb.'],['Birds **migrate** during certain seasons.','Verb',['Adjective','Pronoun','Preposition'],'“Migrate” expresses an action or process.'],['He **might** join the discussion.','Verb',['Noun','Adjective','Interjection'],'“Might” is a modal auxiliary verb.'],['The baby **has been sleeping** peacefully.','Verb',['Noun','Adverb','Conjunction'],'“Has been sleeping” is a verb phrase.'],['The students **were** excited.','Verb',['Adjective','Pronoun','Preposition'],'“Were” is a linking verb.']],
+[
+['The **ancient** building attracts visitors.','Adjective',['Adverb','Noun','Verb'],'“Ancient” describes the noun “building.”'],['She bought a **wooden** desk.','Adjective',['Adverb','Preposition','Pronoun'],'“Wooden” describes the desk.'],['The **three** finalists received certificates.','Adjective',['Noun','Verb','Interjection'],'“Three” modifies the noun “finalists.”'],['It was a **challenging** examination.','Adjective',['Adverb','Conjunction','Verb'],'“Challenging” describes the examination.'],['We need a **reliable** source.','Adjective',['Noun','Adverb','Preposition'],'“Reliable” describes the source.'],['The **sleepy** child yawned.','Adjective',['Adverb','Verb','Conjunction'],'“Sleepy” describes the child.'],['That is the **interesting** chapter.','Adjective',['Adverb','Noun','Pronoun'],'“Interesting” describes the chapter.'],['The road became **narrow**.','Adjective',['Adverb','Verb','Preposition'],'“Narrow” describes the subject after a linking verb.'],['She wore a **bright** scarf.','Adjective',['Adverb','Noun','Conjunction'],'“Bright” describes the scarf.'],['We watched a ** spectacular** sunset.','Adjective',['Adverb','Verb','Pronoun'],'“Spectacular” describes the sunset.']],
+[
+['She completed the task **carefully**.','Adverb',['Adjective','Noun','Preposition'],'“Carefully” tells how she completed the task.'],['We **often** visit the library.','Adverb',['Noun','Adjective','Conjunction'],'“Often” tells how frequently.'],['The speaker talked **quietly**.','Adverb',['Adjective','Pronoun','Preposition'],'“Quietly” modifies the verb “talked.”'],['The test was **extremely** difficult.','Adverb',['Noun','Verb','Interjection'],'“Extremely” modifies the adjective “difficult.”'],['He arrived **yesterday**.','Adverb',['Adjective','Conjunction','Noun'],'“Yesterday” tells when.'],['The children played **outside**.','Adverb',['Pronoun','Adjective','Conjunction'],'“Outside” tells where.'],['She **almost** missed the bus.','Adverb',['Noun','Verb','Preposition'],'“Almost” modifies “missed.”'],['Please work **more** efficiently.','Adverb',['Adjective','Noun','Pronoun'],'“More” modifies the adverb “efficiently.”'],['I **never** skip breakfast.','Adverb',['Noun','Adjective','Preposition'],'“Never” tells how often.'],['The dog ran **away**.','Adverb',['Verb','Noun','Conjunction'],'“Away” tells where the dog ran.']],
+[
+['The cat slept **under** the table.','Preposition',['Adverb','Conjunction','Verb'],'“Under” shows the spatial relationship between the cat and the table.'],['The keys are **inside** the drawer.','Preposition',['Adjective','Verb','Interjection'],'“Inside” relates the keys to the drawer.'],['We walked **through** the forest.','Preposition',['Adverb','Pronoun','Conjunction'],'“Through” introduces the path of movement.'],['The picture hangs **above** the sofa.','Preposition',['Verb','Adjective','Interjection'],'“Above” shows location.'],['She sat **between** her friends.','Preposition',['Conjunction','Adverb','Noun'],'“Between” shows the relationship of position.'],['The meeting starts **at** noon.','Preposition',['Verb','Adjective','Pronoun'],'“At” introduces a time expression.'],['He travelled **from** Davao.','Preposition',['Conjunction','Adverb','Interjection'],'“From” marks the point of origin.'],['The gift is **for** my sister.','Preposition',['Verb','Adjective','Adverb'],'“For” introduces the recipient or intended beneficiary.'],['They rested **beneath** the tree.','Preposition',['Conjunction','Noun','Verb'],'“Beneath” shows a spatial relationship.'],['The path runs **along** the river.','Preposition',['Adjective','Pronoun','Interjection'],'“Along” shows the route in relation to the river.']],
+[
+['I wanted to go, **but** it was raining.','Conjunction',['Preposition','Adverb','Interjection'],'“But” joins contrasting clauses.'],['Mia **and** Leo prepared the slides.','Conjunction',['Preposition','Noun','Adjective'],'“And” joins two nouns.'],['We stayed home **because** it was late.','Conjunction',['Adverb','Preposition','Pronoun'],'“Because” introduces a reason.'],['You may have tea **or** coffee.','Conjunction',['Preposition','Verb','Adverb'],'“Or” joins alternatives.'],['**Although** it was difficult, she continued.','Conjunction',['Adverb','Preposition','Interjection'],'“Although” introduces a contrasting dependent clause.'],['Study carefully, **and** review your notes.','Conjunction',['Preposition','Noun','Adjective'],'“And” connects actions.'],['He was absent, **for** he was ill.','Conjunction',['Preposition','Adverb','Pronoun'],'“For” connects clauses and gives a reason.'],['You can go **if** you finish your work.','Conjunction',['Preposition','Adjective','Interjection'],'“If” introduces a condition.'],['She is talented, **yet** she remains humble.','Conjunction',['Adverb','Preposition','Noun'],'“Yet” connects contrasting clauses.'],['I will wait **until** you return.','Conjunction',['Preposition','Pronoun','Adjective'],'“Until” introduces a time clause.']],
+[
+['**Wow!** Your performance was excellent.','Interjection',['Conjunction','Adjective','Adverb'],'“Wow!” expresses admiration or surprise.'],['**Ouch!** That paper cut hurts.','Interjection',['Noun','Verb','Preposition'],'“Ouch!” expresses sudden pain.'],['**Alas!** We missed the final bus.','Interjection',['Adverb','Conjunction','Pronoun'],'“Alas!” expresses sadness or disappointment.'],['**Hurray!** Our group won the contest.','Interjection',['Noun','Adjective','Preposition'],'“Hurray!” expresses joy or triumph.'],['**Shh!** The baby is sleeping.','Interjection',['Verb','Conjunction','Adverb'],'“Shh!” requests silence.'],['**Oops!** I sent the wrong file.','Interjection',['Preposition','Noun','Adjective'],'“Oops!” expresses a mistake.'],['**Bravo!** That was a wonderful performance.','Interjection',['Conjunction','Verb','Adverb'],'“Bravo!” expresses praise.'],['**Hey!** Please wait for me.','Interjection',['Adjective','Noun','Preposition'],'“Hey!” gets someone’s attention.'],['**Aha!** Now I understand the pattern.','Interjection',['Pronoun','Verb','Conjunction'],'“Aha!” expresses sudden realization.'],['**Phew!** We finished on time.','Interjection',['Adverb','Adjective','Noun'],'“Phew!” expresses relief.']]
+];
+const posCounts=[3,3,3,3,3,5,3,3];
+const posStore='athenaeum.parts-of-speech.categories.v3';
+let posState={unlocked:0,completed:[],best:{},writingPoints:0,writingEarned:[]};
+try{const saved=JSON.parse(localStorage.getItem(posStore)||'null');if(saved)posState=Object.assign(posState,saved)}catch(e){}
+const posUnits=[];posNames.forEach((name,ci)=>{for(let li=0;li<posCounts[ci];li++)posUnits.push({cat:ci,sub:li,name,questions:posBank[ci].map((q,qi)=>{let sentence=q[0];if(li===1)sentence='Choose the part of speech of the bold word: '+sentence;if(li===2)sentence='In this sentence, identify the bold word’s function: '+sentence;if(li>=3)sentence='Identify the grammatical category of the bold word: '+sentence;return [sentence,q[1],q[2],q[3]]})})});
+const posUnitNames=posUnits.map(u=>u.name+' · Level '+(u.sub+1));
+if(!localStorage.getItem(posStore)){try{const legacy=JSON.parse(localStorage.getItem('athenaeum.parts-of-speech.categories.v2')||'null');if(legacy&&legacy.best){posNames.forEach((_,ci)=>{const unitIndex=posUnits.findIndex(u=>u.cat===ci&&u.sub===0);const oldBest=Number(legacy.best[ci]||0);if(oldBest>0)posState.best[unitIndex]=oldBest;if(oldBest>=80)posState.completed.push(unitIndex)});posState.writingPoints=Number(legacy.writingPoints||0);posState.writingEarned=legacy.writingEarned||[];}}catch(e){}}
+posState.completed=(posState.completed||[]).filter(i=>Number(posState.best&&posState.best[i]||0)>=80);
+posState.unlocked=0;while(posState.unlocked<posUnits.length&&posState.completed.includes(posState.unlocked))posState.unlocked++;
+let posLevel=0,posIndex=0,posScore=0,posAnswered=false,posFirst=[];
+const posRoot=document.getElementById('ath-pos-lab');
+function posSave(){try{localStorage.setItem(posStore,JSON.stringify(posState))}catch(e){}}
+function posHome(){ $('ph-pos-quiz').hidden=true;$('ph-pos-result').hidden=true;$('pos-writing').hidden=false;$('pos-total').textContent=Object.values(posState.best).reduce((a,b)=>a+Number(b||0),0);$('pos-levels').innerHTML='';posNames.forEach((name,ci)=>{const group=document.createElement('section');group.className='pos-category-group';const h=document.createElement('h3');h.textContent=name;group.appendChild(h);posUnits.forEach((u,i)=>{if(u.cat!==ci)return;const done=posState.completed.includes(i),locked=i>posState.unlocked,b=document.createElement('button');b.type='button';b.className='pos-level';b.disabled=locked;b.innerHTML='<strong>'+(locked?'🔒 ':done?'✓ ':'')+name+' · Level '+(u.sub+1)+'</strong><br><small>'+(locked?'Locked — pass the previous level with 80%':done?'Passed · Best score: '+posState.best[i]+'/100':'10 '+name.toLowerCase()+' questions · 100 points · Pass: 80%')+'</small>';b.addEventListener('click',()=>posStart(i));group.appendChild(b)});$('pos-levels').appendChild(group)})}
+function posStart(l){if(l>posState.unlocked)return;posLevel=l;posIndex=0;posScore=0;posFirst=Array(10).fill(null);$('pos-writing').hidden=true;$('ph-pos-result').hidden=true;$('ph-pos-quiz').hidden=false;posRender()}
+function posEscape(s){return String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
+const posExtraAnswers={
+ 0:[['books'],['student'],['butterflies','flower'],['decision'],[],['everyone'],['performance'],['valley'],['thought'],['table']],
+ 1:[[],['Mara'],[],[],[],[],['teacher','class'],[],['book'],['person']],
+ 2:[[],[],['is'],['have'],[],[],[],['might'],['has','been','sleeping'],['were']],
+ 3:[['ancient'],['wooden'],['three'],['challenging'],['reliable'],['sleepy'],['interesting'],['narrow'],['bright'],['spectacular']],
+ 4:[[],['often'],['quietly'],['extremely'],['yesterday'],['outside'],['almost'],['more','efficiently'],['never'],['away']],
+ 5:[['under'],['inside'],['through'],['above'],['between'],['at'],['from'],['for'],['beneath'],['along']],
+ 6:[['but'],['and'],['because'],['or'],['although'],['and'],['for'],['yet'],['until'],['yet']],
+ 7:[[],[],[],[],[],[],[],[],[],[]]
+};
+function posAcceptedWords(q){const m=q[0].match(/\*\*(.*?)\*\*/),primary=m?m[1].trim():'';const extra=(posExtraAnswers[posUnits[posLevel].cat]||[])[posIndex]||[];return [...new Set([primary,...extra].filter(Boolean))]}
+function posNormalizeAnswer(v){return String(v||'').toLocaleLowerCase().replace(/[“”‘’]/g,"'").replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu,'').trim()}
+function posRender(){
+ const q=posUnits[posLevel].questions[posIndex],raw=q[0],match=raw.match(/\*\*(.*?)\*\*/),target=match?match[1].trim():'';
+ posAnswered=false;window.posCurrentTarget=target;$('pos-level-name').textContent=posUnitNames[posLevel]+' · Sentence identification';$('pos-count').textContent='Question '+(posIndex+1)+' of 10';$('pos-score').textContent=posScore;$('pos-bar').style.width=(posIndex/10*100)+'%';
+ const sentence=raw.replace(/\*\*(.*?)\*\*/g,'$1').replace(/^(Choose the part of speech of the bold word: |In this sentence, identify the bold word’s function: |Identify the grammatical category of the bold word: )/,'');
+ $('pos-question').innerHTML='<div class="pos-task"><strong>Find the '+posNames[posUnits[posLevel].cat].slice(0,-1).toLowerCase()+' word(s) in this sentence.</strong><p class="pos-sentence">'+posEscape(sentence)+'</p><small>Type your answer. If the sentence contains more than one correct word, separate your answers with commas. You do not need to select from choices.</small></div>';
+ $('pos-options').innerHTML='<label for="pos-written-answer"><strong>Your answer</strong></label><input id="pos-written-answer" class="pos-written-answer" type="text" autocomplete="off" placeholder="Type the word or words here" aria-label="Type the correct word or words from the sentence"><small class="pos-answer-hint">Example format: word one, word two</small>';
+ $('pos-feedback').hidden=true;$('pos-submit').hidden=false;$('pos-question-retry').hidden=true;$('pos-next').hidden=true;
+}
+function posSubmit(){
+ if(posAnswered)return;
+ const field=$('pos-written-answer'),rawAnswer=field?field.value.trim():'';
+ if(!rawAnswer){$('pos-feedback').hidden=false;$('pos-feedback').textContent='Type at least one word from the sentence before checking.';return}
+ const q=posUnits[posLevel].questions[posIndex],accepted=posAcceptedWords(q).map(posNormalizeAnswer),submitted=rawAnswer.split(/[,;\n]+/).map(posNormalizeAnswer).filter(Boolean),unique=[...new Set(submitted)];
+ const valid=unique.filter(w=>accepted.includes(w));const invalid=unique.filter(w=>!accepted.includes(w));
+ // A response is correct when it includes at least one accepted answer and every supplied answer is valid.
+ const ok=valid.length>0&&invalid.length===0,first=posFirst[posIndex]===null;
+ if(first){posFirst[posIndex]=ok;if(ok)posScore+=10;}
+ posAnswered=true;$('pos-score').textContent=posScore;$('pos-feedback').hidden=false;
+ const answerText=posAcceptedWords(q).join(', ');
+ $('pos-feedback').textContent=(ok?(first?'Correct! You earned 10 points.':'Correct on your retry. No points are added for retries.'):'Not quite. '+(first?'This question earns 0 points.':'No points are added for retries.'))+' Accepted answer'+(posAcceptedWords(q).length>1?'s: ':' : ')+answerText+'. Explanation: '+q[3]+(invalid.length?' Your response also included an incorrect word: '+invalid.join(', ')+'.':'');
+ if(field)field.disabled=true;$('pos-submit').hidden=true;$('pos-question-retry').hidden=ok;$('pos-next').hidden=false;$('pos-next').textContent=posIndex===9?'See level results':'Next question →';
+}
+function posFinish(){posState.best[posLevel]=Math.max(Number(posState.best[posLevel]||0),posScore);const passed=posScore>=80;if(passed){if(!posState.completed.includes(posLevel))posState.completed.push(posLevel);posState.unlocked=Math.max(posState.unlocked,Math.min(posUnits.length-1,posLevel+1))}else posState.completed=posState.completed.filter(i=>i!==posLevel);posSave();$('ph-pos-quiz').hidden=true;$('ph-pos-result').hidden=false;$('pos-result-title').textContent=passed?'Level passed!':'80% pass mark not reached';$('pos-result-score').textContent='Your score: '+posScore+'/100 · Best score: '+posState.best[posLevel]+'/100';$('pos-result-message').textContent=passed?(posLevel===posUnits.length-1?'You completed all parts-of-speech levels. Excellent work!':'You earned at least 80%. The next level is now unlocked.'):'You need at least 80/100 to unlock the next level. Review the explanations and retry this level. Your best score is saved.'}
+const posOverlay=document.getElementById('ath-pos-root');document.getElementById('ath-pos-launch').addEventListener('click',()=>{posHome();posOverlay.hidden=false});document.getElementById('pos-close').addEventListener('click',()=>{posOverlay.hidden=true;posHome()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!posOverlay.hidden){posOverlay.hidden=true;posHome()}});
+$('pos-submit').addEventListener('click',posSubmit);$('pos-question-retry').addEventListener('click',()=>{posRender();$('pos-feedback').hidden=true});$('pos-next').addEventListener('click',()=>{if(!posAnswered)return;if(posIndex===9)posFinish();else{posIndex++;posRender()}});$('pos-home-btn').addEventListener('click',posHome);$('pos-result-home').addEventListener('click',posHome);$('pos-retry').addEventListener('click',()=>posStart(posLevel));
+const writeTargets={Noun:['curiosity','friendship','library','celebration'],Pronoun:['they','herself','someone','which'],Verb:['discover','whispered','creates','belong'],Adjective:['curious','generous','ancient','fragile'],Adverb:['carefully','rarely','silently','almost'],Preposition:['beneath','between','through','beside'],Conjunction:['although','because','yet','unless'],Interjection:['Wow','Alas','Hurray','Oops']};
+let writeTarget='curiosity';
+function posNewTarget(){const cat=$('pos-write-category').value,arr=writeTargets[cat];writeTarget=arr[Math.floor(Math.random()*arr.length)];$('pos-write-word').textContent=writeTarget;$('pos-write-answer').value='';$('pos-write-feedback').hidden=true}
+$('pos-write-category').addEventListener('change',posNewTarget);$('pos-write-new').addEventListener('click',posNewTarget);
+$('pos-write-check').addEventListener('click',()=>{const val=$('pos-write-answer').value.trim(),words=val.split(/\s+/).filter(Boolean),tokens=(val.match(/[A-Za-z]+(?:'[A-Za-z]+)?/g)||[]),has=tokens.some(w=>w.toLowerCase()===writeTarget.toLowerCase()),capital=/^[A-Z]/.test(val),punct=/[.!?]$/.test(val),enough=words.length>=4;const checks=[['Uses the target word',has],['At least four words',enough],['Begins with a capital letter',capital],['Ends with punctuation',punct]];const ok=checks.every(x=>x[1]);if(!val){$('pos-write-feedback').textContent='Write a sentence before checking.';$('pos-write-feedback').hidden=false;return}if(ok){const key=$('pos-write-category').value+'|'+writeTarget.toLowerCase()+'|'+val.toLowerCase();posState.writingEarned=posState.writingEarned||[];if(!posState.writingEarned.includes(key)){posState.writingEarned.push(key);posState.writingPoints+=10;posSave();$('pos-write-points').textContent=posState.writingPoints;$('pos-write-feedback').textContent='All automatic checks passed! +10 writing points.\nRemember to review whether the target word is functioning as the requested part of speech.'}else{$('pos-write-feedback').textContent='All automatic checks passed. You have already earned points for this exact sentence and target word. Revise or choose a new target for another scored attempt.'}}else{$('pos-write-feedback').textContent='Revise your sentence:\n'+checks.filter(x=>!x[1]).map(x=>'• '+x[0]).join('\n')+'\nNo points are awarded yet. You may revise and check again.'}$('pos-write-feedback').hidden=false});
+$('pos-write-points').textContent=posState.writingPoints||0;
+posHome();
+setupLearningTools();showHome();
+})();
+</script>
 </body>
 </html>
