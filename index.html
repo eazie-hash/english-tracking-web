@@ -1875,7 +1875,7 @@ button:disabled{cursor:not-allowed}
               <div class="ab-grid">
                 <div><b>&#128218; Structured lessons</b>Work through English studies at your own pace with lessons, notes and progress tracking.</div>
                 <div><b>&#127942; Quiz Arena</b>Test yourself, take on challenges and climb the leaderboard.</div>
-                <div><b>&#9999;&#65039; Sentence Diagramming Lab</b>See how sentences are built by diagramming them step by step.</div>
+                <div><b>&#9999;&#65039; Reed–Kellogg Sentence Diagram</b>See how sentences are built by diagramming them step by step.</div>
                 <div><b>&#129513; Sentence Structure Lab</b>Practise clauses and structure with levels that build to a certificate.</div>
                 <div><b>&#128220; History of English</b>Follow the language from Old English to the World Englishes of today.</div>
                 <div><b>&#9729;&#65039; Cloud sync</b>Sign in on any device and pick up exactly where you stopped.</div>
@@ -3429,21 +3429,40 @@ html.auth-pending #dl-launch{display:none}
 .dl-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 @media(max-width:600px){#dl-root h1{font-size:27px}.dl-lv{grid-template-columns:1fr}.dl-sent{font-size:22px}}
 @media(prefers-reduced-motion:reduce){.dl-slot.hint rect{animation:none}}
+
+#dl-root .dl-guide{border:1px solid var(--border,#e5dff0);border-radius:16px;padding:18px 20px;margin:18px 0 24px;background:var(--color-page,#fff)}
+#dl-root .dl-guide h2{font-size:23px;margin:0 0 8px}
+#dl-root .dl-guide ol{padding-left:22px}
+#dl-root .dl-guide li{margin:6px 0}
+#dl-root .dl-guide details{border-top:1px solid var(--border,#e5dff0);padding:10px 0}
+#dl-root .dl-guide summary{font-weight:700;cursor:pointer}
+#dl-root .dl-refgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px 18px}
+#dl-root .dl-refgrid p{margin:5px 0}
+#dl-root .dl-sample{padding:12px 14px;margin:14px 0;border-radius:12px;background:var(--color-tint,#efe8f8)}
+#dl-root .dl-sample svg{display:block;width:100%;max-height:190px;margin:8px auto;color:var(--color-foreground,#29233a)}
+#dl-root .dl-sample p{margin:6px 0}
+#dl-root .dl-id select{min-height:38px}
+#dl-root .dl-id small{display:block;margin-top:4px}
+@media(max-width:600px){#dl-root .dl-guide{padding:14px}#dl-root .dl-sample svg{min-width:470px}#dl-root .dl-sample{overflow-x:auto}}
 </style>
 <script id="diagram-lab-js">
 (()=>{
 const SK='english-mastery:diagramLab';
 const LV=[
-{n:1,name:'The Foundation',tag:'Beginner',pts:['Subject + verb (SV)','Complete subject and predicate'],eg:'Birds fly.'},
-{n:2,name:'Expanding Sentences',tag:'Elementary',pts:['Direct objects (SVO)','Indirect objects','Subject complements'],eg:'Maria gave her friend a book.'},
-{n:3,name:'Adding Details',tag:'Intermediate',pts:['Adjectives and adverbs','Prepositional phrases','Compound subjects and predicates'],eg:'The little boy quickly ran across the street.'},
-{n:4,name:'Complex Structures',tag:'Advanced',pts:['Independent and dependent clauses','Relative clauses','Subordinating conjunctions'],eg:'The student who studied hard passed the examination.'},
-{n:5,name:'Mastery Challenge',tag:'Expert',pts:['Compound-complex sentences','Participial, infinitive and gerund phrases','Appositives, multiple subordinate clauses'],eg:'Although exhausted after studying all night, the student who wanted to become a teacher completed her difficult assignment before sunrise.'}];
-const ROLES=['Subject','Verb','Direct object','Indirect object','Subject complement','Modifier','Preposition','Object of preposition','Connector','Verbal','Appositive'];
-const RN=[2,5,9,9,11];
+{n:1,name:'Sentence Foundations',tag:'Beginner',pts:['Simple subject and simple predicate','Articles and determiners','Adjectives, adverbs and direct objects'],eg:'The intelligent student reads a book.'},
+{n:2,name:'Developing Sentences',tag:'Developing',pts:['Indirect objects','Predicate nominatives and predicate adjectives','Prepositional phrases','Helping verbs and verb phrases'],eg:'The careful teacher gave each learner a useful book.'},
+{n:3,name:'Intermediate Structures',tag:'Intermediate',pts:['Compound subjects and predicates','Appositives','Gerunds, infinitives and participles','Compound sentences'],eg:'Maya, our class president, enjoys reading and writes reviews.'},
+{n:4,name:'Advanced Clauses',tag:'Advanced',pts:['Independent and dependent clauses','Adjective and adverb clauses','Relative pronouns','Embedded clauses'],eg:'The student who practised daily succeeded because she remained patient.'},
+{n:5,name:'Teaching Mastery',tag:'Teaching mastery',pts:['Challenging multi-clause structures','Multiple grammatical functions','Ambiguity and error analysis','Complete diagramming with rationale'],eg:'Although the lesson that our professor designed was demanding, the students who prepared carefully understood it.'}];
+const ROLES=['Subject','Verb','Verb phrase / auxiliary verb','Direct object','Indirect object','Subject complement','Predicate nominative','Predicate adjective','Determiner / article','Adjective','Adverb','Pronoun','Preposition','Object of preposition','Conjunction / clause connector','Interjection','Infinitive','Gerund','Participle','Appositive','Independent clause','Dependent clause','Relative clause','Adverbial clause','Adjectival clause'];
 const RS={S:'Subject',V:'Verb',D:'Direct object',C:'Subject complement',N:'Verbal'};
-const KR={j:'Modifier',v:'Modifier',p:'Preposition',o:'Object of preposition',i:'Indirect object',k:'Connector',t:'Verbal',a:'Appositive'};
-const HINT={Subject:'Ask "who or what is this about?" before finding the verb.',Verb:'Find the action, or the linking word such as is, seems, became.','Direct object':'Who or what receives the action? It follows the verb.','Indirect object':'Who receives the direct object? Try "to whom" or "for whom".','Subject complement':'After a linking verb, which word renames or describes the subject?',Modifier:'Which word describes a noun (adjective) or a verb (adverb)?',Preposition:'Find the word that starts a phrase such as across, to, before, after.','Object of preposition':'The noun that ends the prepositional phrase.',Connector:'A joining word: and, or a clause starter such as if, when, because, although.',Verbal:'Look for a form built from a verb that is not the main verb: to + verb, -ing, -ed.',Appositive:'A noun that renames the noun beside it, set off by commas.'};
+const KR={j:'Adjective',d:'Determiner / article',v:'Adverb',p:'Preposition',o:'Object of preposition',i:'Indirect object',k:'Conjunction / clause connector',t:'Participle',a:'Appositive'};
+const DET=new Set(['a','an','the','this','that','these','those','my','your','his','her','its','our','their','some','many','much','few','several','every','each','either','neither','any','no','all','both','which','what','whose']);
+const ADJ_WORDS=new Set(['happy','beautiful','bright','boring','tired','ripe','little','intelligent','old','difficult','careful','useful','exhausted','patient','demanding']);
+const PRONOUNS=new Set(['i','me','we','us','you','he','him','she','her','it','they','them','who','whom','whose','which','myself','yourself','himself','herself','itself','ourselves','themselves','anyone','everyone','someone','nobody']);
+function modifierRole(word,k){if(k==='d'||(k==='j'&&DET.has(String(word).toLowerCase())))return 'Determiner / article';if(k==='v')return 'Adverb';return 'Adjective'}
+function coreRole(code,word){if(code==='C'){return ADJ_WORDS.has(String(word).toLowerCase())?'Predicate adjective':'Predicate nominative'}if(code==='V'&&String(word).trim().includes(' '))return 'Verb phrase / auxiliary verb';return RS[code]||'Verbal'}
+const HINT={'Subject':'Ask “who or what is the sentence about?” Find the word that the predicate says something about.','Verb':'Find the action or linking verb. Check whether a helping verb forms a verb phrase.','Direct object':'Ask “verb + what?” or “verb + whom?” after an action verb.','Indirect object':'Ask “to whom?” or “for whom?” the direct object is given or done.','Subject complement':'After a linking verb, does the complement rename or describe the subject?','Predicate nominative':'A noun or pronoun after a linking verb that renames the subject.','Predicate adjective':'An adjective after a linking verb that describes the subject.','Determiner / article':'Does this word introduce or specify a noun (the, a, this, my, each)? It is not an adjective.','Adjective':'Which word describes or limits a noun by giving a quality?','Adverb':'Which word modifies a verb, adjective, or another adverb?','Preposition':'Find a word that begins a phrase such as across, to, before, after, or under.','Object of preposition':'Find the noun or pronoun that completes the prepositional phrase.','Conjunction / clause connector':'Find a joining word such as and, but, because, although, or when.','Interjection':'Find an expression of feeling or reaction, often set apart by punctuation.','Appositive':'A noun phrase beside another noun that renames it.','Infinitive':'Look for to + base verb when it functions as a noun, adjective, or adverb.','Gerund':'Look for an -ing verb form functioning as a noun.','Participle':'Look for an -ing or -ed verb form functioning as an adjective.'};
 const X=[];
 const A=(l,d,t,L,e)=>X.push({l,d,t,L,e});
 const sv=(a,b)=>({s:[['S',a],['V',b]],m:[]});
@@ -3452,9 +3471,11 @@ A(1,1,'Dogs bark.',[sv('Dogs','bark')],'The subject is who or what the sentence 
 A(1,1,'Children laughed.',[sv('Children','laughed')],'Subject on the left of the dividing line, verb on the right.');
 A(1,2,'Everyone smiled.',[sv('Everyone','smiled')],'A pronoun can be the whole subject. Everyone is the subject; smiled is the verb.');
 A(1,2,'Winter arrived.',[sv('Winter','arrived')],'Arrived is the verb; Winter is the thing that arrived.');
+A(1,2,'The intelligent student reads a book.',[{s:[['S','student'],['V','reads'],['D','book']],m:[[0,'d','The'],[0,'j','intelligent'],[2,'d','a']]}],'The and a are determiners/articles because they introduce nouns. Intelligent is an adjective because it describes student. Both determiners and adjectives attach below the noun they modify, but they remain distinct grammatical categories.');
 A(2,1,'Dogs chase cats.',[{s:[['S','Dogs'],['V','chase'],['D','cats']],m:[]}],'The short vertical line that stops at the baseline separates the verb from its direct object.');
 A(2,1,'Lena seems happy.',[{s:[['S','Lena'],['V','seems'],['C','happy']],m:[]}],'Seems is a linking verb, so happy is a subject complement. The slanted line points back toward the subject.');
 A(2,2,'Mia became captain.',[{s:[['S','Mia'],['V','became'],['C','captain']],m:[]}],'Became links Mia to captain, a noun that renames the subject.');
+A(2,2,'The garden is beautiful.',[{s:[['S','garden'],['V','is'],['C','beautiful']],m:[[0,'d','The']]}],'Beautiful is a predicate adjective: it describes the subject after the linking verb is.');
 A(2,3,'Tom handed Anna the keys.',[{s:[['S','Tom'],['V','handed'],['D','keys']],m:[[1,'i','Anna'],[2,'j','the']]}],'Keys is what Tom handed (direct object). Anna receives it (indirect object), drawn on a line under the verb.');
 A(2,3,'Maria gave her friend a book.',[{s:[['S','Maria'],['V','gave'],['D','book']],m:[[1,'i','friend','f'],['f','j','her'],[2,'j','a']]}],'Book is the direct object; friend is the indirect object; her modifies friend and a modifies book.');
 A(3,1,'Ripe apples fell quickly.',[{s:[['S','apples'],['V','fell']],m:[[0,'j','Ripe'],[1,'v','quickly']]}],'Adjectives and adverbs sit on slanted lines under the word they modify.');
@@ -3494,13 +3515,14 @@ const testOpen=l=>open(l)&&doneN(l)>=Math.min(4,pool(l).length);
 
 /* answer specs and roles */
 function specs(x){const out=[],rw={};
- const add=(w,r)=>w.split(' ').forEach(t=>{(rw[t.toLowerCase()]=rw[t.toLowerCase()]||new Set()).add(r)});
+ const add=(w,r)=>String(w).split(' ').forEach(t=>{(rw[t.toLowerCase()]=rw[t.toLowerCase()]||new Set()).add(r)});
  x.L.forEach((L,li)=>{
-  L.s.forEach((s,si)=>{out.push({sid:li+'.'+si,ans:s[1],lab:RS[s[0]]});add(s[1],RS[s[0]])});
-  L.m.forEach((m,mi)=>{let r=KR[m[1]];
-   if(m[1]==='c'){const p=typeof m[0]==='number'?L.s[m[0]][0]:'S';r=RS[p]}
-   out.push({sid:li+'.m'+mi,ans:m[2],lab:r==='Modifier'||!r?'Modifier':r});add(m[2],r)});
-  if(L.k&&L.k.c){out.push({sid:li+'.c',ans:L.k.c,lab:'Connector'});add(L.k.c,'Connector')}});
+  L.s.forEach((s,si)=>{const r=coreRole(s[0],s[1]);out.push({sid:li+'.'+si,ans:s[1],lab:r});add(s[1],r);if(s[0]==='C')add(s[1],'Subject complement');if(PRONOUNS.has(String(s[1]).toLowerCase()))add(s[1],'Pronoun')});
+  L.m.forEach((m,mi)=>{let r=KR[m[1]]||'Modifier';
+   if(m[1]==='j'||m[1]==='d'||m[1]==='v')r=modifierRole(m[2],m[1]);
+   if(m[1]==='c'){const p=typeof m[0]==='number'?L.s[m[0]][0]:'S';r=RS[p]||'Subject'}
+   out.push({sid:li+'.m'+mi,ans:m[2],lab:r});add(m[2],r);if(PRONOUNS.has(String(m[2]).toLowerCase())&&r!=='Determiner / article')add(m[2],'Pronoun')});
+  if(L.k&&L.k.c){out.push({sid:li+'.c',ans:L.k.c,lab:'Conjunction / clause connector'});add(L.k.c,'Conjunction / clause connector')}});
  return{out,rw}}
 
 /* ---------- Reed-Kellogg renderer ---------- */
@@ -3517,7 +3539,7 @@ function dm(L,li,m,x0,ay,o){
  else if(k==='a'){const y=ay+30;o.push(ln(ax,ay,ax,y),ln(x0+22,y,x0+128,y),`<text class="dl-par" x="${x0+6}" y="${y+8}">(</text><text class="dl-par" x="${x0+130}" y="${y+8}">)</text>`,slot(sid,x0+22,y-28,106,26,'Appositive'));ky=y}
  else{o.push(ln(ax,ay,fx,fy));
   if(k==='i'){o.push(ln(fx,fy,fx+110,fy),slot(sid,fx,fy-28,110,26,'Indirect obj.'));ky=fy}
-  else{o.push(slot(sid,ax-53,ay+9,82,26,KR[k]));
+  else{o.push(slot(sid,ax-53,ay+9,82,26,(k==='j'||k==='d'||k==='v')?modifierRole(m[2],k):(KR[k]||'Modifier')));
    if(k==='p'){ch.forEach(c=>dm(L,li,c,x0,fy,o));return}
    ky=fy;if(ch.length)o.push(ln(fx-10,fy,x0+Math.max(60,sum(ch.map(c=>mw(L,c)))-10),fy))}}
  let cx=x0;ch.forEach(c=>{dm(L,li,c,cx,ky,o);cx+=mw(L,c)})}
@@ -3545,9 +3567,11 @@ function svgFor(x){
 
 /* ---------- session flow ---------- */
 const root=document.createElement('div');root.id='dl-root';root.hidden=true;
-const btn=document.createElement('button');btn.id='dl-launch';btn.textContent='Sentence Diagramming Lab';
+const btn=document.createElement('button');btn.id='dl-launch';btn.textContent='Reed–Kellogg Sentence Diagram';
 function show(){root.innerHTML=Hm();}
 let Hm=()=>'';
+function guide(){return `<section class="dl-guide"><h2>Start here: how Reed–Kellogg diagramming works</h2><p>Sentence diagramming is a visual way to show how words and phrases work together. The traditional Reed–Kellogg system places the core subject and predicate on a horizontal baseline. Modifiers and phrases branch below the words they modify; objects and complements occupy their conventional positions.</p><ol><li><b>Read the whole sentence.</b> Find the complete thought and notice punctuation.</li><li><b>Find the verb or verb phrase.</b> Ask what action or state is expressed. Include helping verbs with the main verb.</li><li><b>Find the subject.</b> Ask who or what performs the action or is described. Do not mistake an object of a preposition for the subject.</li><li><b>Find objects and complements.</b> Ask “verb + what/whom?” for a direct object; “to/for whom?” for an indirect object; after a linking verb, identify a predicate nominative or predicate adjective.</li><li><b>Add modifiers and phrases.</b> Attach each word to the exact word it modifies. Determiners and adjectives both modify nouns, but they are different categories.</li><li><b>Diagram clauses and review.</b> Give each clause its own subject–predicate core, then show the connector and clause relationship.</li></ol><div class="dl-sample"><b>Worked example:</b> The intelligent student reads a book.<svg viewBox="0 0 620 190" role="img" aria-label="Reed Kellogg diagram showing student as subject, reads as verb, book as direct object, and determiners and adjective below the nouns"><line x1="35" y1="58" x2="570" y2="58" stroke="currentColor" stroke-width="2"/><line x1="225" y1="34" x2="225" y2="78" stroke="currentColor" stroke-width="2"/><line x1="390" y1="34" x2="390" y2="78" stroke="currentColor" stroke-width="2"/><text x="125" y="48" text-anchor="middle" font-size="19" fill="currentColor">student</text><text x="305" y="48" text-anchor="middle" font-size="19" fill="currentColor">reads</text><text x="485" y="48" text-anchor="middle" font-size="19" fill="currentColor">book</text><line x1="125" y1="58" x2="105" y2="103" stroke="currentColor"/><text x="92" y="124" text-anchor="middle" font-size="15" fill="currentColor">The</text><line x1="125" y1="58" x2="158" y2="103" stroke="currentColor"/><text x="170" y="124" text-anchor="middle" font-size="15" fill="currentColor">intelligent</text><line x1="485" y1="58" x2="485" y2="103" stroke="currentColor"/><text x="485" y="124" text-anchor="middle" font-size="15" fill="currentColor">a</text><text x="310" y="166" text-anchor="middle" font-size="12" fill="currentColor">Core: student | reads | book</text></svg><p><b>The</b> and <b>a</b> are determiners/articles. <b>Intelligent</b> is an adjective. The subject, verb, and direct object form the baseline. In this traditional system, determiners and adjectives are drawn as modifiers beneath the noun they modify, while the learning labels preserve their distinct grammatical functions.</p></div><details><summary>Quick reference: grammatical labels</summary><div class="dl-refgrid"><p><b>Subject (S):</b> who/what the clause is about.</p><p><b>Verb (V):</b> action or linking word; helping verbs join the main verb.</p><p><b>Direct object (DO):</b> receives the action.</p><p><b>Indirect object (IO):</b> recipient or beneficiary of the direct object.</p><p><b>Subject complement (SC):</b> follows a linking verb and completes the subject's meaning.</p><p><b>Predicate nominative (PN):</b> noun/pronoun renaming the subject.</p><p><b>Predicate adjective (PA):</b> adjective describing the subject.</p><p><b>Determiner/article (D):</b> specifies a noun: the, a, an, this, my, each.</p><p><b>Adjective (Adj):</b> describes or classifies a noun.</p><p><b>Adverb (Adv):</b> modifies a verb, adjective, or adverb.</p><p><b>Preposition (Prep):</b> begins a prepositional phrase.</p><p><b>Object of preposition (OP):</b> completes the prepositional phrase.</p><p><b>Pronoun:</b> stands in for a noun phrase; its clause role determines its diagram position.</p><p><b>Conjunction:</b> joins words, phrases, or clauses.</p><p><b>Interjection:</b> expresses a reaction and is usually set apart.</p><p><b>Infinitive:</b> to + base verb, with noun/adjective/adverb function.</p><p><b>Gerund:</b> -ing verb form functioning as a noun.</p><p><b>Participle:</b> verb form functioning as an adjective.</p><p><b>Appositive:</b> noun phrase renaming a nearby noun.</p><p><b>Independent clause:</b> can stand as a sentence.</p><p><b>Dependent clause:</b> relies on another clause.</p><p><b>Relative clause:</b> modifies a noun, often introduced by who, which, or that.</p><p><b>Adverbial clause:</b> modifies a verb/clause, often expressing time, reason, condition, or contrast.</p><p><b>Adjectival clause:</b> modifies a noun or pronoun.</p></div></details><details><summary>Common mistakes and how to avoid them</summary><ul><li>Do not label every noun as a subject. A noun may be an object or object of a preposition.</li><li>Do not combine determiners with adjectives. “The” identifies the noun; “beautiful” describes it.</li><li>Do not label a linking verb's complement as a direct object.</li><li>Do not attach a modifier to the nearest word automatically. Attach it to the word it actually describes.</li><li>Do not diagram a dependent clause as if it were an independent sentence. Show its relationship to the main clause.</li></ul></details></section>`}
+
 function home(){S=null;st=null;clearInterval(home.t);P=loadP();
  const tot=Object.values(P.done).reduce((a,d)=>a+Object.keys(d).length,0),all=X.length;
  const sc=Object.values(P.done).flatMap(d=>Object.values(d));
@@ -3564,7 +3588,7 @@ function home(){S=null;st=null;clearInterval(home.t);P=loadP();
   <div class="dl-bar" title="${n} of ${pl} exercises completed"><i style="width:${n/pl*100}%"></i></div>
   <small>${o?`${n} of ${pl} exercises completed. ${testOpen(v.n)?'Mastery test unlocked.':'Complete '+Math.min(4,pl)+' to unlock the mastery test.'}`:'Locked: pass the Level '+(v.n-1)+' mastery test (80%) to unlock.'}</small></section>`}).join('');
  const h=P.hist.slice(-8).reverse().map(r=>`<tr><td>${new Date(r.d).toLocaleDateString()}</td><td>Level ${r.l}</td><td>${r.m==='test'?'Mastery test':r.m==='timed'?'Timed':'Practice'}</td><td>${r.s}%</td></tr>`).join('');
- Hm=()=>`<div class="in"><button class="dl-b g dl-x" data-a="close">Back to tracker</button><h1>Sentence Diagramming Lab</h1><p class="sub">Build Reed–Kellogg diagrams by dragging words onto the chalkboard. Pass each level's mastery test to unlock the next.</p>
+ Hm=()=>`<div class="in"><button class="dl-b g dl-x" data-a="close">Back to tracker</button><h1>Reed–Kellogg Sentence Diagram</h1><p class="sub">A guided, five-level workshop for analysing sentence structure and building traditional Reed–Kellogg diagrams. Drag words or tap a word and a diagram slot.</p>${guide()}
  <div class="dl-stats"><div><b>${tot}/${all}</b>exercises done</div><div><b>${avg}</b>average best score</div><div><b>${Object.keys(P.passed).length}/5</b>levels mastered</div></div>${lv}
  <h2 style="margin:26px 0 8px">Score history</h2>${h?`<table class="dl-hist"><tr><th>Date</th><th>Level</th><th>Mode</th><th>Score</th></tr>${h}</table>`:'<p class="sub">No sessions yet. Start a practice round.</p>'}</div>`;
  show()}
@@ -3589,14 +3613,14 @@ function ex(){
 'Represent compound-complex sentences and embedded phrases clearly.'
 ][S.l-1]} <strong>How to do it:</strong> Identify the main clause first, label each word’s role, place the core on the baseline, then add objects, modifiers, phrases, and clause connectors in the correct positions.</section><h2 class="dl-sent">${esc(x.t)}</h2>`;
  if(st.step==='id'){
-  const opts=ROLES.slice(0,RN[S.l-1]);
-  b+=`<p>Step 1. Choose each word's role in the sentence.</p><div class="dl-ids">${st.tk.map((w,i)=>{const r=st.idRes?st.idRes[i]:null;return`<div class="dl-id${r===true?' ok':r===false?' bad':''}"><b>${esc(w)}</b><select data-id="${i}" ${st.idRes?'disabled':''}><option value="">Choose role</option>${opts.map(o=>`<option${st.ids[i]===o?' selected':''}>${o}</option>`).join('')}</select>${r===false?`<small>Answer: ${[...st.rw[w.toLowerCase()]].join(' or ')}</small>`:''}</div>`}).join('')}</div>
-  <div class="dl-acts">${st.idRes?'<button class="dl-b" data-a="dia">Continue to the diagram</button>':'<button class="dl-b" data-a="chkid">Check roles</button>'}</div>${st.msg?`<div class="dl-msg">${st.msg}</div>`:''}`}
+  const opts=ROLES;
+  b+=`<p><b>Step 1: Identify each word.</b> Read the sentence, locate the main verb, then the subject. Check each remaining word by asking what it does in context. Use the full label list. Determiners (such as the, a, this, my) are separate from adjectives (such as intelligent, beautiful).</p><div class="dl-ids">${st.tk.map((w,i)=>{const r=st.idRes?st.idRes[i]:null;return`<div class="dl-id${r===true?' ok':r===false?' bad':''}"><b>${esc(w)}</b><select data-id="${i}" ${st.idRes?'disabled':''}><option value="">Choose role</option>${opts.map(o=>`<option${st.ids[i]===o?' selected':''}>${o}</option>`).join('')}</select>${r===false?`<small>Answer: ${[...st.rw[w.toLowerCase()]].join(' or ')}</small>`:''}</div>`}).join('')}</div>
+  <div class="dl-acts">${st.idRes?'<button class="dl-b" data-a="dia">Continue to the diagram</button>':'<button class="dl-b" data-a="chkid">Check roles</button>'}<button class="dl-b g" data-a="reset">Reset exercise</button></div>${st.msg?`<div class="dl-msg">${st.msg}</div>`:''}`}
  else{
   const used=new Set(Object.values(st.placed).flat());
-  b+=`<p>Step 2. Drag each word onto the diagram, or tap a word and then tap a slot. Tap a filled slot to take its words back.</p><div class="dl-bank" aria-label="Word bank">${st.tk.map((w,i)=>used.has(i)?'':`<button class="dl-chip${st.sel===i?' sel':''}" draggable="true" data-chip="${i}">${esc(w)}</button>`).join('')||'<small>All words placed.</small>'}</div>
+  b+=`<p><b>Step 2: Build the diagram.</b> Start with the subject and verb on the baseline. Add objects or complements in their standard positions. Add modifiers beneath the word they modify, then phrases and clause connections. Drag a word to a slot, or tap a word and then a slot. Tap a filled slot to return its words to the bank.</p><div class="dl-bank" aria-label="Word bank">${st.tk.map((w,i)=>used.has(i)?'':`<button class="dl-chip${st.sel===i?' sel':''}" draggable="true" data-chip="${i}">${esc(w)}</button>`).join('')||'<small>All words placed.</small>'}</div>
   <div class="dl-board">${svgFor2()}</div>${st.msg?`<div class="dl-msg ${st.cls||''}">${st.msg}</div>`:''}
-  <div class="dl-acts">${st.done?`<button class="dl-b" data-a="next">${S.i+1<S.list.length?'Next exercise':'See results'}</button>`:`<button class="dl-b" data-a="chk">Check answer</button>${S.mode==='test'?'':'<button class="dl-b g" data-a="hint">Hint</button><button class="dl-b g" data-a="show">Show answer</button>'}`}</div>`}
+  <div class="dl-acts">${st.done?`<button class="dl-b" data-a="next">${S.i+1<S.list.length?'Next exercise':'See results'}</button>`:`<button class="dl-b" data-a="chk">Check answer</button>${S.mode==='test'?'':'<button class="dl-b g" data-a="hint">Hint</button><button class="dl-b g" data-a="show">Show answer</button><button class="dl-b g" data-a="reset">Reset exercise</button>'}`}</div>`}
  Hm=()=>`<div class="in"><button class="dl-b g dl-x" data-a="close">Back to tracker</button>${b}</div>`;
  const sy=root.scrollTop;show();root.scrollTop=sy}
 const svgFor2=()=>svgFor(st.x);
@@ -3611,7 +3635,7 @@ function checkDia(){
  if(!bad.length){fin(100-20*st.wrong-10*st.hints,true);return}
  st.wrong++;
  if(S.mode==='test'){showAll();fin(ok/n*100,false);return}
- st.cls='bad';st.msg=`${ok} of ${n} slots are correct. Red slots need another look: ${[...new Set(bad.map(s=>s.lab))].join(', ')}.`;ex()}
+ st.cls='bad';const left=st.tk.filter((w,i)=>!Object.values(st.placed).flat().includes(i));st.msg=`${ok} of ${n} slots are correct. Review ${[...new Set(bad.map(s=>s.lab))].join(', ')}. ${bad.slice(0,4).map(s=>s.lab+': expected “'+esc(s.ans)+'”').join('; ')}${left.length?' Unplaced word(s): '+left.map(esc).join(', ')+'.':''}`;ex()}
 function fin(diag,perfect,tout){
  clearInterval(home.t);
  const idp=st.idRes?st.idRes.filter(Boolean).length/st.tk.length:0;
@@ -3626,13 +3650,13 @@ function timeUp(){if(st.done)return;clearInterval(home.t);if(st.step==='id'){rea
  st.sp.forEach(s=>{st.res[s.sid]=got(s.sid)===s.ans.toLowerCase()});
  const r=st.sp.filter(s=>st.res[s.sid]).length/st.sp.length;showAll();fin(r*50,false,true)}
 function readIds(){document.querySelectorAll('#dl-root select[data-id]').forEach(e=>{st.ids[e.dataset.id]=e.value})}
-function scoreIds(){st.idRes=st.tk.map((w,i)=>st.rw[w.toLowerCase()].has(st.ids[i]));const n=st.idRes.filter(Boolean).length;st.msg=`${n} of ${st.tk.length} roles correct.`}
+function scoreIds(){st.idRes=st.tk.map((w,i)=>!!(st.rw[w.toLowerCase()]&&st.rw[w.toLowerCase()].has(st.ids[i])));const n=st.idRes.filter(Boolean).length;const misses=st.tk.map((w,i)=>st.idRes[i]?'':`${esc(w)}: ${[...(st.rw[w.toLowerCase()]||new Set(['Check its function in context']))].join(' / ')}`).filter(Boolean);st.msg=`${n} of ${st.tk.length} roles correct.${misses.length?' Review: '+misses.join('; '):' Excellent classification.'}`}
 function results(){
  const avg=Math.round(sum(S.scores)/S.scores.length);let extra='';
  if(S.mode==='test'){const pass=avg>=80;if(pass)P.passed[S.l]=Math.max(P.passed[S.l]||0,avg);
   extra=pass?`<div class="dl-msg ok"><strong>Level ${S.l} mastered.</strong> ${S.l<5?'Level '+(S.l+1)+' is now unlocked.':'You have completed every level.'}</div>`:`<div class="dl-msg bad">You need 80% to pass. Review in practice mode and try again.</div>`}
  P.hist.push({d:Date.now(),m:S.mode,l:S.l,s:avg,n:S.scores.length});P.hist=P.hist.slice(-60);saveP();
- Hm=()=>`<div class="in"><button class="dl-b g dl-x" data-a="close">Back to tracker</button><h1>Session complete</h1><p class="sub">Level ${S.l}, ${S.mode==='test'?'mastery test':S.mode}. Average score: <strong>${avg}%</strong> across ${S.scores.length} exercises (${S.scores.join(', ')}).</p>${extra}<div class="dl-acts"><button class="dl-b" data-a="home">Back to levels</button><button class="dl-b g" data-a="go" data-m="${S.mode}" data-l="${S.l}">Play again with a new order</button></div></div>`;show()}
+ Hm=()=>`<div class="in"><button class="dl-b g dl-x" data-a="close">Back to tracker</button><h1>Session complete</h1><p class="sub">Level ${S.l}, ${S.mode==='test'?'mastery test':S.mode}. Average score: <strong>${avg}%</strong> across ${S.scores.length} exercises (${S.scores.join(', ')}).</p>${extra}<div class="dl-acts"><button class="dl-b" data-a="home">Back to levels</button><button class="dl-b g" data-a="retry">Retry current exercise</button><button class="dl-b g" data-a="go" data-m="${S.mode}" data-l="${S.l}">Play again with a new order</button></div></div>`;show()}
 
 /* ---------- events ---------- */
 root.addEventListener('click',e=>{
@@ -3643,6 +3667,8 @@ root.addEventListener('click',e=>{
  if(a==='close'){clearInterval(home.t);root.hidden=true;document.body.style.overflow=''}
  else if(a==='home')home();
  else if(a==='go')start(b.dataset.m,+b.dataset.l);
+ else if(a==='retry'){loadEx()}
+ else if(a==='reset'){loadEx()}
  else if(a==='chkid'){readIds();if(st.tk.some((w,i)=>!st.ids[i])){st.msg='Choose a role for every word first.';ex();return}scoreIds();ex()}
  else if(a==='dia'){st.step='dia';st.msg='';ex()}
  else if(a==='chk')checkDia();
@@ -4809,7 +4835,7 @@ function seen(){try{return sessionStorage.getItem(K)==="1"}catch(e){return false
 function h(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 var F=[["\uD83D\uDCDA","Structured lessons","Work through English studies at your own pace with lessons, notes and progress tracking."],
 ["\uD83C\uDFC6","Quiz Arena","Test yourself, take on challenges and climb the leaderboard."],
-["\u270F\uFE0F","Sentence Diagramming Lab","See how sentences are built by diagramming them step by step."],
+["\u270F\uFE0F","Reed–Kellogg Sentence Diagram","See how sentences are built by diagramming them step by step."],
 ["\uD83E\uDDE9","Sentence Structure Lab","Practise clauses and structure with levels that build to a certificate."],
 ["\uD83D\uDCDC","History of English","Follow the language from Old English to the World Englishes of today."],
 ["\u2601\uFE0F","Cloud sync","Sign in on any device and pick up exactly where you stopped."]];
@@ -4931,7 +4957,7 @@ function build(){root=h("div","");root.id="he-root";root.hidden=true;root.setAtt
 function open(){if(!root)build();loadProgress();render();root.hidden=false;D.body.style.overflow="hidden";root.scrollTop=0}
 function close(){root.hidden=true;D.body.style.overflow=""}
 // ---------- Hub ----------
-var ITEMS=[{sec:"Practice"},{ic:"🏆",t:"Quiz Arena",d:"Play quizzes and challenges",id:"ar-launch"},{ic:"💬",t:"Messages",d:"Chat with friends and classmates",id:"ms-launch"},{sec:"Labs"},{ic:"✏️",t:"Sentence Diagramming Lab",d:"Diagram sentences step by step",id:"dl-launch"},{ic:"🧩",t:"Sentence Structure Lab",d:"Practise clauses and structure",id:"sl-launch"},{sec:"Read"},{ic:"📜",t:"History of English",d:"Seven chronological learning periods",fn:open}];
+var ITEMS=[{sec:"Practice"},{ic:"🏆",t:"Quiz Arena",d:"Play quizzes and challenges",id:"ar-launch"},{ic:"💬",t:"Messages",d:"Chat with friends and classmates",id:"ms-launch"},{sec:"Labs"},{ic:"✏️",t:"Reed–Kellogg Sentence Diagram",d:"Diagram sentences step by step",id:"dl-launch"},{ic:"🧩",t:"Sentence Structure Lab",d:"Practise clauses and structure",id:"sl-launch"},{sec:"Read"},{ic:"📜",t:"History of English",d:"Seven chronological learning periods",fn:open}];
 var fab,panel,scrim,list,refs=[],side="r",ty=.5;
 function load(){try{var s=JSON.parse(localStorage.getItem(KEY)||"{}");if(s.side==="l"||s.side==="r")side=s.side;if(typeof s.y==="number")ty=Math.min(.92,Math.max(.08,s.y))}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({side:side,y:ty}))}catch(e){}}
@@ -5354,7 +5380,7 @@ var GROUPS=[
  {id:'practice',label:'Practice',items:[
   {t:'Practice',d:'Practice sets and quick drills',ic:'practice',tab:'practice'},
   {t:'Quiz Arena',d:'Play quizzes and challenges',ic:'arena',launch:'ar-launch'},
-  {t:'Sentence Diagramming Lab',d:'Diagram sentences step by step',ic:'diagram',launch:'dl-launch'},
+  {t:'Reed–Kellogg Sentence Diagram',d:'Diagram sentences step by step',ic:'diagram',launch:'dl-launch'},
   {t:'X-bar Diagram Lab',d:'Practise phrase structure at five levels',ic:'structure',launch:'ath-xbar-launch'},
   {t:'Labeled Bracketing Lab',d:'Build phrase markers with labeled brackets at five levels',ic:'structure',launch:'ath-lb-launch'},
   {t:'Grammar Components Lab',d:'Practise syntax, phonetics, phonology, semantics, grammar, and pragmatics',ic:'structure',launch:'ath-gc-launch'},
