@@ -3448,6 +3448,59 @@ html.auth-pending #dl-launch{display:none}
 #dl-root .dl-id small{display:block;margin-top:4px}
 @media(max-width:600px){#dl-root .dl-guide{padding:14px}#dl-root .dl-sample svg{min-width:470px}#dl-root .dl-sample{overflow-x:auto}}
 </style>
+<script id="athenaeum-lab-engine-js">
+/* Shared lab engine: synthesised sound effects (Web Audio, no files), mute control, and non-repeating question ordering. */
+(function(){
+  var KEY='athenaeum-sfx',ctx=null,last={},cur=null,log=[];
+  function on(){try{return localStorage.getItem(KEY)!=='off'}catch(e){return true}}
+  function ac(){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();return ctx}catch(e){return null}}
+  var SEQ={
+    correct:[[523.25,0,.15],[659.25,.1,.15],[783.99,.2,.15],[1046.5,.3,.38]],
+    wrong:[[311.13,0,.22],[246.94,.17,.34]],
+    reveal:[[392,0,.16],[523.25,.16,.16],[659.25,.32,.16],[783.99,.48,.2],[1046.5,.68,.8],[783.99,.68,.8],[659.25,.68,.8]]
+  };
+  function play(n){
+    log.push(n);if(log.length>200)log.shift();
+    if(!on()||!SEQ[n])return;
+    var now=Date.now();if(last[n]&&now-last[n]<350)return;last[n]=now;
+    var c=ac();if(!c)return;
+    if(cur){try{cur.gain.cancelScheduledValues(0);cur.gain.value=0;cur.disconnect()}catch(e){}}
+    var m=c.createGain();m.gain.value=n==='wrong'?.5:.7;m.connect(c.destination);cur=m;
+    var t=c.currentTime+.01;
+    SEQ[n].forEach(function(x){var o=c.createOscillator(),g=c.createGain();o.type=n==='wrong'?'triangle':'sine';o.frequency.value=x[0];
+      g.gain.setValueAtTime(.0001,t+x[1]);g.gain.exponentialRampToValueAtTime(n==='wrong'?.16:.2,t+x[1]+.02);g.gain.exponentialRampToValueAtTime(.0001,t+x[1]+x[2]);
+      o.connect(g);g.connect(m);o.start(t+x[1]);o.stop(t+x[1]+x[2]+.05)});
+  }
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){window.addEventListener(ev,ac,{once:true,passive:true})});
+  window.__athSfx={play:play,answer:function(ok){play(ok?'correct':'wrong')},reveal:function(){play('reveal')},isOn:on,log:log};
+  function paint(b){var o=on();b.textContent=o?'🔊 Sound ON':'🔇 Sound OFF';b.setAttribute('aria-pressed',String(o));b.title=o?'Mute sound effects':'Turn sound effects on'}
+  function mount(){
+    if(document.getElementById('ath-sfx-toggle'))return;
+    var st=document.createElement('style');st.textContent='#ath-sfx-toggle{position:fixed;right:14px;bottom:14px;z-index:2147483000;padding:8px 13px;border:1px solid var(--border,#cfd3dc);border-radius:999px;background:var(--card,#fff);color:var(--foreground,#29233a);font:600 13px system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.14)}#ath-sfx-toggle:focus-visible{outline:2px solid var(--ring,#6845a5);outline-offset:2px}@media(max-width:820px){#ath-sfx-toggle{bottom:78px}}';
+    document.head.appendChild(st);
+    var b=document.createElement('button');b.type='button';b.id='ath-sfx-toggle';paint(b);
+    b.addEventListener('click',function(){var o=on();try{localStorage.setItem(KEY,o?'off':'on')}catch(e){}paint(b);if(!o)play('correct')});
+    document.body.appendChild(b);
+  }
+  if(document.body)mount();else document.addEventListener('DOMContentLoaded',mount);
+  /* ordering helpers: answer keys travel with each question because every item is a self-contained record */
+  function rnd(n){return Math.floor(Math.random()*n)}
+  window.__athShuffle=function(a,swap){
+    if(!a||a.length<2)return a;var prev=a.__last,sw=swap||function(i,j){var t=a[i];a[i]=a[j];a[j]=t};
+    for(var i=a.length-1;i>0;i--)sw(i,rnd(i+1));
+    if(prev&&a[0]===prev)sw(0,1+rnd(a.length-1));
+    return a;
+  };
+  window.__athRetry=function(a,i,swap,key){
+    if(!a||a.length<2)return;var cur=a[i],sw=swap||function(x,y){var t=a[x];a[x]=a[y];a[y]=t},c=[],j;
+    for(j=i+1;j<a.length;j++)if(a[j]!==cur&&(!key||key(a[j])===key(cur)))c.push(j);
+    if(!c.length)for(j=i+1;j<a.length;j++)if(a[j]!==cur)c.push(j);
+    if(!c.length)for(j=0;j<a.length;j++)if(j!==i&&a[j]!==cur)c.push(j);
+    if(c.length)sw(i,c[rnd(c.length)]);
+  };
+})();
+</script>
+
 <script id="diagram-lab-js">
 (()=>{
 const SK='english-mastery:diagramLab';
@@ -3596,10 +3649,10 @@ function home(){S=null;st=null;clearInterval(home.t);P=loadP();
  <h2 style="margin:26px 0 8px">Score history</h2>${h?`<table class="dl-hist"><tr><th>Date</th><th>Level</th><th>Mode</th><th>Score</th></tr>${h}</table>`:'<p class="sub">No sessions yet. Start a practice round.</p>'}</div>`;
  show()}
 function start(mode,l){
- const list=pool(l).slice().sort((a,b)=>a.d-b.d||Math.random()-.5);
+ const list=__athShuffle(pool(l).slice()).sort((a,b)=>a.d-b.d);const lp=(window.__athDiaLast||{})[l];if(lp&&list[0]&&list[0].t===lp.t){const k=list.findIndex((x,ix)=>ix>0&&x.d===list[0].d);if(k>0){const t=list[0];list[0]=list[k];list[k]=t}}
  S={mode,l,list,i:0,scores:[],limit:60+l*45};loadEx()}
 function loadEx(){
- const x=S.list[S.i],sp=specs(x);
+ const x=S.list[S.i],sp=specs(x);(window.__athDiaLast=window.__athDiaLast||{})[S.l]=x;
  st={x,tk:tok(x.t),sp:sp.out,rw:sp.rw,step:'id',ids:{},idRes:null,placed:{},res:{},sel:null,wrong:0,hints:0,rev:false,done:false,msg:'',hintSid:null};
  st.svg=svgFor(x);
  clearInterval(home.t);
@@ -3638,14 +3691,14 @@ function checkDia(){
  if(!bad.length){fin(100-20*st.wrong-10*st.hints,true);return}
  st.wrong++;
  if(S.mode==='test'){showAll();fin(ok/n*100,false);return}
- st.cls='bad';const left=st.tk.filter((w,i)=>!Object.values(st.placed).flat().includes(i));st.msg=`${ok} of ${n} slots are correct. Review ${[...new Set(bad.map(s=>s.lab))].join(', ')}. ${bad.slice(0,4).map(s=>s.lab+': expected “'+esc(s.ans)+'”').join('; ')}${left.length?' Unplaced word(s): '+left.map(esc).join(', ')+'.':''}`;ex()}
+ __athSfx.answer(false);st.cls='bad';const left=st.tk.filter((w,i)=>!Object.values(st.placed).flat().includes(i));st.msg=`${ok} of ${n} slots are correct. Review ${[...new Set(bad.map(s=>s.lab))].join(', ')}. ${bad.slice(0,4).map(s=>s.lab+': expected “'+esc(s.ans)+'”').join('; ')}${left.length?' Unplaced word(s): '+left.map(esc).join(', ')+'.':''}`;ex()}
 function fin(diag,perfect,tout){
  clearInterval(home.t);
  const idp=st.idRes?st.idRes.filter(Boolean).length/st.tk.length:0;
  let d=st.rev?0:Math.max(0,diag);if(tout)d=diag;
  let sc=Math.round(30*idp+0.7*d);
  if(S.mode==='timed'&&perfect)sc=Math.min(100,sc+Math.round(10*Math.max(0,S.left)/S.limit));
- st.done=true;S.scores.push(sc);
+ st.done=true;S.scores.push(sc);if(!st.rev)__athSfx.answer(!!perfect&&!tout);
  const dn=P.done[S.l]=P.done[S.l]||{};dn[st.x.t]=Math.max(dn[st.x.t]||0,sc);saveP();
  st.cls=perfect&&!st.rev?'ok':'bad';
  st.msg=`<strong>${perfect&&!st.rev?'Correct.':tout?'Time is up.':st.rev?'Answer shown.':'Checked.'} Score: ${sc}/100.</strong> ${esc(st.x.e)}`;ex()}
@@ -3654,7 +3707,7 @@ function timeUp(){if(st.done)return;clearInterval(home.t);if(st.step==='id'){rea
  const r=st.sp.filter(s=>st.res[s.sid]).length/st.sp.length;showAll();fin(r*50,false,true)}
 function readIds(){document.querySelectorAll('#dl-root select[data-id]').forEach(e=>{st.ids[e.dataset.id]=e.value})}
 function scoreIds(){st.idRes=st.tk.map((w,i)=>!!(st.rw[w.toLowerCase()]&&st.rw[w.toLowerCase()].has(st.ids[i])));const n=st.idRes.filter(Boolean).length;const misses=st.tk.map((w,i)=>st.idRes[i]?'':`${esc(w)}: ${[...(st.rw[w.toLowerCase()]||new Set(['Check its function in context']))].join(' / ')}`).filter(Boolean);st.msg=`${n} of ${st.tk.length} roles correct.${misses.length?' Review: '+misses.join('; '):' Excellent classification.'}`}
-function results(){
+function results(){__athSfx.reveal();
  const avg=Math.round(sum(S.scores)/S.scores.length);let extra='';
  if(S.mode==='test'){const pass=avg>=80;if(pass)P.passed[S.l]=Math.max(P.passed[S.l]||0,avg);
   extra=pass?`<div class="dl-msg ok"><strong>Level ${S.l} mastered.</strong> ${S.l<5?'Level '+(S.l+1)+' is now unlocked.':'You have completed every level.'}</div>`:`<div class="dl-msg bad">You need 80% to pass. Review in practice mode and try again.</div>`}
@@ -3670,9 +3723,9 @@ root.addEventListener('click',e=>{
  if(a==='close'){clearInterval(home.t);root.hidden=true;document.body.style.overflow=''}
  else if(a==='home')home();
  else if(a==='go')start(b.dataset.m,+b.dataset.l);
- else if(a==='retry'){loadEx()}
+ else if(a==='retry'){__athRetry(S.list,S.i,null,function(x){return x.d});loadEx()}
  else if(a==='reset'){loadEx()}
- else if(a==='chkid'){readIds();if(st.tk.some((w,i)=>!st.ids[i])){st.msg='Choose a role for every word first.';ex();return}scoreIds();ex()}
+ else if(a==='chkid'){readIds();if(st.tk.some((w,i)=>!st.ids[i])){st.msg='Choose a role for every word first.';ex();return}scoreIds();__athSfx.answer(!!(st.idRes&&st.idRes.every(Boolean)));ex()}
  else if(a==='dia'){st.step='dia';st.msg='';ex()}
  else if(a==='chk')checkDia();
  else if(a==='hint'){const s=st.sp.find(q=>got(q.sid)!==q.ans.toLowerCase());if(s){st.hints++;st.hintSid=s.sid;st.cls='';st.msg=`Hint: look at the <strong>${s.lab}</strong> slot highlighted on the board. ${HINT[s.lab]||''}`}ex()}
@@ -3964,14 +4017,14 @@ function chk(){grab();const q=cur(),s=q.st,v=s.vals;let ok=false,frac=0,miss='';
  else if(q.f==='build'){const t=(v.in||'').trim();if(t.split(/\s+/).length<3)miss='Write a complete sentence first.';else{ok=q.b.t(t);s.build=t}}
  if(miss){s.msg=miss;s.cls='';return view()}
  if(q.f!=='dis')frac=ok?1:0;
- s.done=true;s.ok=ok;s.frac=frac;s.msg='';
+ s.done=true;s.ok=ok;s.frac=frac;s.msg='';__athSfx.answer(ok);
  if(s.practice){return view()}
  const pts=frac*(s.hint?.5:1);Z.pts.push(pts);if(frac<1)Z.missed.push(q);
  const t=P.top[q.topic]=P.top[q.topic]||{a:0,c:0};t.a++;t.c+=frac>=.75?1:0;
  P.log=(P.log||[]).concat([{d:Date.now(),l:Z.lv,t:q.topic,ok:frac>=.75}]).slice(-80);sp();
  if(q.f==='build'&&!ok)s.msg='The automatic check could not confirm the structure. Compare with the model sentence below.';
  view()}
-function finish(){const n=Z.qs.length,sc=Z.pts.reduce((a,b)=>a+b,0),pct=Math.round(100*sc/n);let extra='';
+function finish(){__athSfx.reveal();const n=Z.qs.length,sc=Z.pts.reduce((a,b)=>a+b,0),pct=Math.round(100*sc/n);let extra='';
  if(!Z.retry){P.ses.push({d:Date.now(),l:Z.lv,pct});P.ses=P.ses.slice(-60);P.att[Z.lv]=(P.att[Z.lv]||0)+1;P.best[Z.lv]=Math.max(P.best[Z.lv]||0,pct);
   if(pct>=70&&!P.done[Z.lv]){P.done[Z.lv]=true;const d=new Date();P.certs[Z.lv]={d:d.toISOString(),id:`SSAL-L${Z.lv}-${d.toISOString().slice(0,10).replace(/-/g,'')}-${Math.random().toString(36).slice(2,6).toUpperCase()}`};extra=`<div class="sl-msg ok"><strong>Level ${Z.lv} complete.</strong> ${Z.lv<5?'Level '+(Z.lv+1)+' is unlocked.':'You have completed every level.'} <button class="sl-b" data-a="cert" data-l="${Z.lv}">View certificate</button></div>`}
   else if(pct<70)extra='<div class="sl-msg bad">You need 70% to complete this level. Review the missed questions below and try again.</div>';
@@ -3997,7 +4050,7 @@ $r.addEventListener('click',e=>{
  else if(a==='chk')chk();
  else if(a==='hint'){grab();cur().st.hint=true;view()}
  else if(a==='skip'){grab();if(Z.i>=Z.qs.length-1){cur().st.msg='This is the last question, so it cannot be skipped.';view()}else{Z.qs.push(Z.qs.splice(Z.i,1)[0]);view()}}
- else if(a==='retry'){const q=cur();q.st=Object.assign(freshSt(),{practice:true,tries:q.st.tries+1,msg:'Practice retry: this attempt is not scored.'});view()}
+ else if(a==='retry'){const q0=cur();let alt=null;try{const key=x=>qtext(x)+'|'+JSON.stringify(x.s||x.e||x.b||''),seen=new Set(Z.qs.map(key)),pool=build(Z.lv).filter(x=>x.f===q0.f&&!seen.has(key(x)));if(pool.length)alt=pool[Math.floor(Math.random()*pool.length)]}catch(e){}if(alt){alt.st=freshSt();Z.qs[Z.i]=alt}const q=cur();q.st=Object.assign(freshSt(),{practice:true,tries:q0.st.tries+1,msg:'Practice retry: this attempt is not scored.'});view()}
  else if(a==='next'){Z.i++;Z.i<Z.qs.length?view():finish()}
  else if(a==='cert')cert(+b.dataset.l);
  else if(a==='print'){const n=$r.querySelector('#sl-nm');if(n&&n.value.trim()){P.nm=n.value.trim();sp();cert(+b.dataset.l)}
@@ -6265,6 +6318,7 @@ html.dark #ath-pos-root{--xb-bg:#17131f;--xb-fg:#ece7f6;--xb-card:#221c2e;--xb-m
     <p><strong>Writing points:</strong> <span id="pos-write-points">0</span> <span class="xb-muted">· 10 points for a sentence that meets the checks; no points are deducted for revisions.</span></p>
    </section>
 </section>
+</section>
 <script id="athenaeum-xbar-addon-js">
 (()=>{
  const root=document.getElementById('ath-xbar-root'),launch=document.getElementById('ath-xbar-launch');
@@ -6368,12 +6422,12 @@ html.dark #ath-pos-root{--xb-bg:#17131f;--xb-fg:#ece7f6;--xb-card:#221c2e;--xb-m
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" rx="16" fill="#ffffff"/><text x="${width/2}" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#24344d">${esc(title||'X-bar model structure')}</text>${edges}${boxes}<text x="${width/2}" y="${height-12}" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#64748b">Follow each connecting line from the phrase node to its constituents.</text></svg>`;
   return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
  }
- function render(){const L=levels[level],q=L.items[index];checked=false;$('level').value=String(level);$('levelnote').textContent=L.note;$('count').textContent=`Exercise ${index+1} of ${L.items.length} · Level ${level+1}: ${L.name}`;$('progress').style.width=`${index/L.items.length*100}%`;$('type').textContent=q[0];$('phrase').textContent=q[1];$('assignments').innerHTML=q[2].map((p,i)=>`<div class="xb-assign"><label for="ath-xbar-role-${i}"><strong>${p[0]}</strong></label><select id="ath-xbar-role-${i}" data-xb-role="${i}" aria-label="X-bar role for ${p[0]}"><option value="">Choose a role</option>${roles.map(r=>`<option value="${r}">${r}</option>`).join('')}</select></div>`).join('');$('feedback').hidden=true;$('tree-wrap').hidden=true;root.querySelector('[data-xb="check"]').hidden=false;root.querySelector('[data-xb="reveal"]').hidden=false;root.querySelector('[data-xb="next"]').hidden=true;$('score').textContent=`Correct answers: ${score} of ${levels.reduce((n,l)=>n+l.items.length,0)} across all levels`;}
- function finish(reveal=false){if(checked)return;const q=levels[level].items[index],sels=[...root.querySelectorAll('[data-xb-role]')];if(!reveal&&sels.some(s=>!s.value)){$('feedback').hidden=false;$('feedback').className='xb-feedback retry';$('feedback').textContent='Choose a role for every phrase part before checking.';return;}const correct=sels.every(s=>s.value===q[2][+s.dataset.xbRole][1]);if(!reveal&&correct)score++;checked=true;$('feedback').hidden=false;$('feedback').className='xb-feedback '+(correct&&!reveal?'good':'');$('feedback').textContent=reveal?'Model answer shown.':correct?'Excellent! All phrase roles are correct.':'Some roles need review. Compare your choices with the model structure and explanation.';const treeImg=$('tree-image');treeImg.src=makeTreeImage(q[3],q[0]+' · model structure');treeImg.alt='Visual X-bar model structure for '+q[1]+': '+q[3].replace(/\n/g,'; ');$('tree-caption').textContent='True phrase-structure model for “'+q[1]+'”. Each rounded box is a node; connecting lines show which constituents belong under each phrase. Read from the top node downward.';$('explain').textContent=q[4];$('tree-wrap').hidden=false;sels.forEach(s=>s.disabled=true);$('progress').style.width=`${(index+1)/levels[level].items.length*100}%`;$('score').textContent=`Correct answers: ${score} across all levels` ;root.querySelector('[data-xb="check"]').hidden=true;root.querySelector('[data-xb="reveal"]').hidden=true;root.querySelector('[data-xb="retry"]').hidden=correct||reveal;root.querySelector('[data-xb="next"]').hidden=false;root.querySelector('[data-xb="next"]').textContent=index===levels[level].items.length-1?(level===levels.length-1?'Finish mastery practice':'Next level'):'Next exercise';}
+ function render(){const L=levels[level],q=L.items[index];L.items.__last=q;checked=false;$('level').value=String(level);$('levelnote').textContent=L.note;$('count').textContent=`Exercise ${index+1} of ${L.items.length} · Level ${level+1}: ${L.name}`;$('progress').style.width=`${index/L.items.length*100}%`;$('type').textContent=q[0];$('phrase').textContent=q[1];$('assignments').innerHTML=q[2].map((p,i)=>`<div class="xb-assign"><label for="ath-xbar-role-${i}"><strong>${p[0]}</strong></label><select id="ath-xbar-role-${i}" data-xb-role="${i}" aria-label="X-bar role for ${p[0]}"><option value="">Choose a role</option>${roles.map(r=>`<option value="${r}">${r}</option>`).join('')}</select></div>`).join('');$('feedback').hidden=true;$('tree-wrap').hidden=true;root.querySelector('[data-xb="check"]').hidden=false;root.querySelector('[data-xb="reveal"]').hidden=false;root.querySelector('[data-xb="next"]').hidden=true;$('score').textContent=`Correct answers: ${score} of ${levels.reduce((n,l)=>n+l.items.length,0)} across all levels`;}
+ function finish(reveal=false){if(checked)return;const q=levels[level].items[index],sels=[...root.querySelectorAll('[data-xb-role]')];if(!reveal&&sels.some(s=>!s.value)){$('feedback').hidden=false;$('feedback').className='xb-feedback retry';$('feedback').textContent='Choose a role for every phrase part before checking.';return;}const correct=sels.every(s=>s.value===q[2][+s.dataset.xbRole][1]);if(!reveal)__athSfx.answer(correct);if(!reveal&&correct)score++;checked=true;$('feedback').hidden=false;$('feedback').className='xb-feedback '+(correct&&!reveal?'good':'');$('feedback').textContent=reveal?'Model answer shown.':correct?'Excellent! All phrase roles are correct.':'Some roles need review. Compare your choices with the model structure and explanation.';const treeImg=$('tree-image');treeImg.src=makeTreeImage(q[3],q[0]+' · model structure');treeImg.alt='Visual X-bar model structure for '+q[1]+': '+q[3].replace(/\n/g,'; ');$('tree-caption').textContent='True phrase-structure model for “'+q[1]+'”. Each rounded box is a node; connecting lines show which constituents belong under each phrase. Read from the top node downward.';$('explain').textContent=q[4];$('tree-wrap').hidden=false;sels.forEach(s=>s.disabled=true);$('progress').style.width=`${(index+1)/levels[level].items.length*100}%`;$('score').textContent=`Correct answers: ${score} across all levels` ;root.querySelector('[data-xb="check"]').hidden=true;root.querySelector('[data-xb="reveal"]').hidden=true;root.querySelector('[data-xb="retry"]').hidden=correct||reveal;root.querySelector('[data-xb="next"]').hidden=false;root.querySelector('[data-xb="next"]').textContent=index===levels[level].items.length-1?(level===levels.length-1?'Finish mastery practice':'Next level'):'Next exercise';}
  function close(){root.hidden=true;document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
- launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;render();root.querySelector('.xb-close').focus()});
- $('level').addEventListener('change',e=>{level=Number(e.target.value);index=0;render()});
- root.addEventListener('click',e=>{const b=e.target.closest('[data-xb]');if(!b)return;const a=b.dataset.xb;if(a==='close')close();if(a==='check')finish(false);if(a==='reveal')finish(true);if(a==='retry'){render()}if(a==='restart'){index=0;score=0;render()}if(a==='next'){if(index<levels[level].items.length-1){index++;render()}else if(level<levels.length-1){level++;index=0;render()}else{$('progress').style.width='100%';$('count').textContent='All five levels completed';$('type').textContent='Mastery practice complete';$('phrase').textContent=`You answered ${score} questions correctly across five levels.`;$('assignments').innerHTML='<p>Well done. Review any model structures you found challenging and repeat a level to improve your score.</p>';$('feedback').hidden=false;$('feedback').className='xb-feedback good';$('feedback').textContent=`Final result: ${score} correct out of ${levels.reduce((n,l)=>n+l.items.length,0)} exercises.`;$('tree-wrap').hidden=true;root.querySelector('[data-xb="check"]').hidden=true;root.querySelector('[data-xb="reveal"]').hidden=true;b.hidden=true;$('score').textContent=`Final score: ${score} of ${levels.reduce((n,l)=>n+l.items.length,0)}`;}}});
+ launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;__athShuffle(levels[0].items);render();root.querySelector('.xb-close').focus()});
+ $('level').addEventListener('change',e=>{level=Number(e.target.value);index=0;__athShuffle(levels[level].items);render()});
+ root.addEventListener('click',e=>{const b=e.target.closest('[data-xb]');if(!b)return;const a=b.dataset.xb;if(a==='close')close();if(a==='check')finish(false);if(a==='reveal')finish(true);if(a==='retry'){__athRetry(levels[level].items,index);render()}if(a==='restart'){__athShuffle(levels[level].items);index=0;score=0;render()}if(a==='next'){if(index<levels[level].items.length-1){index++;render()}else if(level<levels.length-1){level++;index=0;__athShuffle(levels[level].items);render()}else{$('progress').style.width='100%';__athSfx.reveal();$('count').textContent='All five levels completed';$('type').textContent='Mastery practice complete';$('phrase').textContent=`You answered ${score} questions correctly across five levels.`;$('assignments').innerHTML='<p>Well done. Review any model structures you found challenging and repeat a level to improve your score.</p>';$('feedback').hidden=false;$('feedback').className='xb-feedback good';$('feedback').textContent=`Final result: ${score} correct out of ${levels.reduce((n,l)=>n+l.items.length,0)} exercises.`;$('tree-wrap').hidden=true;root.querySelector('[data-xb="check"]').hidden=true;root.querySelector('[data-xb="reveal"]').hidden=true;b.hidden=true;$('score').textContent=`Final score: ${score} of ${levels.reduce((n,l)=>n+l.items.length,0)}`;}}});
  root.addEventListener('keydown',e=>{if(e.key==='Escape'){close();return}if(e.key==='Tab'){const f=[...root.querySelectorAll('button:not([hidden]),select:not([disabled]):not([hidden])')].filter(x=>x.offsetParent!==null);if(!f.length)return;const first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
 })();
 </script>
@@ -6490,12 +6544,12 @@ html.dark #ath-pos-root{--xb-bg:#17131f;--xb-fg:#ece7f6;--xb-card:#221c2e;--xb-m
   const shift=(level*3+index)%unique.length;
   return unique.slice(shift).concat(unique.slice(0,shift));
  }
- function render(){done=false;const L=levels[level],q=L.items[index];$('level').value=String(level);$('levelnote').textContent=L.note;$('count').textContent=`Question ${index+1} of 10 · Level ${level+1}: ${L.name}`;$('progress').style.width=`${index/10*100}%`;$('focus').textContent='Select the best traditional phrase marker / IC tree for this sentence.';$('sentence').textContent=q[0];$('options').innerHTML=variants(q).map((o,i)=>`<label class="ic-option"><input type="radio" name="ath-ic-choice" value="${i}"><span><strong>Tree ${String.fromCharCode(65+i)}</strong><pre>${o.tree}</pre></span></label>`).join('');$('feedback').hidden=true;root.querySelector('[data-ic="check"]').hidden=false;root.querySelector('[data-ic="next"]').hidden=true;$('score').textContent=`Correct: ${score} of 50`}
- function check(){if(done)return;const sel=root.querySelector('input[name="ath-ic-choice"]:checked');if(!sel){$('feedback').hidden=false;$('feedback').innerHTML='<strong>Please choose a tree first.</strong>';return;}const q=levels[level].items[index],opts=variants(q),chosen=opts[+sel.value],correct=chosen.ok;if(correct)score++;done=true;$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="${correct?'ic-good':'ic-bad'}">${correct?'Correct!':'Not quite.'}</strong><p>${chosen.why}</p><p><strong>Why the other structures are wrong:</strong> ${opts.filter(o=>!o.ok).map(o=>o.why).join(' ')}</p><p><strong>Model IC tree:</strong></p><pre>${q[1]}</pre>`;root.querySelectorAll('input[name="ath-ic-choice"]').forEach(x=>x.disabled=true);root.querySelector('[data-ic="check"]').hidden=true;root.querySelector('[data-ic="retry"]').hidden=correct;root.querySelector('[data-ic="next"]').hidden=false;root.querySelector('[data-ic="next"]').textContent=index===9&&level===4?'Finish practice':index===9?'Next level':'Next question';$('progress').style.width=`${(index+1)/10*100}%`;$('score').textContent=`Correct: ${score} of 50`}
+ function render(){done=false;const L=levels[level],q=L.items[index];L.items.__last=q;$('level').value=String(level);$('levelnote').textContent=L.note;$('count').textContent=`Question ${index+1} of 10 · Level ${level+1}: ${L.name}`;$('progress').style.width=`${index/10*100}%`;$('focus').textContent='Select the best traditional phrase marker / IC tree for this sentence.';$('sentence').textContent=q[0];$('options').innerHTML=variants(q).map((o,i)=>`<label class="ic-option"><input type="radio" name="ath-ic-choice" value="${i}"><span><strong>Tree ${String.fromCharCode(65+i)}</strong><pre>${o.tree}</pre></span></label>`).join('');$('feedback').hidden=true;root.querySelector('[data-ic="check"]').hidden=false;root.querySelector('[data-ic="next"]').hidden=true;$('score').textContent=`Correct: ${score} of 50`}
+ function check(){if(done)return;const sel=root.querySelector('input[name="ath-ic-choice"]:checked');if(!sel){$('feedback').hidden=false;$('feedback').innerHTML='<strong>Please choose a tree first.</strong>';return;}const q=levels[level].items[index],opts=variants(q),chosen=opts[+sel.value],correct=chosen.ok;if(correct)score++;done=true;__athSfx.answer(correct);$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="${correct?'ic-good':'ic-bad'}">${correct?'Correct!':'Not quite.'}</strong><p>${chosen.why}</p><p><strong>Why the other structures are wrong:</strong> ${opts.filter(o=>!o.ok).map(o=>o.why).join(' ')}</p><p><strong>Model IC tree:</strong></p><pre>${q[1]}</pre>`;root.querySelectorAll('input[name="ath-ic-choice"]').forEach(x=>x.disabled=true);root.querySelector('[data-ic="check"]').hidden=true;root.querySelector('[data-ic="retry"]').hidden=correct;root.querySelector('[data-ic="next"]').hidden=false;root.querySelector('[data-ic="next"]').textContent=index===9&&level===4?'Finish practice':index===9?'Next level':'Next question';$('progress').style.width=`${(index+1)/10*100}%`;$('score').textContent=`Correct: ${score} of 50`}
  function close(){root.hidden=true;document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
- launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;render();root.querySelector('[data-ic="close"]').focus()});
- $('level').addEventListener('change',e=>{level=Number(e.target.value);index=0;render()});
- root.addEventListener('click',e=>{const b=e.target.closest('[data-ic]');if(!b)return;const a=b.dataset.ic;if(a==='close')close();if(a==='check')check();if(a==='retry'){render()}if(a==='restart'){index=0;score=0;render()}if(a==='next'){if(index<9){index++;render()}else if(level<4){level++;index=0;render()}else{$('progress').style.width='100%';$('count').textContent='All five levels completed';$('sentence').textContent=`Practice complete — ${score} correct answers out of 50.`;$('focus').textContent='You have completed all five levels of IC phrase structure tree practice.';$('options').innerHTML='<p>Review the model explanations for any missed questions, then restart a level to practise again.</p>';$('feedback').hidden=false;$('feedback').innerHTML=`<strong>Final score: ${score} / 50</strong><p>Each question included feedback about constituent boundaries and why the alternative trees were incorrect.</p>`;b.hidden=true;root.querySelector('[data-ic="check"]').hidden=true;$('score').textContent=`Final score: ${score} of 50`;}}});
+ launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;__athShuffle(levels[0].items);render();root.querySelector('[data-ic="close"]').focus()});
+ $('level').addEventListener('change',e=>{level=Number(e.target.value);index=0;__athShuffle(levels[level].items);render()});
+ root.addEventListener('click',e=>{const b=e.target.closest('[data-ic]');if(!b)return;const a=b.dataset.ic;if(a==='close')close();if(a==='check')check();if(a==='retry'){__athRetry(levels[level].items,index);render()}if(a==='restart'){__athShuffle(levels[level].items);index=0;score=0;render()}if(a==='next'){if(index<9){index++;render()}else if(level<4){level++;index=0;__athShuffle(levels[level].items);render()}else{$('progress').style.width='100%';__athSfx.reveal();$('count').textContent='All five levels completed';$('sentence').textContent=`Practice complete — ${score} correct answers out of 50.`;$('focus').textContent='You have completed all five levels of IC phrase structure tree practice.';$('options').innerHTML='<p>Review the model explanations for any missed questions, then restart a level to practise again.</p>';$('feedback').hidden=false;$('feedback').innerHTML=`<strong>Final score: ${score} / 50</strong><p>Each question included feedback about constituent boundaries and why the alternative trees were incorrect.</p>`;b.hidden=true;root.querySelector('[data-ic="check"]').hidden=true;$('score').textContent=`Final score: ${score} of 50`;}}});
  root.addEventListener('keydown',e=>{if(e.key==='Escape'){close();return}if(e.key==='Tab'){const f=[...root.querySelectorAll('button:not([hidden]),select:not([disabled])')].filter(x=>x.offsetParent!==null);if(!f.length)return;const first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
 })();
 </script>
@@ -6617,7 +6671,7 @@ function options(q){
 }
 function render(){
  answered=false;
- const L=levels[level],q=L.items[index];
+ const L=levels[level],q=L.items[index];L.items.__last=q;
  $('level').value=String(level);
  $('levelnote').textContent=L.note;
  $('count').textContent='Question '+(index+1)+' of 10 · Level '+(level+1)+': '+L.name;
@@ -6635,7 +6689,7 @@ function check(){
  const sel=root.querySelector('input[name="ath-dep-choice"]:checked');
  if(!sel){$('feedback').hidden=false;$('feedback').innerHTML='<strong>Please choose a tree first.</strong>';return;}
  const q=levels[level].items[index],opts=options(q),chosen=opts[Number(sel.value)];
- if(chosen.ok)score++;
+ if(chosen.ok)score++;__athSfx.answer(chosen.ok);
  answered=true;
  const labels=q.deps.map(d=>'<li><b>'+esc(d[0])+'</b> — '+esc(d[1])+'</li>').join('');
  $('feedback').hidden=false;
@@ -6649,21 +6703,21 @@ function check(){
  $('score').textContent='Correct: '+score+' of 50';
 }
 function close(){root.hidden=true;document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus();}
-launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;render();root.querySelector('[data-dp="close"]').focus();});
-$('level').addEventListener('change',e=>{level=Number(e.target.value);index=0;render();});
+launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;__athShuffle(levels[0].items);render();root.querySelector('[data-dp="close"]').focus();});
+$('level').addEventListener('change',e=>{level=Number(e.target.value);index=0;__athShuffle(levels[level].items);render();});
 root.addEventListener('click',e=>{
  const b=e.target.closest('[data-dp]');if(!b)return;
  const a=b.dataset.dp;
  if(a==='close')close();
  if(a==='check')check();
- if(a==='retry'){render();}
- if(a==='restart'){index=0;score=0;render();}
+ if(a==='retry'){__athRetry(levels[level].items,index);render();}
+ if(a==='restart'){__athShuffle(levels[level].items);index=0;score=0;render();}
  if(a==='next'){
   if(index<9){index++;render();}
-  else if(level<4){level++;index=0;render();}
+  else if(level<4){level++;index=0;__athShuffle(levels[level].items);render();}
   else{
    $('progress').style.width='100%';
-   $('count').textContent='All five levels completed';
+   __athSfx.reveal();$('count').textContent='All five levels completed';
    $('sentence').textContent='Practice complete — '+score+' correct answers out of 50.';
    $('focus').textContent='You have completed all 50 Dependency Tree Lab questions.';
    $('options').innerHTML='<p>Review the model explanations above, then restart a level to practise again.</p>';
@@ -7107,12 +7161,12 @@ html.dark #ath-lb-root{--lb-bg:#111c27;--lb-fg:#e9f2fa;--lb-card:#1b2a38;--lb-mu
   const shift=(level+index)%all.length;
   return all.slice(shift).concat(all.slice(0,shift));
  }
- function render(){const L=levels[level],q=L.items[index];checked=false;finished=false;$('level').value=String(level);applyLocks();$('levelnote').textContent=L.note;$('count').textContent=`Exercise ${index+1} of ${L.items.length} · Level ${level+1}: ${L.name}`;$('progress').style.width=`${index/L.items.length*100}%`;$('sentence').textContent=q.s;$('options').innerHTML=options(q).map((o,i)=>`<label class="lb-option"><input type="radio" name="ath-lb-choice" value="${i}"><span><strong>Structure ${String.fromCharCode(65+i)}</strong><pre>${o.v}</pre></span></label>`).join('');$('feedback').hidden=true;$('model-wrap').hidden=true;root.querySelector('[data-lb="check"]').hidden=false;root.querySelector('[data-lb="reveal"]').hidden=false;root.querySelector('[data-lb="next"]').hidden=true;$('score').textContent=`Correct answers this level: ${levelScore} of ${levels[level].items.length} · Total correct: ${score}`;}
- function finish(reveal){if(checked)return;const q=levels[level].items[index],sel=root.querySelector('input[name="ath-lb-choice"]:checked');if(!reveal&&!sel){$('feedback').hidden=false;$('feedback').textContent='Choose a bracketed structure before checking.';return;}const good=reveal||options(q)[+sel.value].ok;if(!reveal&&good){score++;levelScore++;}$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="${good?'lb-good':'lb-bad'}">${reveal?'Model answer revealed.':good?'Correct!':'Not quite.'}</strong><p>${q.e}</p>`;$('model').textContent=q.a;$('explain').textContent=q.e;$('model-wrap').hidden=false;checked=true;root.querySelectorAll('input[name="ath-lb-choice"]').forEach(x=>x.disabled=true);root.querySelector('[data-lb="check"]').hidden=true;root.querySelector('[data-lb="reveal"]').hidden=true;root.querySelector('[data-lb="retry"]').hidden=good||reveal;root.querySelector('[data-lb="next"]').hidden=false;root.querySelector('[data-lb="next"]').textContent=index===levels[level].items.length-1?(level===4?'Finish level':'Complete level'):'Next exercise';$('progress').style.width=`${(index+1)/levels[level].items.length*100}%`;}
+ function render(){const L=levels[level],q=L.items[index];L.items.__last=q;checked=false;finished=false;$('level').value=String(level);applyLocks();$('levelnote').textContent=L.note;$('count').textContent=`Exercise ${index+1} of ${L.items.length} · Level ${level+1}: ${L.name}`;$('progress').style.width=`${index/L.items.length*100}%`;$('sentence').textContent=q.s;$('options').innerHTML=options(q).map((o,i)=>`<label class="lb-option"><input type="radio" name="ath-lb-choice" value="${i}"><span><strong>Structure ${String.fromCharCode(65+i)}</strong><pre>${o.v}</pre></span></label>`).join('');$('feedback').hidden=true;$('model-wrap').hidden=true;root.querySelector('[data-lb="check"]').hidden=false;root.querySelector('[data-lb="reveal"]').hidden=false;root.querySelector('[data-lb="next"]').hidden=true;$('score').textContent=`Correct answers this level: ${levelScore} of ${levels[level].items.length} · Total correct: ${score}`;}
+ function finish(reveal){if(checked)return;const q=levels[level].items[index],sel=root.querySelector('input[name="ath-lb-choice"]:checked');if(!reveal&&!sel){$('feedback').hidden=false;$('feedback').textContent='Choose a bracketed structure before checking.';return;}const good=reveal||options(q)[+sel.value].ok;if(!reveal)__athSfx.answer(good);if(!reveal&&good){score++;levelScore++;}$('score').textContent=`Correct answers this level: ${levelScore} of 10 · Total correct: ${score}`;$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="${good?'lb-good':'lb-bad'}">${reveal?'Model answer revealed.':good?'Correct!':'Not quite.'}</strong><p>${q.e}</p>`;$('model').textContent=q.a;$('explain').textContent=q.e;$('model-wrap').hidden=false;checked=true;root.querySelectorAll('input[name="ath-lb-choice"]').forEach(x=>x.disabled=true);root.querySelector('[data-lb="check"]').hidden=true;root.querySelector('[data-lb="reveal"]').hidden=true;root.querySelector('[data-lb="retry"]').hidden=good||reveal;root.querySelector('[data-lb="next"]').hidden=false;root.querySelector('[data-lb="next"]').textContent=index===levels[level].items.length-1?(level===4?'Finish level':'Complete level'):'Next exercise';$('progress').style.width=`${(index+1)/levels[level].items.length*100}%`;}
  function close(){root.hidden=true;document.body.style.overflow='';if(lastFocus)lastFocus.focus();}
- launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;levelScore=0;applyLocks();render();root.querySelector('[data-lb="close"]').focus()});
- $('level').addEventListener('change',e=>{const requested=Number(e.target.value);if(requested+1>unlocked()){e.target.value=String(unlocked()-1);return;}level=requested;index=0;levelScore=0;render()});
- root.addEventListener('click',e=>{const b=e.target.closest('[data-lb]');if(!b)return;const a=b.dataset.lb;if(a==='close')close();if(a==='check')finish(false);if(a==='reveal')finish(true);if(a==='retry'){render()}if(a==='restart'){index=0;levelScore=0;render()}if(a==='next'){if(index<levels[level].items.length-1){index++;render();return;}if(levelScore>=PASS){if(level<4)saveUnlocked(level+2);finished=true;$('focus').textContent=`Level ${level+1} completed with ${levelScore}/10 (${Math.round(levelScore/10*100)}%). ${level<4?'The next level is now unlocked.':'You have completed all five levels.'}`;$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="lb-good">Level completed!</strong><p>You earned ${levelScore*10} points from correct first attempts. ${level<4?'The next level is unlocked.':'All five levels are complete.'}</p>`;b.hidden=true;$('level').disabled=false;applyLocks();return;}$('focus').textContent=`You scored ${levelScore}/10. You need at least ${PASS}/10 (80%) to unlock the next level. Restart this level and try again.`;$('feedback').hidden=false;$('feedback').innerHTML='<strong class="lb-bad">Level not yet complete.</strong><p>You need 80% (8 out of 10 correct) to unlock the next level. Select Restart level to try again.</p>';b.hidden=true;return;}});
+ launch.addEventListener('click',()=>{lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';level=0;index=0;score=0;levelScore=0;__athShuffle(levels[0].items);applyLocks();render();root.querySelector('[data-lb="close"]').focus()});
+ $('level').addEventListener('change',e=>{const requested=Number(e.target.value);if(requested+1>unlocked()){e.target.value=String(unlocked()-1);return;}level=requested;index=0;levelScore=0;__athShuffle(levels[level].items);render()});
+ root.addEventListener('click',e=>{const b=e.target.closest('[data-lb]');if(!b)return;const a=b.dataset.lb;if(a==='close')close();if(a==='check')finish(false);if(a==='reveal')finish(true);if(a==='retry'){__athRetry(levels[level].items,index);render()}if(a==='restart'){__athShuffle(levels[level].items);index=0;levelScore=0;render()}if(a==='next'){if(index<levels[level].items.length-1){index++;render();return;}__athSfx.reveal();if(levelScore>=PASS){if(level<4)saveUnlocked(level+2);finished=true;$('focus').textContent=`Level ${level+1} completed with ${levelScore}/10 (${Math.round(levelScore/10*100)}%). ${level<4?'The next level is now unlocked.':'You have completed all five levels.'}`;$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="lb-good">Level completed!</strong><p>You earned ${levelScore*10} points from correct first attempts. ${level<4?'The next level is unlocked.':'All five levels are complete.'}</p>`;b.hidden=true;$('level').disabled=false;applyLocks();return;}$('focus').textContent=`You scored ${levelScore}/10. You need at least ${PASS}/10 (80%) to unlock the next level. Restart this level and try again.`;$('feedback').hidden=false;$('feedback').innerHTML='<strong class="lb-bad">Level not yet complete.</strong><p>You need 80% (8 out of 10 correct) to unlock the next level. Select Restart level to try again.</p>';b.hidden=true;return;}});
  document.addEventListener('keydown',e=>{if(!root.hidden&&e.key==='Escape')close()});
  applyLocks();
 })();
@@ -7310,7 +7364,7 @@ window.__ATH_GC_LESSONS=lessonData;document.dispatchEvent(new Event("athenaeum-g
 function renderLesson(){const key=$('lesson-select').value,lesson=lessonData[key],done=lessonDone();$('lesson-content').innerHTML=`<h2>${lesson.title}</h2><p class="gc-muted">${lesson.intro}</p><h3 class="gc-lesson-subhead">Full Lesson</h3>`+lesson.sections.map((sec,i)=>`<details ${i===0?'open':''} style="border-top:1px solid var(--gc-border);padding:12px 2px"><summary style="font-weight:700;cursor:pointer">${sec[0]}</summary><div style="line-height:1.7;padding:8px 4px">${sec[1]}</div></details>`).join('')+(lesson.studyNotes?`<section class="gc-study-notes" style="margin-top:16px;padding:14px;border:1px solid var(--gc-border);border-radius:12px"><h3>Study Notes</h3>${lesson.studyNotes.map(function(n){return '<p>'+n+'</p>'}).join('')}</section>`:'')+`<div style="margin-top:16px;padding:14px;border:1px solid var(--gc-border);border-radius:12px"><h3>Practice Questions · Quick Knowledge Check</h3><p class="gc-muted">Answer each question, then check your result. This practice is separate from your level score.</p>`+lesson.check.map((q,i)=>`<fieldset style="border:0;border-top:1px solid var(--gc-border);padding:12px 0"><legend><strong>${i+1}. ${q[0]}</strong></legend>${q[1].map((a,j)=>`<label class="gc-option"><input type="radio" name="ath-gc-lesson-q${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${a}</span></label>`).join('')}<p id="ath-gc-lesson-feedback-${i}" class="gc-muted" hidden></p></fieldset>`).join('')+`<button class="gc-btn secondary" type="button" data-gc="lesson-check">Check knowledge check</button></div>`; $('lesson-completion').textContent=done.includes(key)?'✓ Completed':'';}
 function lessonDone(){try{return JSON.parse(localStorage.getItem('athenaeum.gc.lessons.completed.v1')||'[]')}catch(e){return []}}
 function markLessonDone(){const key=$('lesson-select').value,d=lessonDone();if(!d.includes(key))d.push(key);try{localStorage.setItem('athenaeum.gc.lessons.completed.v1',JSON.stringify(d))}catch(e){};$('lesson-completion').textContent='✓ Lesson marked complete';$('lesson-status').textContent='Completed: '+d.map(x=>x[0].toUpperCase()+x.slice(1)).join(' · ')}
-function checkLesson(){const key=$('lesson-select').value,qs=lessonData[key].check;let correct=0,answered=0;qs.forEach((q,i)=>{const chosen=root.querySelector(`input[name="ath-gc-lesson-q${i}"]:checked`),fb=$('lesson-feedback-'+i);fb.hidden=false;if(!chosen){fb.textContent='Choose an answer to complete this item.';return}answered++;const ok=Number(chosen.value)===q[2];if(ok)correct++;fb.textContent=(ok?'Correct. ':'Review: ')+q[3];fb.style.color=ok?'#187044':'#a12b3c'});$('lesson-status').textContent=`Knowledge check: ${correct}/${qs.length} correct (${answered} answered).`}
+function checkLesson(){const key=$('lesson-select').value,qs=lessonData[key].check;let correct=0,answered=0;qs.forEach((q,i)=>{const chosen=root.querySelector(`input[name="ath-gc-lesson-q${i}"]:checked`),fb=$('lesson-feedback-'+i);fb.hidden=false;if(!chosen){fb.textContent='Choose an answer to complete this item.';return}answered++;const ok=Number(chosen.value)===q[2];if(ok)correct++;__athSfx.answer(ok);fb.textContent=(ok?'Correct. ':'Review: ')+q[3];fb.style.color=ok?'#187044':'#a12b3c'});$('lesson-status').textContent=`Knowledge check: ${correct}/${qs.length} correct (${answered} answered).`}
 
 let component='syntax',level=0,index=0,score=0,levelScore=0,checked=false,lastFocus=null;
 const levels=['Beginner','Developing','Intermediate','Advanced','Mastery'];
@@ -7319,15 +7373,15 @@ function unlocked(){return Math.max(1,Math.min(5,Number(progress()[component]||1
 function applyLocks(){const max=unlocked();Array.from($('level').options).forEach((o,i)=>{o.disabled=i+1>max;const base=o.getAttribute('data-base-label')||o.textContent.replace(/\s*🔒 Locked$/,'');o.setAttribute('data-base-label',base);o.textContent=base+(i+1>max?' 🔒 Locked':'')});if(Number($('level').value)+1>max)$('level').value=String(max-1)}
 function bank(){return topics[component].items}
 function options(q){const correct=q[2],base=q[1].map((v,i)=>({v,ok:String.fromCharCode(65+i)===correct}));const shift=(index+level)%base.length;return base.slice(shift).concat(base.slice(0,shift))}
-function render(){checked=false;const t=topics[component],q=bank()[index];$('component').value=component;$('level').value=String(level);applyLocks();$('levelnote').textContent=t.note[level];$('count').textContent=`Exercise ${index+1} of 10 · ${component[0].toUpperCase()+component.slice(1)} · Level ${level+1}: ${levels[level]}`;$('progress').style.width=`${index/10*100}%`;$('prompt').textContent=q[0];$('focus').textContent='Choose the most accurate answer.';$('options').innerHTML=options(q).map((o,i)=>`<label class="gc-option"><input type="radio" name="ath-gc-choice" value="${i}"><span><strong>Option ${String.fromCharCode(65+i)}</strong><br>${o.v}</span></label>`).join('');$('feedback').hidden=true;$('model-wrap').hidden=true;root.querySelector('[data-gc="check"]').hidden=false;root.querySelector('[data-gc="reveal"]').hidden=false;root.querySelector('[data-gc="next"]').hidden=true;$('score').textContent=`Correct answers this level: ${levelScore}/10 · Total correct: ${score}`}
-function finish(reveal){if(checked)return;const q=bank()[index],sel=root.querySelector('input[name="ath-gc-choice"]:checked');if(!reveal&&!sel){$('feedback').hidden=false;$('feedback').textContent='Select an answer before checking.';return}const good=reveal||options(q)[Number(sel.value)].ok;if(good&&!reveal){score++;levelScore++}$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="${good?'gc-good':'gc-bad'}">${reveal?'Model answer revealed.':good?'Correct!':'Not quite.'}</strong><p>${q[4]}</p>`;$('model').textContent=q[3];$('explain').textContent=q[4];$('model-wrap').hidden=false;checked=true;root.querySelectorAll('input[name="ath-gc-choice"]').forEach(x=>x.disabled=true);root.querySelector('[data-gc="check"]').hidden=true;root.querySelector('[data-gc="reveal"]').hidden=true;root.querySelector('[data-gc="retry"]').hidden=good||reveal;root.querySelector('[data-gc="next"]').hidden=false;root.querySelector('[data-gc="next"]').textContent=index===9?'Complete level':'Next exercise';$('progress').style.width=`${(index+1)/10*100}%`}
-function open(){lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';component='syntax';level=0;index=0;score=0;levelScore=0;applyLocks();render();root.querySelector('[data-gc="close"]').focus()}
+function render(){checked=false;const t=topics[component],q=bank()[index];bank().__last=q;$('component').value=component;$('level').value=String(level);applyLocks();$('levelnote').textContent=t.note[level];$('count').textContent=`Exercise ${index+1} of 10 · ${component[0].toUpperCase()+component.slice(1)} · Level ${level+1}: ${levels[level]}`;$('progress').style.width=`${index/10*100}%`;$('prompt').textContent=q[0];$('focus').textContent='Choose the most accurate answer.';$('options').innerHTML=options(q).map((o,i)=>`<label class="gc-option"><input type="radio" name="ath-gc-choice" value="${i}"><span><strong>Option ${String.fromCharCode(65+i)}</strong><br>${o.v}</span></label>`).join('');$('feedback').hidden=true;$('model-wrap').hidden=true;root.querySelector('[data-gc="check"]').hidden=false;root.querySelector('[data-gc="reveal"]').hidden=false;root.querySelector('[data-gc="next"]').hidden=true;$('score').textContent=`Correct answers this level: ${levelScore}/10 · Total correct: ${score}`}
+function finish(reveal){if(checked)return;const q=bank()[index],sel=root.querySelector('input[name="ath-gc-choice"]:checked');if(!reveal&&!sel){$('feedback').hidden=false;$('feedback').textContent='Select an answer before checking.';return}const good=reveal||options(q)[Number(sel.value)].ok;if(!reveal)__athSfx.answer(good);if(good&&!reveal){score++;levelScore++}$('score').textContent=`Correct answers this level: ${levelScore}/10 · Total correct: ${score}`;$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="${good?'gc-good':'gc-bad'}">${reveal?'Model answer revealed.':good?'Correct!':'Not quite.'}</strong><p>${q[4]}</p>`;$('model').textContent=q[3];$('explain').textContent=q[4];$('model-wrap').hidden=false;checked=true;root.querySelectorAll('input[name="ath-gc-choice"]').forEach(x=>x.disabled=true);root.querySelector('[data-gc="check"]').hidden=true;root.querySelector('[data-gc="reveal"]').hidden=true;root.querySelector('[data-gc="retry"]').hidden=good||reveal;root.querySelector('[data-gc="next"]').hidden=false;root.querySelector('[data-gc="next"]').textContent=index===9?'Complete level':'Next exercise';$('progress').style.width=`${(index+1)/10*100}%`}
+function open(){lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';component='syntax';level=0;index=0;score=0;levelScore=0;__athShuffle(bank());applyLocks();render();root.querySelector('[data-gc="close"]').focus()}
 function close(){root.hidden=true;document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
 launch.addEventListener('click',open);
-$('component').addEventListener('change',e=>{component=e.target.value;level=0;index=0;score=0;levelScore=0;applyLocks();render()});
+$('component').addEventListener('change',e=>{component=e.target.value;level=0;index=0;score=0;levelScore=0;__athShuffle(bank());applyLocks();render()});
 $('lesson-select').addEventListener('change',renderLesson);
-$('level').addEventListener('change',e=>{const n=Number(e.target.value);if(n+1>unlocked()){e.target.value=String(unlocked()-1);return}level=n;index=0;levelScore=0;render()});
-root.addEventListener('click',e=>{const b=e.target.closest('[data-gc]');if(!b)return;const a=b.dataset.gc;if(a==='lesson-open'){$('lesson-panel').hidden=false;renderLesson();$('lesson-panel').scrollIntoView({behavior:'smooth',block:'start'});return}if(a==='lesson-close'){$('lesson-panel').hidden=true;return}if(a==='lesson-complete'){markLessonDone();return}if(a==='lesson-check'){checkLesson();return}if(a==='close')close();if(a==='check')finish(false);if(a==='reveal')finish(true);if(a==='retry')render();if(a==='restart'){index=0;levelScore=0;render()}if(a==='next'){if(index<9){index++;render();return}if(levelScore>=8){if(level<4){const d=progress();d[component]=Math.max(Number(d[component]||1),level+2);try{localStorage.setItem(STORE,JSON.stringify(d))}catch(e){}}$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="gc-good">Level completed!</strong><p>You scored ${levelScore}/10. ${level<4?'The next level is now unlocked for this component.':'You have completed all five levels for this component.'}</p>`;$('focus').textContent='Level result';b.hidden=true;applyLocks()}else{$('feedback').hidden=false;$('feedback').innerHTML='<strong class="gc-bad">Level not yet complete.</strong><p>You need at least 8/10 (80%). Restart the level to try again.</p>';$('focus').textContent=`You scored ${levelScore}/10. Keep practising and try again.`;b.hidden=true}}});
+$('level').addEventListener('change',e=>{const n=Number(e.target.value);if(n+1>unlocked()){e.target.value=String(unlocked()-1);return}level=n;index=0;levelScore=0;__athShuffle(bank());render()});
+root.addEventListener('click',e=>{const b=e.target.closest('[data-gc]');if(!b)return;const a=b.dataset.gc;if(a==='lesson-open'){$('lesson-panel').hidden=false;renderLesson();$('lesson-panel').scrollIntoView({behavior:'smooth',block:'start'});return}if(a==='lesson-close'){$('lesson-panel').hidden=true;return}if(a==='lesson-complete'){markLessonDone();return}if(a==='lesson-check'){checkLesson();return}if(a==='close')close();if(a==='check')finish(false);if(a==='reveal')finish(true);if(a==='retry'){__athRetry(bank(),index);render()}if(a==='restart'){__athShuffle(bank());index=0;levelScore=0;render()}if(a==='next'){if(index<9){index++;render();return}__athSfx.reveal();if(levelScore>=8){if(level<4){const d=progress();d[component]=Math.max(Number(d[component]||1),level+2);try{localStorage.setItem(STORE,JSON.stringify(d))}catch(e){}}$('feedback').hidden=false;$('feedback').innerHTML=`<strong class="gc-good">Level completed!</strong><p>You scored ${levelScore}/10. ${level<4?'The next level is now unlocked for this component.':'You have completed all five levels for this component.'}</p>`;$('focus').textContent='Level result';b.hidden=true;applyLocks()}else{$('feedback').hidden=false;$('feedback').innerHTML='<strong class="gc-bad">Level not yet complete.</strong><p>You need at least 8/10 (80%). Restart the level to try again.</p>';$('focus').textContent=`You scored ${levelScore}/10. Keep practising and try again.`;b.hidden=true}}});
 document.addEventListener('keydown',e=>{if(!root.hidden&&e.key==='Escape')close()});
 applyLocks();
 })();
@@ -7384,6 +7438,15 @@ html.dark #ath-phonetics-root{--ph-bg:#151d2b;--ph-fg:#e8edf6;--ph-card:#202c3d;
 #ath-phonetics-root .ph-pos-progress{height:8px;background:var(--ph-border);border-radius:9px;overflow:hidden;margin:12px 0}
 #ath-phonetics-root .ph-pos-progress span{display:block;height:100%;background:var(--ph-accent);width:0}
 @media(max-width:560px){#ath-phonetics-root{padding:60px 12px 28px}}
+
+/* Parts of Speech Lab: preposition multiple-choice completion */
+.pos-prep-choice-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0;padding:12px;border:1px solid var(--line,#d7dfeb);border-radius:12px;background:var(--surface-2,#f7f9fc);min-width:0}
+.pos-prep-choice-group legend{padding:0 6px}
+.pos-prep-choice{display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 12px;border:1px solid var(--line,#d7dfeb);border-radius:10px;background:var(--surface,#fff);cursor:pointer}
+.pos-prep-choice input{width:18px;height:18px;flex:0 0 auto;accent-color:var(--color-primary,#2563eb)}
+.pos-prep-choice:has(input:checked){outline:2px solid var(--color-primary,#2563eb);outline-offset:1px}
+.pos-prep-choice:focus-within{outline:2px solid var(--color-primary,#2563eb);outline-offset:2px}
+@media(max-width:600px){.pos-prep-choice-group{grid-template-columns:1fr}}
 </style>
 <button id="ath-phonetics-launch" type="button" aria-label="Open Phonetics Exercises"></button>
 <section id="ath-phonetics-root" hidden aria-label="Phonetics Exercises">
@@ -7611,9 +7674,9 @@ function showHome(){
   b.addEventListener('click',()=>start(i));$('ph-levels').appendChild(b);
  });
 }
-function start(l){if(l>state.unlocked)return;level=l;index=0;score=0;answered=false;earned=Array(20).fill(false);firstTry=Array(20).fill(null);$('ph-home').hidden=true;$('ph-result').hidden=true;$('ph-quiz').hidden=false;render()}
+function start(l){if(l>state.unlocked)return;level=l;index=0;score=0;__athShuffle(bank[level]);answered=false;earned=Array(20).fill(false);firstTry=Array(20).fill(null);$('ph-home').hidden=true;$('ph-result').hidden=true;$('ph-quiz').hidden=false;render()}
 function render(){
- const q=bank[level][index];answered=false;
+ const q=bank[level][index];bank[level].__last=q;answered=false;
  $('ph-level-name').textContent=names[level]+' · 20-question challenge';
  $('ph-count').textContent='Question '+(index+1)+' of 20';
  $('ph-score').textContent=score;$('ph-bar').style.width=(index/20*100)+'%';
@@ -7625,14 +7688,14 @@ function render(){
 function submit(){
  if(answered)return;
  const selected=root.querySelector('input[name="ph-answer"]:checked');if(!selected){$('ph-feedback').hidden=false;$('ph-feedback').textContent='Choose an answer before checking.';return}
- const q=bank[level][index],ok=selected.value===q[1];answered=true;
+ const q=bank[level][index],ok=selected.value===q[1];answered=true;__athSfx.answer(ok);
  if(firstTry[index]===null){firstTry[index]=ok;if(ok)score+=5;}
  $('ph-score').textContent=score;$('ph-feedback').hidden=false;
  $('ph-feedback').innerHTML='<strong>'+(ok?'Correct! '+(firstTry[index]?'You earned 5 points.':'Correct on your retry; your first-answer score stays the same.'):'Not quite — 0 points for this question.')+'</strong><br>Correct answer: <b>'+q[1].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</b><br>'+q[3];
  root.querySelectorAll('input[name="ph-answer"]').forEach(x=>x.disabled=true);
  $('ph-submit').hidden=true;$('ph-question-retry').hidden=ok;$('ph-next').hidden=false;$('ph-next').textContent=index===19?'See results':'Next question →';
 }
-function finish(){
+function finish(){__athSfx.reveal();
  const old=Number(state.best[level]||0);state.best[level]=Math.max(old,score);
  const passed=score>=80;
  if(passed){if(!state.completed.includes(level))state.completed.push(level);state.unlocked=Math.max(state.unlocked,Math.min(4,level+1));}
@@ -7644,7 +7707,7 @@ function finish(){
  $('ph-result-message').textContent=passed?(level===4?'You have completed all five phonetics levels. Excellent work!':'You met the 80% requirement. The next level is now unlocked.'):'You need at least 80/100 to pass and unlock the next level. Review the explanations, then retry this level. Your best score is saved.';
 }
 $('ph-submit').addEventListener('click',submit);
-$('ph-question-retry').addEventListener('click',()=>{render();$('ph-feedback').hidden=true;});
+$('ph-question-retry').addEventListener('click',()=>{__athRetry(bank[level],index);firstTry[index]=null;earned[index]=false;render();$('ph-feedback').hidden=true;});
 $('ph-next').addEventListener('click',()=>{if(!answered)return;if(index===19)finish();else{index++;render()}});
 $('ph-home-btn').addEventListener('click',showHome);$('ph-result-home').addEventListener('click',showHome);
 $('ph-retry').addEventListener('click',()=>start(level));
@@ -7678,15 +7741,91 @@ let posState={unlocked:0,completed:[],best:{},writingPoints:0,writingEarned:[]};
 try{const saved=JSON.parse(localStorage.getItem(posStore)||'null');if(saved)posState=Object.assign(posState,saved)}catch(e){}
 const posUnits=[];posNames.forEach((name,ci)=>{for(let li=0;li<posCounts[ci];li++)posUnits.push({cat:ci,sub:li,name,questions:posBank[ci].map((q,qi)=>{let sentence=q[0];if(li===1)sentence='Choose the part of speech of the bold word: '+sentence;if(li===2)sentence='In this sentence, identify the bold word’s function: '+sentence;if(li>=3)sentence='Identify the grammatical category of the bold word: '+sentence;return [sentence,q[1],q[2],q[3]]})})});
 const posUnitNames=posUnits.map(u=>u.name+' · Level '+(u.sub+1));
+
+// Five genuinely different preposition levels. Each item has one correct
+// preposition and three plausible alternatives; learners must type the answer.
+const posPrepositionLevels = [
+[
+['The notebook is **beside** the laptop.','beside','“Beside” means next to.',['beside','beneath','beyond','between']],
+['The class will meet **after** lunch.','after','“After” places the meeting later than lunch.',['after','during','until','since']],
+['A narrow path leads **through** the garden.','through','“Through” describes movement from one side to another.',['through','across','above','toward']],
+['Please place your name **on** the first page.','on','“On” indicates the surface of the page.',['on','in','at','under']],
+['The puppy hid **behind** the curtain.','behind','“Behind” means at the back of something.',['behind','among','opposite','inside']],
+['We have studied here **since** August.','since','“Since” marks the starting point of a period continuing to now.',['since','for','until','during']],
+['The children ran **across** the field.','across','“Across” indicates movement from one side to the other.',['across','along','around','into']],
+['The train arrived **before** sunrise.','before','“Before” means earlier than.',['before','after','during','within']],
+['The keys fell **between** the cushions.','between','“Between” indicates a position separating two things.',['between','among','beneath','beyond']],
+['She divided the sweets **among** the children.','among','“Among” is used for a group of more than two.',['among','between','beside','within']]
+],
+[
+['The lecture begins **at** nine o’clock.','at','“At” is used for a specific clock time.',['at','on','in','by']],
+['We usually travel **in** December.','in','“In” is used with months.',['in','on','at','during']],
+['The announcement was posted **on** Monday.','on','“On” is used with days and dates.',['on','at','in','by']],
+['He has worked here **for** six years.','for','“For” expresses a duration.',['for','since','during','until']],
+['The shop remains open **until** midnight.','until','“Until” marks the ending point.',['until','by','since','from']],
+['The guests arrived **during** the ceremony.','during','“During” means within the time of an event.',['during','for','since','until']],
+['Please finish the activity **by** Friday.','by','“By” gives a deadline no later than Friday.',['by','until','since','during']],
+['The café is **opposite** the library.','opposite','“Opposite” means facing or across from.',['opposite','beside','behind','within']],
+['She walked **toward** the main entrance.','toward','“Toward” indicates direction.',['toward','through','beneath','among']],
+['The ball rolled **under** the wooden table.','under','“Under” means below or beneath.',['under','over','between','beyond']]
+],
+[
+['The students succeeded **because of** their preparation.','because of','“Because of” introduces a reason.',['because of','instead of','in spite of','according to']],
+['The team continued **in spite of** the heavy rain.','in spite of','“In spite of” expresses contrast or concession.',['in spite of','because of','ahead of','next to']],
+['The report was written **according to** the guidelines.','according to','“According to” identifies the source or rule followed.',['according to','apart from','because of','in front of']],
+['The bus stop is **in front of** the school.','in front of','“In front of” indicates a position ahead of something.',['in front of','on behalf of','instead of','out of']],
+['She spoke **on behalf of** the entire group.','on behalf of','“On behalf of” means as a representative of.',['on behalf of','in addition to','in spite of','according to']],
+['The hikers walked **along** the riverbank.','along','“Along” means following the length of something.',['along','across','throughout','beneath']],
+['The children gathered **around** the storyteller.','around','“Around” indicates surrounding or encircling.',['around','through','between','beyond']],
+['The parcel was sent **via** the local courier.','via','“Via” means by way of or using a route.',['via','amid','upon','beneath']],
+['The decision was made **without** delay.','without','“Without” means in the absence of.',['without','within','beyond','despite']],
+['The students worked **within** the time limit.','within','“Within” means inside a limit or period.',['within','without','throughout','toward']]
+],
+[
+['The cottage stands **among** tall pine trees.','among','“Among” places something within a group.',['among','between','beside','across']],
+['The documents must be submitted **prior to** the interview.','prior to','“Prior to” means before.',['prior to','subsequent to','in addition to','in spite of']],
+['The results were announced **subsequent to** the final review.','subsequent to','“Subsequent to” means after.',['subsequent to','prior to','because of','regardless of']],
+['The speaker continued **despite** several interruptions.','despite','“Despite” introduces a contrast.',['despite','because of','according to','instead of']],
+['The village is located **beyond** the mountain pass.','beyond','“Beyond” means farther than or on the other side of.',['beyond','beneath','within','beside']],
+['The students sat **in a row** along the wall.','in a row','“In a row” describes an arrangement.',['in a row','at random','by chance','on time']],
+['The committee acted **in accordance with** the policy.','in accordance with','This phrase means following or conforming to.',['in accordance with','in contrast to','in exchange for','in addition to']],
+['The new building was constructed **on top of** the old foundation.','on top of','“On top of” indicates a higher position resting on something.',['on top of','in place of','in front of','by means of']],
+['The charity operates **on behalf of** local families.','on behalf of','The phrase indicates representation or support for others.',['on behalf of','in spite of','in view of','in addition to']],
+['The decision is **up to** the department head.','up to','“Up to” indicates responsibility or choice.',['up to','apart from','away from','next to']]
+],
+[
+['**Notwithstanding** the delay, the panel completed its review.','notwithstanding','“Notwithstanding” means despite or in spite of.',['notwithstanding','concerning','regarding','alongside']],
+['The funds were allocated **pursuant to** the agreement.','pursuant to','“Pursuant to” means in accordance with or as required by.',['pursuant to','in lieu of','regardless of','by virtue of']],
+['The witness gave evidence **with regard to** the disputed contract.','with regard to','This phrase means concerning or about.',['with regard to','in exchange for','in advance of','on account of']],
+['The team succeeded **by virtue of** its careful planning.','by virtue of','This phrase means because of or as a result of.',['by virtue of','in spite of','in place of','with reference to']],
+['The amendment was adopted **in lieu of** the original proposal.','in lieu of','“In lieu of” means instead of.',['in lieu of','in view of','in addition to','in accordance with']],
+['The policy applies **irrespective of** a student’s year level.','irrespective of','This phrase means regardless of.',['irrespective of','in relation to','in accordance with','in exchange for']],
+['The decision was reached **in light of** new evidence.','in light of','This phrase means considering or because of.',['in light of','in spite of','in place of','in addition to']],
+['The payment was made **in exchange for** the materials.','in exchange for','This phrase expresses what was received in return.',['in exchange for','in view of','in accordance with','on behalf of']],
+['The discussion focused **with respect to** the revised curriculum.','with respect to','This phrase means concerning.',['with respect to','in spite of','by means of','in lieu of']],
+['The contract remains valid **subject to** the stated conditions.','subject to','This phrase means dependent on or conditional upon.',['subject to','prior to','apart from','in addition to']]
+]
+];
+posPrepositionLevels.forEach((items, level) => {
+  const unitIndex = 15 + level;
+  if (posUnits[unitIndex]) {
+    posUnits[unitIndex].questions = items.map(([sentence, answer, explanation]) =>
+      [sentence.replace('**'+answer+'**','_____'), 'Preposition', [], explanation]
+    );
+  }
+});
+
 if(!localStorage.getItem(posStore)){try{const legacy=JSON.parse(localStorage.getItem('athenaeum.parts-of-speech.categories.v2')||'null');if(legacy&&legacy.best){posNames.forEach((_,ci)=>{const unitIndex=posUnits.findIndex(u=>u.cat===ci&&u.sub===0);const oldBest=Number(legacy.best[ci]||0);if(oldBest>0)posState.best[unitIndex]=oldBest;if(oldBest>=80)posState.completed.push(unitIndex)});posState.writingPoints=Number(legacy.writingPoints||0);posState.writingEarned=legacy.writingEarned||[];}}catch(e){}}
 posState.completed=(posState.completed||[]).filter(i=>Number(posState.best&&posState.best[i]||0)>=80);
 posState.unlocked=0;while(posState.unlocked<posUnits.length&&posState.completed.includes(posState.unlocked))posState.unlocked++;
-let posLevel=0,posIndex=0,posScore=0,posAnswered=false,posFirst=[];
+let posLevel=0,posIndex=0,posScore=0,posAnswered=false,posFirst=[],posSelectedPreposition='';
 const posRoot=document.getElementById('ath-pos-lab');
 function posSave(){try{localStorage.setItem(posStore,JSON.stringify(posState))}catch(e){}}
 function posIsUnlocked(i){const u=posUnits[i];return u.sub===0||posState.completed.includes(posUnits.findIndex(x=>x.cat===u.cat&&x.sub===u.sub-1))}
 function posHome(){ $('ph-pos-quiz').hidden=true;$('ph-pos-result').hidden=true;$('pos-writing').hidden=false;$('pos-total').textContent=Object.values(posState.best).reduce((a,b)=>a+Number(b||0),0);$('pos-levels').innerHTML='';posNames.forEach((name,ci)=>{const group=document.createElement('section');group.className='pos-category-group';const h=document.createElement('h3');h.textContent=name;group.appendChild(h);posUnits.forEach((u,i)=>{if(u.cat!==ci)return;const done=posState.completed.includes(i),locked=!posIsUnlocked(i),b=document.createElement('button');b.type='button';b.className='pos-level';b.disabled=locked;b.innerHTML='<strong>'+(locked?'🔒 ':done?'✓ ':'')+name+' · Level '+(u.sub+1)+'</strong><br><small>'+(locked?'Locked — pass the previous level in this category with 80%':done?'Passed · Best score: '+posState.best[i]+'/100':u.sub===0?'Available now · 10 questions · 100 points · Pass: 80%':'10 '+name.toLowerCase()+' questions · 100 points · Pass: 80%')+'</small>';b.addEventListener('click',()=>posStart(i));group.appendChild(b)});$('pos-levels').appendChild(group)})}
-function posStart(l){if(!posIsUnlocked(l))return;posLevel=l;posIndex=0;posScore=0;posFirst=Array(10).fill(null);$('pos-writing').hidden=true;$('ph-pos-result').hidden=true;$('ph-pos-quiz').hidden=false;posRender()}
+function posAnnotate(){const u=posUnits[posLevel];if(u.questions.__ann)return;if(u.cat!==5){const keep=posIndex;u.questions.forEach((q,i)=>{posIndex=i;q.__acc=posAcceptedWords(q)});posIndex=keep}u.questions.__ann=1}
+ function posSwapQ(i,j){const u=posUnits[posLevel],q=u.questions,t=q[i];q[i]=q[j];q[j]=t;if(u.cat===5){const p=posPrepositionLevels[u.sub];if(p){const x=p[i];p[i]=p[j];p[j]=x}}}
+ function posStart(l){if(!posIsUnlocked(l))return;posLevel=l;posIndex=0;posScore=0;posFirst=Array(10).fill(null);posAnnotate();__athShuffle(posUnits[posLevel].questions,posSwapQ);$('pos-writing').hidden=true;$('ph-pos-result').hidden=true;$('ph-pos-quiz').hidden=false;posRender()}
 function posEscape(s){return String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
 const posExtraAnswers={
  0:[['books'],['student'],['butterflies','flower'],['decision'],[],['everyone'],['performance'],['valley'],['thought'],['table']],
@@ -7698,33 +7837,43 @@ const posExtraAnswers={
  6:[['but'],['and'],['because'],['or'],['although'],['and'],['for'],['yet'],['until'],['yet']],
  7:[[],[],[],[],[],[],[],[],[],[]]
 };
-function posAcceptedWords(q){const m=q[0].match(/\*\*(.*?)\*\*/),primary=m?m[1].trim():'';const extra=(posExtraAnswers[posUnits[posLevel].cat]||[])[posIndex]||[];return [...new Set([primary,...extra].filter(Boolean))]}
+function posAcceptedWords(q){if(q&&q.__acc)return q.__acc;if(posUnits[posLevel].cat===5)return [posPrepositionLevels[posUnits[posLevel].sub][posIndex][1]];const m=q[0].match(/\*\*(.*?)\*\*/),primary=m?m[1].trim():'';const extra=(posExtraAnswers[posUnits[posLevel].cat]||[])[posIndex]||[];return [...new Set([primary,...extra].filter(Boolean))]}
 function posNormalizeAnswer(v){return String(v||'').toLocaleLowerCase().replace(/[“”‘’]/g,"'").replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu,'').trim()}
 function posRender(){
- const q=posUnits[posLevel].questions[posIndex],raw=q[0],match=raw.match(/\*\*(.*?)\*\*/),target=match?match[1].trim():'';
+ const q=posUnits[posLevel].questions[posIndex],raw=q[0],_last=(posUnits[posLevel].questions.__last=q),match=raw.match(/\*\*(.*?)\*\*/),target=match?match[1].trim():'';
  posAnswered=false;window.posCurrentTarget=target;$('pos-level-name').textContent=posUnitNames[posLevel]+' · Sentence identification';$('pos-count').textContent='Question '+(posIndex+1)+' of 10';$('pos-score').textContent=posScore;$('pos-bar').style.width=(posIndex/10*100)+'%';
  const sentence=raw.replace(/\*\*(.*?)\*\*/g,'$1').replace(/^(Choose the part of speech of the bold word: |In this sentence, identify the bold word’s function: |Identify the grammatical category of the bold word: )/,'');
- $('pos-question').innerHTML='<div class="pos-task"><strong>Find the '+posNames[posUnits[posLevel].cat].slice(0,-1).toLowerCase()+' word(s) in this sentence.</strong><p class="pos-sentence">'+posEscape(sentence)+'</p><small>Type your answer. If the sentence contains more than one correct word, separate your answers with commas. You do not need to select from choices.</small></div>';
- $('pos-options').innerHTML='<label for="pos-written-answer"><strong>Your answer</strong></label><input id="pos-written-answer" class="pos-written-answer" type="text" autocomplete="off" placeholder="Type the word or words here" aria-label="Type the correct word or words from the sentence"><small class="pos-answer-hint">Example format: word one, word two</small>';
+ if(posUnits[posLevel].cat===5){
+  $('pos-question').innerHTML='<div class="pos-task"><strong>Choose the preposition that best completes the sentence.</strong><p class="pos-sentence">'+posEscape(sentence)+'</p><small>Only one option is correct. Read the whole sentence before choosing.</small></div>';
+  const choices=posPrepositionLevels[posUnits[posLevel].sub][posIndex][3];
+  posSelectedPreposition='';
+  $('pos-options').innerHTML='<fieldset class="pos-prep-choice-group"><legend><strong>Select one answer</strong></legend>'+choices.map((w,i)=>'<label class="pos-prep-choice"><input type="radio" name="pos-preposition-choice" value="'+posEscape(w)+'"><span>'+String.fromCharCode(65+i)+'. '+posEscape(w)+'</span></label>').join('')+'</fieldset>';
+ }else{
+  $('pos-question').innerHTML='<div class="pos-task"><strong>Find the '+posNames[posUnits[posLevel].cat].slice(0,-1).toLowerCase()+' word(s) in this sentence.</strong><p class="pos-sentence">'+posEscape(sentence)+'</p><small>Type your answer. If the sentence contains more than one correct word, separate your answers with commas. You do not need to select from choices.</small></div>';
+  $('pos-options').innerHTML='<label for="pos-written-answer"><strong>Your answer</strong></label><input id="pos-written-answer" class="pos-written-answer" type="text" autocomplete="off" placeholder="Type the word or words here" aria-label="Type the correct word or words from the sentence"><small class="pos-answer-hint">Example format: word one, word two</small>';
+ }
  $('pos-feedback').hidden=true;$('pos-submit').hidden=false;$('pos-question-retry').hidden=true;$('pos-next').hidden=true;
 }
 function posSubmit(){
  if(posAnswered)return;
- const field=$('pos-written-answer'),rawAnswer=field?field.value.trim():'';
- if(!rawAnswer){$('pos-feedback').hidden=false;$('pos-feedback').textContent='Type at least one word from the sentence before checking.';return}
+ const isPreposition=posUnits[posLevel].cat===5,field=$('pos-written-answer'),rawAnswer=isPreposition?posSelectedPreposition:(field?field.value.trim():'');
+ if(!rawAnswer){$('pos-feedback').hidden=false;$('pos-feedback').textContent=isPreposition?'Choose one of the four prepositions before checking.':'Type at least one word from the sentence before checking.';return}
  const q=posUnits[posLevel].questions[posIndex],accepted=posAcceptedWords(q).map(posNormalizeAnswer),submitted=rawAnswer.split(/[,;\n]+/).map(posNormalizeAnswer).filter(Boolean),unique=[...new Set(submitted)];
  const valid=unique.filter(w=>accepted.includes(w));const invalid=unique.filter(w=>!accepted.includes(w));
  // A response is correct when it includes at least one accepted answer and every supplied answer is valid.
- const ok=valid.length>0&&invalid.length===0,first=posFirst[posIndex]===null;
+ const ok=valid.length>0&&invalid.length===0,first=posFirst[posIndex]===null;__athSfx.answer(ok);
  if(first){posFirst[posIndex]=ok;if(ok)posScore+=10;}
  posAnswered=true;$('pos-score').textContent=posScore;$('pos-feedback').hidden=false;
  const answerText=posAcceptedWords(q).join(', ');
  $('pos-feedback').textContent=(ok?(first?'Correct! You earned 10 points.':'Correct on your retry. No points are added for retries.'):'Not quite. '+(first?'This question earns 0 points.':'No points are added for retries.'))+' Accepted answer'+(posAcceptedWords(q).length>1?'s: ':' : ')+answerText+'. Explanation: '+q[3]+(invalid.length?' Your response also included an incorrect word: '+invalid.join(', ')+'.':'');
- if(field)field.disabled=true;$('pos-submit').hidden=true;$('pos-question-retry').hidden=ok;$('pos-next').hidden=false;$('pos-next').textContent=posIndex===9?'See level results':'Next question →';
+ if(field)field.disabled=true;if(isPreposition)document.querySelectorAll('input[name="pos-preposition-choice"]').forEach(el=>el.disabled=true);$('pos-submit').hidden=true;$('pos-question-retry').hidden=ok;$('pos-next').hidden=false;$('pos-next').textContent=posIndex===9?'See level results':'Next question →';
 }
-function posFinish(){posState.best[posLevel]=Math.max(Number(posState.best[posLevel]||0),posScore);const passed=posScore>=80;if(passed){if(!posState.completed.includes(posLevel))posState.completed.push(posLevel)}else posState.completed=posState.completed.filter(i=>i!==posLevel);posSave();$('ph-pos-quiz').hidden=true;$('ph-pos-result').hidden=false;$('pos-result-title').textContent=passed?'Level passed!':'80% pass mark not reached';$('pos-result-score').textContent='Your score: '+posScore+'/100 · Best score: '+posState.best[posLevel]+'/100';const u=posUnits[posLevel],nextSame=posUnits.findIndex(x=>x.cat===u.cat&&x.sub===u.sub+1);$('pos-result-message').textContent=passed?(nextSame<0?'You completed all levels in this category. Excellent work!':'You earned at least 80%. The next level in this category is now unlocked. Level 1 in every other category is also available.'):'You need at least 80/100 to unlock the next level in this category. Review the explanations and retry this level. Your best score is saved.'}
+function posFinish(){__athSfx.reveal();posState.best[posLevel]=Math.max(Number(posState.best[posLevel]||0),posScore);const passed=posScore>=80;if(passed){if(!posState.completed.includes(posLevel))posState.completed.push(posLevel)}else posState.completed=posState.completed.filter(i=>i!==posLevel);posSave();$('ph-pos-quiz').hidden=true;$('ph-pos-result').hidden=false;$('pos-result-title').textContent=passed?'Level passed!':'80% pass mark not reached';$('pos-result-score').textContent='Your score: '+posScore+'/100 · Best score: '+posState.best[posLevel]+'/100';const u=posUnits[posLevel],nextSame=posUnits.findIndex(x=>x.cat===u.cat&&x.sub===u.sub+1);$('pos-result-message').textContent=passed?(nextSame<0?'You completed all levels in this category. Excellent work!':'You earned at least 80%. The next level in this category is now unlocked. Level 1 in every other category is also available.'):'You need at least 80/100 to unlock the next level in this category. Review the explanations and retry this level. Your best score is saved.'}
 const posOverlay=document.getElementById('ath-pos-root');document.getElementById('ath-pos-launch').addEventListener('click',()=>{posHome();posOverlay.hidden=false});document.getElementById('pos-close').addEventListener('click',()=>{posOverlay.hidden=true;posHome()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!posOverlay.hidden){posOverlay.hidden=true;posHome()}});
-$('pos-submit').addEventListener('click',posSubmit);$('pos-question-retry').addEventListener('click',()=>{posRender();$('pos-feedback').hidden=true});$('pos-next').addEventListener('click',()=>{if(!posAnswered)return;if(posIndex===9)posFinish();else{posIndex++;posRender()}});$('pos-home-btn').addEventListener('click',posHome);$('pos-result-home').addEventListener('click',posHome);$('pos-retry').addEventListener('click',()=>posStart(posLevel));
+$('pos-submit').addEventListener('click',posSubmit);
+document.getElementById('pos-options').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&e.target.id==='pos-written-answer'){e.preventDefault();posSubmit()}});
+document.getElementById('pos-options').addEventListener('change',e=>{if(e.target&&e.target.name==='pos-preposition-choice')posSelectedPreposition=e.target.value});
+$('pos-question-retry').addEventListener('click',()=>{__athRetry(posUnits[posLevel].questions,posIndex,posSwapQ);posFirst[posIndex]=null;posRender();$('pos-feedback').hidden=true});$('pos-next').addEventListener('click',()=>{if(!posAnswered)return;if(posIndex===9)posFinish();else{posIndex++;posRender()}});$('pos-home-btn').addEventListener('click',posHome);$('pos-result-home').addEventListener('click',posHome);$('pos-retry').addEventListener('click',()=>posStart(posLevel));
 const writeTargets={Noun:['curiosity','friendship','library','celebration'],Pronoun:['they','herself','someone','which'],Verb:['discover','whispered','creates','belong'],Adjective:['curious','generous','ancient','fragile'],Adverb:['carefully','rarely','silently','almost'],Preposition:['beneath','between','through','beside'],Conjunction:['although','because','yet','unless'],Interjection:['Wow','Alas','Hurray','Oops']};
 let writeTarget='curiosity';
 function posNewTarget(){const cat=$('pos-write-category').value,arr=writeTargets[cat];writeTarget=arr[Math.floor(Math.random()*arr.length)];$('pos-write-word').textContent=writeTarget;$('pos-write-answer').value='';$('pos-write-feedback').hidden=true}
